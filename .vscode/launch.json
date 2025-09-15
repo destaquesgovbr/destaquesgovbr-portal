@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "Dev",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev"],
+            "skipFiles": ["<node_internals>/**"]
+        }
+    ]
+}
