@@ -25,7 +25,7 @@ const NewsCard = ({
   return (
     <Link href={internalUrl}>
       <Card
-        className={`hover:shadow-government transition-all duration-300 cursor-pointer group ${isMain ? 'col-span-2 row-span-2' : ''}`}
+        className={`hover:shadow-government transition-all overflow-hidden duration-300 cursor-pointer group ${isMain ? 'col-span-2 row-span-2' : ''}`}
       >
         {imageUrl && (
           <div
