@@ -77,10 +77,7 @@ export default async function Page({ params }: Props) {
 
       {/* Article content */}
       <article className="prose prose-lg max-w-none mb-8">
-        <div
-          className="text-foreground leading-relaxed space-y-4"
-          // dangerouslySetInnerHTML={{ __html: article.content }}
-        >
+        <div className="text-foreground leading-relaxed space-y-4 flex flex-col [&>*]:flex [&>*]:flex-col [&>*]:items-center">
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
       </article>
