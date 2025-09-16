@@ -1,26 +1,26 @@
-import { Building2, Heart, TrendingUp, Users } from "lucide-react"
-import NewsCard, { type NewsCardProps } from "@/components/NewsCard"
-import { Badge } from "@/components/ui/badge"
+import { Building2, Heart, TrendingUp, Users } from 'lucide-react'
+import NewsCard, { type NewsCardProps } from '@/components/NewsCard'
+import { Badge } from '@/components/ui/badge'
 
-import { Button } from "@/components/ui/button"
-import { getLatestArticles } from "./actions"
+import { Button } from '@/components/ui/button'
+import { getLatestArticles } from './actions'
 
 const featuredNews: NewsCardProps = {
   title:
-    "Governo Federal anuncia novo pacote de investimentos em infraestrutura",
+    'Governo Federal anuncia novo pacote de investimentos em infraestrutura',
   summary:
-    "Presidente assina decreto que destina R$ 50 bilhões para obras de modernização de rodovias, ferrovias e portos em todo o país, priorizando regiões com maior necessidade de desenvolvimento.",
-  category: "Infraestrutura",
-  internalUrl: ".",
-  date: new Date("2024-01-10"),
-  imageUrl: "news-hero.png",
+    'Presidente assina decreto que destina R$ 50 bilhões para obras de modernização de rodovias, ferrovias e portos em todo o país, priorizando regiões com maior necessidade de desenvolvimento.',
+  category: 'Infraestrutura',
+  internalUrl: '.',
+  date: new Date('2024-01-10'),
+  imageUrl: 'news-hero.png',
 }
 
 const categories = [
-  { name: "Economia", icon: TrendingUp, count: 45 },
-  { name: "Saúde", icon: Heart, count: 32 },
-  { name: "Educação", icon: Users, count: 28 },
-  { name: "Infraestrutura", icon: Building2, count: 23 },
+  { name: 'Economia', icon: TrendingUp, count: 45 },
+  { name: 'Saúde', icon: Heart, count: 32 },
+  { name: 'Educação', icon: Users, count: 28 },
+  { name: 'Infraestrutura', icon: Building2, count: 23 },
 ]
 
 export default async function Home() {
@@ -90,11 +90,11 @@ export default async function Home() {
                 <NewsCard
                   key={article.id}
                   internalUrl={`/articles/${article.id}`}
-                  category={article.category || ""}
+                  category={article.category || ''}
                   date={article.published_at || new Date(0)}
-                  summary={article.title || ""}
-                  title={article.title || ""}
-                  imageUrl={article.image || ""}
+                  summary={article.title || ''}
+                  title={article.title || ''}
+                  imageUrl={article.image || ''}
                 />
               ))}
             </div>

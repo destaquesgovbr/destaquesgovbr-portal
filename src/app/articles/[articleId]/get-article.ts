@@ -1,7 +1,7 @@
-"use server"
+'use server'
 
-import type { ArticleRow } from "@/lib/article-row"
-import { getPool } from "@/lib/client"
+import type { ArticleRow } from '@/lib/article-row'
+import { getPool } from '@/lib/client'
 
 export type GetArticleResult = ArticleRow[]
 

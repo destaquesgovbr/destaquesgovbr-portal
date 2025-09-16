@@ -1,11 +1,11 @@
-import { ArrowLeft, Calendar, ExternalLink, Share2, Tag } from "lucide-react"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import ReactMarkdown from "react-markdown"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { getArticleById } from "./get-article"
+import { ArrowLeft, Calendar, ExternalLink, Share2, Tag } from 'lucide-react'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import ReactMarkdown from 'react-markdown'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { getArticleById } from './get-article'
 
 interface Props {
   params: Promise<{ articleId: number }>
@@ -18,8 +18,8 @@ export default async function Page({ params }: Props) {
     notFound()
   }
 
-  const articleUrl = new URL(article.url || "")
-  const baseUrl = articleUrl.hostname.replace("www.", "")
+  const articleUrl = new URL(article.url || '')
+  const baseUrl = articleUrl.hostname.replace('www.', '')
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-5xl">
@@ -45,7 +45,7 @@ export default async function Page({ params }: Props) {
           </Badge>
           <div className="flex items-center text-sm text-muted-foreground">
             <Calendar className="w-4 h-4 mr-1" />
-            {article.published_at?.toDateString() ?? ""}
+            {article.published_at?.toDateString() ?? ''}
           </div>
           <Button variant="ghost" size="sm">
             <Share2 className="w-4 h-4 mr-1" />
@@ -67,7 +67,7 @@ export default async function Page({ params }: Props) {
         <div className="mb-8">
           <img
             src={article.image}
-            alt={article.title || ""}
+            alt={article.title || ''}
             width={992}
             height={384}
             className="w-full h-64 md:h-96 object-cover rounded-lg"
@@ -93,7 +93,7 @@ export default async function Page({ params }: Props) {
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Fonte oficial:</span>
           <a
-            href={article.url || "."}
+            href={article.url || '.'}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-primary hover:underline"
