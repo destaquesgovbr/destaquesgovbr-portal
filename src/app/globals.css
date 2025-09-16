@@ -90,9 +90,9 @@
   --ring: hsl(142 65% 25%);
 
   /* Government specific tokens */
-  --government-green: hsl(142 65% 25%);
-  --government-yellow: hsl(45 90% 55%);
-  --government-blue: hsl(220 90% 55%);
+  --government-green: hsl(142 70% 30%);
+  --government-yellow: hsl(55 80% 45%);
+  --government-blue: hsl(220 85% 55%);
   --government-gray: hsl(210 10% 95%);
 
   /* Gradients */
