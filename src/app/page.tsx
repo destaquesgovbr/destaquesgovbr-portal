@@ -3,6 +3,7 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import NewsCard from "@/components/NewsCard"
 import { Badge } from "@/components/ui/badge"
+
 import { Button } from "@/components/ui/button"
 
 const featuredNews = {
@@ -60,8 +61,6 @@ const categories = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-
       <main>
         {/* Hero Section */}
         <section className="bg-gradient-subtle py-12">
@@ -159,8 +158,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }
