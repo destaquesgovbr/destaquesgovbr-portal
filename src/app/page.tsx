@@ -1,53 +1,20 @@
 import { Building2, Heart, TrendingUp, Users } from "lucide-react"
-import NewsCard from "@/components/NewsCard"
+import NewsCard, { type NewsCardProps } from "@/components/NewsCard"
 import { Badge } from "@/components/ui/badge"
 
 import { Button } from "@/components/ui/button"
+import { getLatestArticles } from "./actions"
 
-const featuredNews = {
+const featuredNews: NewsCardProps = {
   title:
     "Governo Federal anuncia novo pacote de investimentos em infraestrutura",
   summary:
     "Presidente assina decreto que destina R$ 50 bilhões para obras de modernização de rodovias, ferrovias e portos em todo o país, priorizando regiões com maior necessidade de desenvolvimento.",
   category: "Infraestrutura",
-  date: "10 de Janeiro, 2024",
+  internalUrl: ".",
+  date: new Date("2024-01-10"),
   imageUrl: "news-hero.png",
 }
-
-const recentNews = [
-  {
-    title:
-      "Ministério da Saúde amplia cobertura de vacinas para população infantil",
-    summary:
-      "Nova campanha nacional de vacinação será implementada em todos os estados brasileiros.",
-    category: "Saúde",
-    date: "9 de Janeiro, 2024",
-    imageUrl: "news-health.png",
-  },
-  {
-    title: "Programa de educação digital chega a mais 1000 escolas públicas",
-    summary:
-      "Iniciativa visa modernizar o ensino através da tecnologia em comunidades rurais.",
-    category: "Educação",
-    date: "8 de Janeiro, 2024",
-    imageUrl: "news-education.png",
-  },
-  {
-    title: "Aprovação de nova lei de incentivo à inovação tecnológica",
-    summary:
-      "Medida prevê benefícios fiscais para startups e empresas de tecnologia nacional.",
-    category: "Economia",
-    date: "7 de Janeiro, 2024",
-  },
-  {
-    title: "Expansão do programa habitacional para famílias de baixa renda",
-    summary:
-      "Governo anuncia construção de 100 mil novas unidades habitacionais em 2024.",
-    category: "Habitação",
-    date: "6 de Janeiro, 2024",
-    imageUrl: "news-infrastructure.jpg",
-  },
-]
 
 const categories = [
   { name: "Economia", icon: TrendingUp, count: 45 },
@@ -57,6 +24,8 @@ const categories = [
 ]
 
 export default async function Home() {
+  const latestNews = await getLatestArticles()
+
   return (
     <div className="min-h-screen bg-background">
       <main>
@@ -117,8 +86,16 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {recentNews.map((news, index) => (
-                <NewsCard key={index} {...news} />
+              {latestNews.map((article) => (
+                <NewsCard
+                  key={article.id}
+                  internalUrl={`/articles/${article.id}`}
+                  category={article.category || ""}
+                  date={article.published_at || new Date(0)}
+                  summary={article.title || ""}
+                  title={article.title || ""}
+                  imageUrl={article.image || ""}
+                />
               ))}
             </div>
           </div>

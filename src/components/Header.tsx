@@ -50,43 +50,43 @@ const Header = () => {
         {/* Navigation */}
         <nav className="hidden md:flex space-x-8 py-4 border-t">
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Todas as Notícias
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Presidência
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Ministérios
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Economia
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Saúde
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Educação
           </a>
           <a
-            href="#"
+            href="."
             className="text-sm font-medium hover:text-primary transition-colors"
           >
             Infraestrutura
