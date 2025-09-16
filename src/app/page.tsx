@@ -1,6 +1,4 @@
 import { Building2, Heart, TrendingUp, Users } from "lucide-react"
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
 import NewsCard from "@/components/NewsCard"
 import { Badge } from "@/components/ui/badge"
 
@@ -58,7 +56,7 @@ const categories = [
   { name: "Infraestrutura", icon: Building2, count: 23 },
 ]
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="min-h-screen bg-background">
       <main>

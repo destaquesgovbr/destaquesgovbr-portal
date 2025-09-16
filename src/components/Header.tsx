@@ -28,7 +28,7 @@ const Header = () => {
               className="h-10 w-10"
             />
             <div>
-              <h1 className="text-xl font-bold">Portal Brasil</h1>
+              <h1 className="text-xl font-bold">Destaques GOVBR</h1>
               <p className="text-sm text-muted-foreground">Governo Federal</p>
             </div>
           </div>
