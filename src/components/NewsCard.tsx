@@ -1,5 +1,6 @@
 import { Calendar, Tag } from 'lucide-react'
 import Link from 'next/link'
+import type { Ref } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
@@ -11,6 +12,7 @@ export interface NewsCardProps {
   date: Date
   imageUrl?: string
   isMain?: boolean
+  ref?: Ref<HTMLAnchorElement>
 }
 
 const NewsCard = ({
@@ -20,10 +22,11 @@ const NewsCard = ({
   internalUrl,
   date,
   imageUrl,
+  ref,
   isMain = false,
 }: NewsCardProps) => {
   return (
-    <Link href={internalUrl} className="h-full">
+    <Link href={internalUrl} className="h-full" ref={ref}>
       <Card
         className={`hover:shadow-government transition-all overflow-hidden duration-300 h-full cursor-pointer group ${isMain ? 'col-span-2 row-span-2' : ''}`}
       >

@@ -1,18 +1,30 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { getAllArticles } from './actions'
 
 export default function ArticlesPage() {
-  const articlesQuery = useInfiniteQuery({
+  const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
-    queryFn: async () => getAllArticles(),
-    getNextPageParam: () => null,
+    queryFn: getAllArticles,
+    getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     initialPageParam: null,
   })
 
-  if (articlesQuery.isError) {
+  const { ref } = useInView({
+    onChange: (inView) => {
+      console.log('inView', inView)
+      if (inView && articlesQ.hasNextPage && !articlesQ.isFetchingNextPage) {
+        articlesQ.fetchNextPage()
+      }
+    },
+  })
+
+  const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
+
+  if (articlesQ.isError) {
     return (
       <div className="container mx-auto px-4 py-8">
         <p className="text-center text-red-500">
@@ -22,9 +34,6 @@ export default function ArticlesPage() {
     )
   }
 
-  const articles =
-    articlesQuery.data?.pages.flatMap((page) => page.articles) ?? []
-
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
@@ -33,12 +42,13 @@ export default function ArticlesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <NewsCard
               key={article.id}
               internalUrl={`/articles/${article.id}`}
               category={article.category || ''}
               date={article.published_at || new Date(0)}
+              ref={index === articles.length - 1 ? ref : undefined}
               summary={article.title || ''}
               title={article.title || ''}
               imageUrl={article.image || ''}
