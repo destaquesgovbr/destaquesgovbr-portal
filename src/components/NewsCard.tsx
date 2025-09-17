@@ -23,9 +23,9 @@ const NewsCard = ({
   isMain = false,
 }: NewsCardProps) => {
   return (
-    <Link href={internalUrl}>
+    <Link href={internalUrl} className="h-full">
       <Card
-        className={`hover:shadow-government transition-all overflow-hidden duration-300 cursor-pointer group ${isMain ? 'col-span-2 row-span-2' : ''}`}
+        className={`hover:shadow-government transition-all overflow-hidden duration-300 h-full cursor-pointer group ${isMain ? 'col-span-2 row-span-2' : ''}`}
       >
         {imageUrl && (
           <div
@@ -55,7 +55,7 @@ const NewsCard = ({
             </Badge>
           )}
           <h3
-            className={`font-semibold leading-tight group-hover:text-primary transition-colors ${isMain ? 'text-xl' : 'text-base'}`}
+            className={`font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2 ${isMain ? 'text-xl' : 'text-base'}`}
           >
             {title}
           </h3>

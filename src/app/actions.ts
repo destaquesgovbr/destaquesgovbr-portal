@@ -2,8 +2,9 @@
 
 import type { ArticleRow } from '@/lib/article-row'
 import { getPool } from '@/lib/client'
+import { withResult } from '@/lib/result'
 
-export async function getLatestArticles(): Promise<ArticleRow[]> {
+export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   const pool = await getPool()
   const result = await pool.query(
     `
@@ -14,4 +15,4 @@ export async function getLatestArticles(): Promise<ArticleRow[]> {
     `,
   )
   return result.rows as ArticleRow[]
-}
+})

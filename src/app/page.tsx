@@ -1,7 +1,7 @@
 import { Building2, Heart, TrendingUp, Users } from 'lucide-react'
+import Link from 'next/link'
 import NewsCard, { type NewsCardProps } from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
-
 import { Button } from '@/components/ui/button'
 import { getLatestArticles } from './actions'
 
@@ -24,7 +24,11 @@ const categories = [
 ]
 
 export default async function Home() {
-  const latestNews = await getLatestArticles()
+  const latestNewsResult = await getLatestArticles()
+  if (latestNewsResult.type !== 'ok') {
+    return <div>Erro ao carregar as notícias.</div>
+  }
+  const latestNews = latestNewsResult.data
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,7 +86,11 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold">Últimas Notícias</h2>
-              <Button variant="outline">Ver Todas</Button>
+              <Link href="/articles">
+                <Button variant="outline" className="cursor-pointer">
+                  Ver Todas
+                </Button>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -8,18 +8,27 @@ import { Separator } from '@/components/ui/separator'
 import { getArticleById } from './get-article'
 
 interface Props {
-  params: Promise<{ articleId: number }>
+  params: Promise<{ articleId: string }>
 }
 
 export default async function Page({ params }: Props) {
   const { articleId } = await params
-  const [article] = await getArticleById(articleId)
-  if (!article) {
-    notFound()
+  const articleResult = await getArticleById(Number(articleId) || 0)
+
+  if (articleResult.type === 'err') {
+    if (articleResult.error === 'not_found') notFound()
+    if (articleResult.error === 'db_error')
+      return <div>Erro no banco de dados.</div>
   }
 
+  if (articleResult.type !== 'ok') {
+    return <div>Erro desconhecido ao carregar a notícia.</div>
+  }
+
+  const article = articleResult.data
+
   const articleUrl = new URL(article.url || '')
-  const baseUrl = articleUrl.hostname.replace('www.', '')
+  const baseUrl = articleUrl.hostname
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-5xl">
