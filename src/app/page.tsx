@@ -29,6 +29,7 @@ export default async function Home() {
     return <div>Erro ao carregar as notícias.</div>
   }
   const latestNews = latestNewsResult.data
+  const lastArticle = latestNews[0]
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,7 +40,15 @@ export default async function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Featured news */}
               <div className="lg:col-span-2">
-                <NewsCard {...featuredNews} isMain={true} />
+                <NewsCard
+                  category={lastArticle.category || ''}
+                  date={lastArticle.published_at || new Date(0)}
+                  internalUrl={`/articles/${lastArticle.id}`}
+                  imageUrl={lastArticle.image || ''}
+                  summary={lastArticle.title || ''}
+                  title={lastArticle.title || ''}
+                  isMain={true}
+                />
               </div>
 
               {/* Categories sidebar */}
@@ -94,7 +103,7 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {latestNews.map((article) => (
+              {latestNews.slice(1).map((article) => (
                 <NewsCard
                   key={article.id}
                   internalUrl={`/articles/${article.id}`}

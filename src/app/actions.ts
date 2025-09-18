@@ -11,7 +11,7 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
       SELECT *
       FROM news
       ORDER BY published_at DESC
-      LIMIT 4
+      LIMIT 5
     `,
   )
   return result.rows as ArticleRow[]
