@@ -16,3 +16,26 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   )
   return result.rows as ArticleRow[]
 })
+
+export type GetCategoriesResult = {
+  name: string
+  count: number
+}[]
+
+export const getCategories = withResult(
+  async (): Promise<GetCategoriesResult> => {
+    const pool = await getPool()
+    const result = await pool.query(`
+      SELECT category AS name, count(*) as count
+      FROM news
+      WHERE category IS NOT NULL
+        AND category <> ''
+        AND category <> 'No Category'
+        AND published_at > NOW() - INTERVAL '7 days'
+      GROUP BY category
+      ORDER BY count DESC
+      LIMIT 4
+    `)
+    return result.rows
+  },
+)

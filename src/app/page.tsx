@@ -1,22 +1,11 @@
 import { Building2, Heart, TrendingUp, Users } from 'lucide-react'
 import Link from 'next/link'
-import NewsCard, { type NewsCardProps } from '@/components/NewsCard'
+import NewsCard from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { getLatestArticles } from './actions'
+import { getCategories, getLatestArticles } from './actions'
 
-const featuredNews: NewsCardProps = {
-  title:
-    'Governo Federal anuncia novo pacote de investimentos em infraestrutura',
-  summary:
-    'Presidente assina decreto que destina R$ 50 bilhões para obras de modernização de rodovias, ferrovias e portos em todo o país, priorizando regiões com maior necessidade de desenvolvimento.',
-  category: 'Infraestrutura',
-  internalUrl: '.',
-  date: new Date('2024-01-10'),
-  imageUrl: 'news-hero.png',
-}
-
-const categories = [
+const _categories = [
   { name: 'Economia', icon: TrendingUp, count: 45 },
   { name: 'Saúde', icon: Heart, count: 32 },
   { name: 'Educação', icon: Users, count: 28 },
@@ -25,6 +14,13 @@ const categories = [
 
 export default async function Home() {
   const latestNewsResult = await getLatestArticles()
+  const categoriesResult = await getCategories()
+
+  if (categoriesResult.type !== 'ok') {
+    return <div>Erro ao carregar as categorias.</div>
+  }
+  const categories = categoriesResult.data
+
   if (latestNewsResult.type !== 'ok') {
     return <div>Erro ao carregar as notícias.</div>
   }
@@ -62,7 +58,7 @@ export default async function Home() {
                         className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
                       >
                         <div className="flex items-center space-x-3">
-                          <category.icon className="w-5 h-5 text-primary" />
+                          {/* <category.icon className="w-5 h-5 text-primary" /> */}
                           <span className="font-medium">{category.name}</span>
                         </div>
                         <Badge variant="secondary">{category.count}</Badge>
