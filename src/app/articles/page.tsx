@@ -5,10 +5,14 @@ import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { getArticles } from './actions'
 
+function queryFn({ pageParam }: { pageParam: string | null }) {
+  return getArticles({ cursor: pageParam ?? undefined })
+}
+
 export default function ArticlesPage() {
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
-    queryFn: getArticles,
+    queryFn,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     initialPageParam: null,
   })

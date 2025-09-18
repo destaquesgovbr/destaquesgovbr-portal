@@ -4,7 +4,7 @@ import { SELECT } from 'pg-chain'
 import type { ArticleRow } from '@/lib/article-row'
 import { getPool } from '@/lib/client'
 
-export type GetArticlesQuery = {
+export type GetArticlesArgs = {
   category?: string
   cursor?: string
 }
@@ -32,13 +32,11 @@ function encodeCursor(publishedAt: Date, id: number): string {
   return Buffer.from(toEncode).toString('base64url')
 }
 
-export async function getArticles({
-  pageParam,
-}: {
-  pageParam: string | null
-}): Promise<GetArticlesResult> {
+export async function getArticles(
+  args: GetArticlesArgs,
+): Promise<GetArticlesResult> {
   const pool = await getPool()
-  const cursor = pageParam ? decodeCursor(pageParam) : null
+  const cursor = args.cursor ? decodeCursor(args.cursor) : null
 
   // biome-ignore format: true
   const result = await pool.query<ArticleRow>(
@@ -47,6 +45,8 @@ export async function getArticles({
     if(Boolean(cursor), (chain) => chain.
       WHERE`(published_at, id) < (${new Date(cursor!.publishedAt)}, ${cursor!.id})`,
     ).
+    if(Boolean(args.category), (chain) => chain.
+      WHERE`category = ${args.category}`).
     ORDER_BY`published_at DESC, id DESC`.LIMIT`${PAGE_SIZE}`,
   )
 
