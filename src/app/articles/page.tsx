@@ -3,12 +3,12 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
-import { getAllArticles } from './actions'
+import { getArticles } from './actions'
 
 export default function ArticlesPage() {
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
-    queryFn: getAllArticles,
+    queryFn: getArticles,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     initialPageParam: null,
   })

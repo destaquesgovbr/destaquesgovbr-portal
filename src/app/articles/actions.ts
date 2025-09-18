@@ -1,9 +1,15 @@
 'use server'
 
+import { SELECT } from 'pg-chain'
 import type { ArticleRow } from '@/lib/article-row'
 import { getPool } from '@/lib/client'
 
-export type GetAllArticlesResult = {
+export type GetArticlesQuery = {
+  category?: string
+  cursor?: string
+}
+
+export type GetArticlesResult = {
   articles: ArticleRow[]
   cursor: string | null
 }
@@ -26,36 +32,23 @@ function encodeCursor(publishedAt: Date, id: number): string {
   return Buffer.from(toEncode).toString('base64url')
 }
 
-export async function getAllArticles({
+export async function getArticles({
   pageParam,
 }: {
   pageParam: string | null
-}): Promise<GetAllArticlesResult> {
+}): Promise<GetArticlesResult> {
   const pool = await getPool()
   const cursor = pageParam ? decodeCursor(pageParam) : null
 
-  const result = await (async () => {
-    if (!cursor)
-      return await pool.query<ArticleRow>(
-        `
-        SELECT *
-        FROM news
-        ORDER BY published_at DESC, id DESC
-        LIMIT ${PAGE_SIZE}
-      `,
-      )
-
-    return await pool.query<ArticleRow>(
-      `
-        SELECT *
-        FROM news
-        WHERE (published_at, id) < ($1, $2)
-        ORDER BY published_at DESC, id DESC
-        LIMIT ${PAGE_SIZE}
-      `,
-      [new Date(cursor.publishedAt), cursor.id],
-    )
-  })()
+  // biome-ignore format: true
+  const result = await pool.query<ArticleRow>(
+    SELECT`*`.
+    FROM`news`.
+    if(Boolean(cursor), (chain) => chain.
+      WHERE`(published_at, id) < (${new Date(cursor!.publishedAt)}, ${cursor!.id})`,
+    ).
+    ORDER_BY`published_at DESC, id DESC`.LIMIT`${PAGE_SIZE}`,
+  )
 
   const lastResult = result.rows.at(-1)
 
