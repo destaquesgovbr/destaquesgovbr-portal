@@ -16,6 +16,7 @@ export type GetArticlesResult = {
 
 type CursorPayload = {
   publishedAt: Date
+  category?: string
   id: string
 }
 
@@ -38,6 +39,8 @@ export async function getArticles(
   const pool = await getPool()
   const cursor = args.cursor ? decodeCursor(args.cursor) : null
 
+  console.log(args.category)
+
   // biome-ignore format: true
   const result = await pool.query<ArticleRow>(
     SELECT`*`.
@@ -45,7 +48,9 @@ export async function getArticles(
     if(Boolean(cursor), (chain) => chain.
       WHERE`(published_at, id) < (${new Date(cursor!.publishedAt)}, ${cursor!.id})`,
     ).
-    if(Boolean(args.category), (chain) => chain.
+    if(Boolean(cursor) && Boolean(args.category), (chain) => chain.
+      AND`category = ${args.category}`).
+    if(!cursor && Boolean(args.category), (chain) => chain.
       WHERE`category = ${args.category}`).
     ORDER_BY`published_at DESC, id DESC`.LIMIT`${PAGE_SIZE}`,
   )

@@ -53,8 +53,9 @@ export default async function Home() {
                   <h2 className="text-xl font-semibold mb-4">Categorias</h2>
                   <div className="space-y-3">
                     {categories.map((category) => (
-                      <div
+                      <Link
                         key={category.name}
+                        href={`/articles?category=${encodeURIComponent(category.name)}`}
                         className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
                       >
                         <div className="flex items-center space-x-3">
@@ -62,7 +63,7 @@ export default async function Home() {
                           <span className="font-medium">{category.name}</span>
                         </div>
                         <Badge variant="secondary">{category.count}</Badge>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>

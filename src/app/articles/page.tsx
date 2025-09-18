@@ -1,15 +1,20 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { getArticles } from './actions'
 
-function queryFn({ pageParam }: { pageParam: string | null }) {
-  return getArticles({ cursor: pageParam ?? undefined })
-}
-
 export default function ArticlesPage() {
+  const searchParams = useSearchParams()
+  const category = searchParams.get('category') || undefined
+  console.log(category)
+
+  function queryFn({ pageParam }: { pageParam: string | null }) {
+    return getArticles({ cursor: pageParam ?? undefined, category })
+  }
+
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
     queryFn,
