@@ -38,8 +38,8 @@ export default async function Home() {
               <div className="lg:col-span-2">
                 <NewsCard
                   category={lastArticle.category || ''}
-                  date={lastArticle.published_at || new Date(0)}
-                  internalUrl={`/articles/${lastArticle.id}`}
+                  date={lastArticle.published_at}
+                  internalUrl={`/articles/${lastArticle.unique_id}`}
                   imageUrl={lastArticle.image || ''}
                   summary={lastArticle.title || ''}
                   title={lastArticle.title || ''}
@@ -102,10 +102,10 @@ export default async function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {latestNews.slice(1).map((article) => (
                 <NewsCard
-                  key={article.id}
-                  internalUrl={`/articles/${article.id}`}
+                  key={article.unique_id}
+                  internalUrl={`/articles/${article.unique_id}`}
                   category={article.category || ''}
-                  date={article.published_at || new Date(0)}
+                  date={article.published_at}
                   summary={article.title || ''}
                   title={article.title || ''}
                   imageUrl={article.image || ''}
