@@ -28,7 +28,7 @@ function decodeCursor(cursor: string): CursorPayload {
 }
 
 function encodeCursor(publishedAt: Date, id: string): string {
-  const toEncode = `${publishedAt.toDateString()}:${id}`
+  const toEncode = `${publishedAt}:${id}`
   return Buffer.from(toEncode).toString('base64url')
 }
 
