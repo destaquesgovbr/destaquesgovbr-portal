@@ -48,8 +48,6 @@ export async function getArticles(
     filter_by = `category:=${args.category}`
   }
 
-  console.log(filter_by)
-
   // biome-ignore format: true
   const result = await typesense
     .collections<ArticleRow>('news')

@@ -51,7 +51,7 @@ export default function ArticlesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {articles.map((article, index) => (
             <NewsCard
-              key={article.unique_id}
+              key={index}
               internalUrl={`/articles/${article.unique_id}`}
               category={article.category || ''}
               date={article.published_at}
