@@ -52,10 +52,12 @@ export default async function Page({ params }: Props) {
             <Tag className="w-3 h-3 mr-1" />
             {article.category}
           </Badge>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Calendar className="w-4 h-4 mr-1" />
-            {new Date(article.published_at ?? 0).toDateString() ?? ''}
-          </div>
+          {article.published_at &&
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Calendar className="w-4 h-4 mr-1" />
+              {new Date(article.published_at).toDateString() ?? ''}
+            </div>
+          }
           <Button variant="ghost" size="sm">
             <Share2 className="w-4 h-4 mr-1" />
             Compartilhar
