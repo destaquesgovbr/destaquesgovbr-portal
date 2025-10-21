@@ -1,8 +1,7 @@
 'use server'
 
-import { SELECT } from 'pg-chain'
 import type { ArticleRow } from '@/lib/article-row'
-import { getPool } from '@/lib/client'
+import { typesense } from '@/lib/typesense-client'
 
 export type GetArticlesArgs = {
   category?: string
@@ -28,7 +27,7 @@ function decodeCursor(cursor: string): CursorPayload {
   return { publishedAt: new Date(publishedAt), id }
 }
 
-function encodeCursor(publishedAt: Date, id: number): string {
+function encodeCursor(publishedAt: Date, id: string): string {
   const toEncode = `${publishedAt.toDateString()}:${id}`
   return Buffer.from(toEncode).toString('base64url')
 }
@@ -36,32 +35,37 @@ function encodeCursor(publishedAt: Date, id: number): string {
 export async function getArticles(
   args: GetArticlesArgs,
 ): Promise<GetArticlesResult> {
-  const pool = await getPool()
   const cursor = args.cursor ? decodeCursor(args.cursor) : null
 
-  console.log(args.category)
+  let filter_by = ''
+
+  if (cursor) {
+    filter_by = `published_at < ${cursor.publishedAt} || (published_at:=${cursor.publishedAt} && unique_id:<${cursor.id})`
+    if (args.category) {
+      filter_by += ` && category:=${args.category}`
+    }
+  } else if (args.category) {
+    filter_by = `category:=${args.category}`
+  }
 
   // biome-ignore format: true
-  const result = await pool.query<ArticleRow>(
-    SELECT`*`.
-    FROM`news`.
-    if(Boolean(cursor), (chain) => chain.
-      WHERE`(published_at, id) < (${new Date(cursor!.publishedAt)}, ${cursor!.id})`,
-    ).
-    if(Boolean(cursor) && Boolean(args.category), (chain) => chain.
-      AND`category = ${args.category}`).
-    if(!cursor && Boolean(args.category), (chain) => chain.
-      WHERE`category = ${args.category}`).
-    ORDER_BY`published_at DESC, id DESC`.LIMIT`${PAGE_SIZE}`,
-  )
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: '*',
+      sort_by: 'published_at:desc, unique_id:desc',
+      filter_by,
+      limit: PAGE_SIZE
+    })
 
-  const lastResult = result.rows.at(-1)
+  const lastResult = result.hits?.at(-1)?.document
 
   return {
-    articles: result.rows,
+    articles: result.hits?.map(hit => hit.document) ?? [],
     cursor:
-      result.rows.length === PAGE_SIZE
-        ? encodeCursor(lastResult!.published_at!, lastResult!.id)
+      result.hits?.length === PAGE_SIZE
+        ? encodeCursor(new Date(lastResult!.published_at!), lastResult!.unique_id)
         : null,
   }
 }

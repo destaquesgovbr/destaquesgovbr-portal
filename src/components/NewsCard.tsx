@@ -9,7 +9,7 @@ export interface NewsCardProps {
   summary?: string
   category: string
   internalUrl: string
-  date: Date
+  date?: number | null
   imageUrl?: string
   isMain?: boolean
   ref?: Ref<HTMLAnchorElement>
@@ -69,10 +69,12 @@ const NewsCard = ({
           >
             {summary}
           </p>
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Calendar className="w-3 h-3 mr-1" />
-            {date.toDateString()}
-          </div>
+          {date &&
+            <div className="flex items-center text-xs text-muted-foreground">
+              <Calendar className="w-3 h-3 mr-1" />
+              {new Date(date).toDateString()}
+            </div>
+          }
         </CardContent>
       </Card>
     </Link>

@@ -1,20 +1,21 @@
 'use server'
 
 import type { ArticleRow } from '@/lib/article-row'
-import { getPool } from '@/lib/client'
 import { withResult } from '@/lib/result'
+import { typesense } from '@/lib/typesense-client'
+import { subDays } from 'date-fns'
 
 export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
-  const pool = await getPool()
-  const result = await pool.query(
-    `
-      SELECT *
-      FROM news
-      ORDER BY published_at DESC
-      LIMIT 5
-    `,
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: '*',
+      limit: 5,
+      sort_by: 'published_at:desc'
+    }
   )
-  return result.rows as ArticleRow[]
+  return result.hits?.map(hit => hit.document) as ArticleRow[]
 })
 
 export type GetCategoriesResult = {
@@ -24,18 +25,34 @@ export type GetCategoriesResult = {
 
 export const getCategories = withResult(
   async (): Promise<GetCategoriesResult> => {
-    const pool = await getPool()
-    const result = await pool.query(`
-      SELECT category AS name, count(*) as count
-      FROM news
-      WHERE category IS NOT NULL
-        AND category <> ''
-        AND category <> 'No Category'
-        AND published_at > NOW() - INTERVAL '7 days'
-      GROUP BY category
-      ORDER BY count DESC
-      LIMIT 4
-    `)
-    return result.rows
+    const sevenDaysAgo = subDays(new Date(), 7).getTime()
+
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: '*',
+        filter_by: `published_at:<${sevenDaysAgo}`,
+        include_fields: 'category'
+      })
+
+    const categoriesCount: Record<string, number> = {}
+
+    for (const hit of result.hits ?? []) {
+      const document = hit.document
+
+      if (!document.category) continue
+
+      if (categoriesCount[document.category]) {
+        categoriesCount [document.category] = categoriesCount [document.category] + 1
+      } else {
+        categoriesCount [document.category] = 1
+      }
+    }
+
+    const countResult = Object.keys(categoriesCount)
+      .map(categoryName => ({ name: categoryName, count: categoriesCount[categoryName] }))
+
+    return countResult
   },
 )
