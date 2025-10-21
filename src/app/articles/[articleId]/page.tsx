@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { getArticleById } from './get-article'
+import { getArticleById } from './actions'
 
 interface Props {
   params: Promise<{ articleId: string }>
@@ -13,7 +13,7 @@ interface Props {
 
 export default async function Page({ params }: Props) {
   const { articleId } = await params
-  const articleResult = await getArticleById(Number(articleId) || 0)
+  const articleResult = await getArticleById(articleId)
 
   if (articleResult.type === 'err') {
     if (articleResult.error === 'not_found') notFound()
@@ -54,7 +54,7 @@ export default async function Page({ params }: Props) {
           </Badge>
           <div className="flex items-center text-sm text-muted-foreground">
             <Calendar className="w-4 h-4 mr-1" />
-            {article.published_at?.toDateString() ?? ''}
+            {new Date(article.published_at ?? 0).toDateString() ?? ''}
           </div>
           <Button variant="ghost" size="sm">
             <Share2 className="w-4 h-4 mr-1" />
