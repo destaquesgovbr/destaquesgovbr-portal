@@ -9,7 +9,6 @@ import { getArticles } from './actions'
 export default function ArticlesPage() {
   const searchParams = useSearchParams()
   const category = searchParams.get('category') || undefined
-  console.log(category)
 
   function queryFn({ pageParam }: { pageParam: string | null }) {
     return getArticles({ cursor: pageParam ?? undefined, category })
@@ -24,7 +23,6 @@ export default function ArticlesPage() {
 
   const { ref } = useInView({
     onChange: (inView) => {
-      console.log('inView', inView)
       if (inView && articlesQ.hasNextPage && !articlesQ.isFetchingNextPage) {
         articlesQ.fetchNextPage()
       }
