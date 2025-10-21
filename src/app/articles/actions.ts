@@ -14,7 +14,7 @@ export type GetArticlesResult = {
 }
 
 type CursorPayload = {
-  publishedAt: Date
+  publishedAt: number
   category?: string
   id: string
 }
@@ -24,10 +24,10 @@ const PAGE_SIZE = 40
 function decodeCursor(cursor: string): CursorPayload {
   const decoded = Buffer.from(cursor, 'base64url').toString('utf-8')
   const [publishedAt, id] = decoded.split(':')
-  return { publishedAt: new Date(publishedAt), id }
+  return { publishedAt: parseInt(publishedAt), id }
 }
 
-function encodeCursor(publishedAt: Date, id: string): string {
+function encodeCursor(publishedAt: number, id: string): string {
   const toEncode = `${publishedAt}:${id}`
   return Buffer.from(toEncode).toString('base64url')
 }
@@ -40,13 +40,15 @@ export async function getArticles(
   let filter_by = ''
 
   if (cursor) {
-    filter_by = `published_at < ${cursor.publishedAt} || (published_at:=${cursor.publishedAt} && unique_id:<${cursor.id})`
+    filter_by = `published_at:<${cursor.publishedAt} || (published_at:=${cursor.publishedAt} && unique_id:!=${cursor.id})`
     if (args.category) {
       filter_by += ` && category:=${args.category}`
     }
   } else if (args.category) {
     filter_by = `category:=${args.category}`
   }
+
+  console.log(filter_by)
 
   // biome-ignore format: true
   const result = await typesense
@@ -65,7 +67,7 @@ export async function getArticles(
     articles: result.hits?.map(hit => hit.document) ?? [],
     cursor:
       result.hits?.length === PAGE_SIZE
-        ? encodeCursor(new Date(lastResult!.published_at!), lastResult!.unique_id)
+        ? encodeCursor(lastResult!.published_at!, lastResult!.unique_id)
         : null,
   }
 }
