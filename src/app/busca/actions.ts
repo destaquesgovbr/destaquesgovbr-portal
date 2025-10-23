@@ -3,12 +3,12 @@
 import type { ArticleRow } from '@/lib/article-row'
 import { typesense } from '@/lib/typesense-client'
 
-export type GetArticlesArgs = {
+export type QueryArticlesArgs = {
   query?: string
   cursor?: string
 }
 
-export type GetArticlesResult = {
+export type QueryArticlesResult = {
   articles: ArticleRow[]
   cursor: string | null
 }
@@ -32,9 +32,9 @@ function encodeCursor(publishedAt: number, id: string): string {
   return Buffer.from(toEncode).toString('base64url')
 }
 
-export async function getArticles(
-  args: GetArticlesArgs,
-): Promise<GetArticlesResult> {
+export async function queryArticles(
+  args: QueryArticlesArgs,
+): Promise<QueryArticlesResult> {
   const cursor = args.cursor ? decodeCursor(args.cursor) : null
 
   let filter_by = ''

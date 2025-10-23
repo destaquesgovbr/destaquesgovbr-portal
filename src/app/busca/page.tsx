@@ -4,14 +4,14 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
-import { getArticles } from './actions'
+import { queryArticles } from './actions'
 
 export default function QueryPage() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || undefined
 
   function queryFn({ pageParam }: { pageParam: string | null }) {
-    return getArticles({ cursor: pageParam ?? undefined, query })
+    return queryArticles({ cursor: pageParam ?? undefined, query })
   }
 
   const articlesQ = useInfiniteQuery({
