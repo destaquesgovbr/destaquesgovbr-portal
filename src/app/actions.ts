@@ -34,7 +34,7 @@ export const getThemes = withResult(
         q: '*',
         filter_by: `published_at:<${sevenDaysAgo}`,
         include_fields: 'theme_1_level_1',
-        limit: 4
+        limit: 10
       })
 
     const themesCount: Record<string, number> = {}
