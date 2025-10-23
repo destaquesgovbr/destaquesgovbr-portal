@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { queryArticles } from './actions'
+import { useEffect } from 'react'
 
 export default function QueryPage() {
   const searchParams = useSearchParams()
@@ -18,7 +19,7 @@ export default function QueryPage() {
     queryKey: ['articles'],
     queryFn,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
-    initialPageParam: null,
+    initialPageParam: null
   })
 
   const { ref } = useInView({
@@ -28,6 +29,10 @@ export default function QueryPage() {
       }
     },
   })
+
+  useEffect(() => {
+    articlesQ.refetch()
+  }, [query])
 
   const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
 
