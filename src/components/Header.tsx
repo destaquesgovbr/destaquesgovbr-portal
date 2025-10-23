@@ -2,6 +2,7 @@ import { Menu, Search } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import SearchBar from './SearchBar'
 
 const Header = () => {
   return (
@@ -35,10 +36,7 @@ const Header = () => {
 
           {/* Search bar */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Buscar notícias..." className="pl-10" />
-            </div>
+            <SearchBar />
           </div>
 
           {/* Mobile menu button */}
