@@ -98,7 +98,7 @@ export default async function Page({ params }: Props) {
       {/* Article footer */}
       <footer className="space-y-4">
         <div className="text-sm text-muted-foreground">
-          <strong>Autor:</strong> {article.agency}
+          <strong>Fonte:</strong> {article.agency}
         </div>
 
         <div className="flex items-center gap-2">
