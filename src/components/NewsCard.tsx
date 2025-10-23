@@ -72,7 +72,7 @@ const NewsCard = ({
           {date &&
             <div className="flex items-center text-xs text-muted-foreground">
               <Calendar className="w-3 h-3 mr-1" />
-              {new Date(date * 1000).toDateString()}
+              {new Date(date * 1000).toLocaleDateString("pt-BR")}
             </div>
           }
         </CardContent>

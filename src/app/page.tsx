@@ -71,7 +71,7 @@ export default async function Home() {
                     size="sm"
                     className="bg-white text-foreground hover:bg-white/90"
                   >
-                    Acessar Portal
+                    Acessar portal
                   </Button>
                 </div>
               </div>
@@ -83,10 +83,10 @@ export default async function Home() {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold">Últimas Notícias</h2>
+              <h2 className="text-2xl font-bold">Últimas notícias</h2>
               <Link href="/articles">
                 <Button variant="outline" className="cursor-pointer">
-                  Ver Todas
+                  Ver todas
                 </Button>
               </Link>
             </div>
