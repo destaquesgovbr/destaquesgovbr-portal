@@ -2,6 +2,8 @@ import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-government-gray border-t mt-16">
       <div className="container mx-auto px-4 py-12">
@@ -116,7 +118,7 @@ const Footer = () => {
 
         <div className="border-t mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 Governo Federal do Brasil. Todos os direitos reservados.
+            © {currentYear} Governo Federal do Brasil. Todos os direitos reservados.
           </p>
         </div>
       </div>
