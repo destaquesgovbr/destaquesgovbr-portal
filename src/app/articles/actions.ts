@@ -4,7 +4,7 @@ import type { ArticleRow } from '@/lib/article-row'
 import { typesense } from '@/lib/typesense-client'
 
 export type GetArticlesArgs = {
-  category?: string
+  theme_1_level_1?: string
   cursor?: string
 }
 
@@ -15,7 +15,7 @@ export type GetArticlesResult = {
 
 type CursorPayload = {
   publishedAt: number
-  category?: string
+  theme_1_level_1?: string
   id: string
 }
 
@@ -41,11 +41,11 @@ export async function getArticles(
 
   if (cursor) {
     filter_by = `published_at:<${cursor.publishedAt} || (published_at:=${cursor.publishedAt} && unique_id:!=${cursor.id})`
-    if (args.category) {
-      filter_by += ` && category:=${args.category}`
+    if (args.theme_1_level_1) {
+      filter_by += ` && theme_1_level_1:=${args.theme_1_level_1}`
     }
-  } else if (args.category) {
-    filter_by = `category:=${args.category}`
+  } else if (args.theme_1_level_1) {
+    filter_by = `theme_1_level_1:=${args.theme_1_level_1}`
   }
 
   // biome-ignore format: true

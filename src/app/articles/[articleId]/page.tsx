@@ -50,7 +50,7 @@ export default async function Page({ params }: Props) {
         <div className="flex flex-wrap items-center gap-4 mb-4">
           <Badge variant="secondary">
             <Tag className="w-3 h-3 mr-1" />
-            {article.category}
+            {article.theme_1_level_1}
           </Badge>
           {article.published_at &&
             <div className="flex items-center text-sm text-muted-foreground">

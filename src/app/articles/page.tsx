@@ -8,10 +8,10 @@ import { getArticles } from './actions'
 
 export default function ArticlesPage() {
   const searchParams = useSearchParams()
-  const category = searchParams.get('category') || undefined
+  const theme_1_level_1 = searchParams.get('theme') || undefined
 
   function queryFn({ pageParam }: { pageParam: string | null }) {
-    return getArticles({ cursor: pageParam ?? undefined, category })
+    return getArticles({ cursor: pageParam ?? undefined, theme_1_level_1 })
   }
 
   const articlesQ = useInfiniteQuery({
@@ -53,7 +53,7 @@ export default function ArticlesPage() {
             <NewsCard
               key={index}
               internalUrl={`/articles/${article.unique_id}`}
-              category={article.category || ''}
+              theme_1_level_1={article.theme_1_level_1 || ''}
               date={article.published_at}
               ref={index === articles.length - 1 ? ref : undefined}
               summary={article.title || ''}

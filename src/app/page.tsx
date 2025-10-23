@@ -3,7 +3,7 @@ import Link from 'next/link'
 import NewsCard from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { getCategories, getLatestArticles } from './actions'
+import { getThemes, getLatestArticles } from './actions'
 
 const _categories = [
   { name: 'Economia', icon: TrendingUp, count: 45 },
@@ -14,12 +14,12 @@ const _categories = [
 
 export default async function Home() {
   const latestNewsResult = await getLatestArticles()
-  const categoriesResult = await getCategories()
+  const themesResult = await getThemes()
 
-  if (categoriesResult.type !== 'ok') {
+  if (themesResult.type !== 'ok') {
     return <div>Erro ao carregar as categorias.</div>
   }
-  const categories = categoriesResult.data
+  const themes = themesResult.data
 
   if (latestNewsResult.type !== 'ok') {
     return <div>Erro ao carregar as notícias.</div>
@@ -37,7 +37,7 @@ export default async function Home() {
               {/* Featured news */}
               <div className="lg:col-span-2">
                 <NewsCard
-                  category={lastArticle.category || ''}
+                  theme_1_level_1={lastArticle.theme_1_level_1 || ''}
                   date={lastArticle.published_at}
                   internalUrl={`/articles/${lastArticle.unique_id}`}
                   imageUrl={lastArticle.image || ''}
@@ -52,17 +52,16 @@ export default async function Home() {
                 <div>
                   <h2 className="text-xl font-semibold mb-4">Categorias</h2>
                   <div className="space-y-3">
-                    {categories.map((category) => (
+                    {themes.map((theme) => (
                       <Link
-                        key={category.name}
-                        href={`/articles?category=${encodeURIComponent(category.name)}`}
+                        key={theme.name}
+                        href={`/articles?theme=${encodeURIComponent(theme.name)}`}
                         className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
                       >
                         <div className="flex items-center space-x-3">
-                          {/* <category.icon className="w-5 h-5 text-primary" /> */}
-                          <span className="font-medium">{category.name}</span>
+                          <span className="font-medium">{theme.name}</span>
                         </div>
-                        <Badge variant="secondary">{category.count}</Badge>
+                        <Badge variant="secondary">{theme.count}</Badge>
                       </Link>
                     ))}
                   </div>
@@ -104,7 +103,7 @@ export default async function Home() {
                 <NewsCard
                   key={index}
                   internalUrl={`/articles/${article.unique_id}`}
-                  category={article.category || ''}
+                  theme_1_level_1={article.theme_1_level_1 || ''}
                   date={article.published_at}
                   summary={article.title || ''}
                   title={article.title || ''}

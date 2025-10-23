@@ -23,7 +23,7 @@ export type GetCategoriesResult = {
   count: number
 }[]
 
-export const getCategories = withResult(
+export const getThemes = withResult(
   async (): Promise<GetCategoriesResult> => {
     const sevenDaysAgo = subDays(new Date(), 7).getTime()
 
@@ -33,7 +33,8 @@ export const getCategories = withResult(
       .search({
         q: '*',
         filter_by: `published_at:<${sevenDaysAgo}`,
-        include_fields: 'category'
+        include_fields: 'theme_1_level_1',
+        limit: 4
       })
 
     const categoriesCount: Record<string, number> = {}
@@ -41,17 +42,17 @@ export const getCategories = withResult(
     for (const hit of result.hits ?? []) {
       const document = hit.document
 
-      if (!document.category) continue
+      if (!document.theme_1_level_1) continue
 
-      if (categoriesCount[document.category]) {
-        categoriesCount [document.category] = categoriesCount [document.category] + 1
+      if (categoriesCount[document.theme_1_level_1]) {
+        categoriesCount [document.theme_1_level_1] = categoriesCount [document.theme_1_level_1] + 1
       } else {
-        categoriesCount [document.category] = 1
+        categoriesCount [document.theme_1_level_1] = 1
       }
     }
 
     const countResult = Object.keys(categoriesCount)
-      .map(categoryName => ({ name: categoryName, count: categoriesCount[categoryName] }))
+      .map(themeName => ({ name: themeName, count: categoriesCount[themeName] }))
 
     return countResult
   },
