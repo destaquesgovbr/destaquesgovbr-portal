@@ -3,7 +3,7 @@
 import type { ArticleRow } from '@/lib/article-row'
 import { withResult } from '@/lib/result'
 import { typesense } from '@/lib/typesense-client'
-import { subDays } from 'date-fns'
+import { startOfMonth, subDays } from 'date-fns'
 
 export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   const result = await typesense
@@ -57,3 +57,17 @@ export const getThemes = withResult(
     return countResult
   },
 )
+
+export const countMonthlyNews = withResult(async (): Promise<number> => {
+  const thisMonth = startOfMonth(new Date()).getTime()
+
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: '*',
+      filter_by: `published_at:<${thisMonth}`
+    }
+  )
+  return result.out_of
+})

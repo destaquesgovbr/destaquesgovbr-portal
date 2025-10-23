@@ -2,11 +2,12 @@ import Link from 'next/link'
 import NewsCard from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { getThemes, getLatestArticles } from './actions'
+import { getThemes, getLatestArticles, countMonthlyNews } from './actions'
 
 export default async function Home() {
   const latestNewsResult = await getLatestArticles()
   const themesResult = await getThemes()
+  const newsThisMonth = await countMonthlyNews()
 
   if (themesResult.type !== 'ok') {
     return <div>Erro ao carregar os temas.</div>
@@ -108,31 +109,28 @@ export default async function Home() {
 
         {/* Quick Stats */}
         <section className="py-12 bg-government-gray">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">156</div>
-                <div className="text-sm text-muted-foreground">
-                  Notícias publicadas este mês
-                </div>
+          <div
+            className="container mx-auto px-4 flex"
+            style={{ justifyContent: "space-around" }}
+          >
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">
+                {new Intl.NumberFormat('pt-BR').format(newsThisMonth.data ?? 0)}
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">27</div>
-                <div className="text-sm text-muted-foreground">
-                  Ministérios ativos
-                </div>
+              <div className="text-sm text-muted-foreground">
+                Notícias publicadas este mês
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">98%</div>
-                <div className="text-sm text-muted-foreground">
-                  Taxa de transparência
-                </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">31</div>
+              <div className="text-sm text-muted-foreground">
+                Ministérios ativos
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">24h</div>
-                <div className="text-sm text-muted-foreground">
-                  Atualização contínua
-                </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">24h</div>
+              <div className="text-sm text-muted-foreground">
+                Atualização contínua
               </div>
             </div>
           </div>
