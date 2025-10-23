@@ -34,7 +34,7 @@ export const getThemes = withResult(
         q: '*',
         filter_by: `published_at:<${sevenDaysAgo}`,
         include_fields: 'theme_1_level_1',
-        limit: 10
+        limit: 20
       })
 
     const themesCount: Record<string, number> = {}
@@ -53,6 +53,7 @@ export const getThemes = withResult(
 
     const countResult = Object.keys(themesCount)
       .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
+      .slice(0, 4)
 
     return countResult
   },
