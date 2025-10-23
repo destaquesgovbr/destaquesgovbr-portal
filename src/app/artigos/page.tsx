@@ -8,7 +8,7 @@ import { getArticles } from './actions'
 
 export default function ArticlesPage() {
   const searchParams = useSearchParams()
-  const theme_1_level_1 = searchParams.get('theme') || undefined
+  const theme_1_level_1 = searchParams.get('tema') || undefined
 
   function queryFn({ pageParam }: { pageParam: string | null }) {
     return getArticles({ cursor: pageParam ?? undefined, theme_1_level_1 })
@@ -52,7 +52,7 @@ export default function ArticlesPage() {
           {articles.map((article, index) => (
             <NewsCard
               key={index}
-              internalUrl={`/articles/${article.unique_id}`}
+              internalUrl={`/artigos/${article.unique_id}`}
               theme_1_level_1={article.theme_1_level_1 || ''}
               date={article.published_at}
               ref={index === articles.length - 1 ? ref : undefined}

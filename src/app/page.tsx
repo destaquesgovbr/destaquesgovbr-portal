@@ -32,7 +32,7 @@ export default async function Home() {
                 <NewsCard
                   theme_1_level_1={lastArticle.theme_1_level_1 || ''}
                   date={lastArticle.published_at}
-                  internalUrl={`/articles/${lastArticle.unique_id}`}
+                  internalUrl={`/artigos/${lastArticle.unique_id}`}
                   imageUrl={lastArticle.image || ''}
                   summary={lastArticle.title || ''}
                   title={lastArticle.title || ''}
@@ -48,7 +48,7 @@ export default async function Home() {
                     {themes.map((theme) => (
                       <Link
                         key={theme.name}
-                        href={`/articles?theme=${encodeURIComponent(theme.name)}`}
+                        href={`/artigos?tema=${encodeURIComponent(theme.name)}`}
                         className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
                       >
                         <div className="flex items-center space-x-3">
@@ -84,7 +84,7 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold">Últimas notícias</h2>
-              <Link href="/articles">
+              <Link href="/artigos">
                 <Button variant="outline" className="cursor-pointer">
                   Ver todas
                 </Button>
@@ -95,7 +95,7 @@ export default async function Home() {
               {latestNews.slice(1).map((article, index) => (
                 <NewsCard
                   key={index}
-                  internalUrl={`/articles/${article.unique_id}`}
+                  internalUrl={`/artigos/${article.unique_id}`}
                   theme_1_level_1={article.theme_1_level_1 || ''}
                   date={article.published_at}
                   summary={article.title || ''}
