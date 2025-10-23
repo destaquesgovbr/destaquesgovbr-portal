@@ -1,7 +1,6 @@
-import { Menu, Search } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import SearchBar from './SearchBar'
 
 const Header = () => {
