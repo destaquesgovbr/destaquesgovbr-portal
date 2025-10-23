@@ -1,23 +1,15 @@
-import { Building2, Heart, TrendingUp, Users } from 'lucide-react'
 import Link from 'next/link'
 import NewsCard from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { getThemes, getLatestArticles } from './actions'
 
-const _categories = [
-  { name: 'Economia', icon: TrendingUp, count: 45 },
-  { name: 'Saúde', icon: Heart, count: 32 },
-  { name: 'Educação', icon: Users, count: 28 },
-  { name: 'Infraestrutura', icon: Building2, count: 23 },
-]
-
 export default async function Home() {
   const latestNewsResult = await getLatestArticles()
   const themesResult = await getThemes()
 
   if (themesResult.type !== 'ok') {
-    return <div>Erro ao carregar as categorias.</div>
+    return <div>Erro ao carregar os temas.</div>
   }
   const themes = themesResult.data
 
@@ -47,10 +39,10 @@ export default async function Home() {
                 />
               </div>
 
-              {/* Categories sidebar */}
+              {/* Themes sidebar */}
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Categorias</h2>
+                  <h2 className="text-xl font-semibold mb-4">Temas</h2>
                   <div className="space-y-3">
                     {themes.map((theme) => (
                       <Link

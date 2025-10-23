@@ -18,13 +18,13 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   return result.hits?.map(hit => hit.document) as ArticleRow[]
 })
 
-export type GetCategoriesResult = {
+export type GetThemesResult = {
   name: string
   count: number
 }[]
 
 export const getThemes = withResult(
-  async (): Promise<GetCategoriesResult> => {
+  async (): Promise<GetThemesResult> => {
     const sevenDaysAgo = subDays(new Date(), 7).getTime()
 
     const result = await typesense
@@ -37,22 +37,22 @@ export const getThemes = withResult(
         limit: 4
       })
 
-    const categoriesCount: Record<string, number> = {}
+    const themesCount: Record<string, number> = {}
 
     for (const hit of result.hits ?? []) {
       const document = hit.document
 
       if (!document.theme_1_level_1) continue
 
-      if (categoriesCount[document.theme_1_level_1]) {
-        categoriesCount [document.theme_1_level_1] = categoriesCount [document.theme_1_level_1] + 1
+      if (themesCount[document.theme_1_level_1]) {
+        themesCount [document.theme_1_level_1] = themesCount [document.theme_1_level_1] + 1
       } else {
-        categoriesCount [document.theme_1_level_1] = 1
+        themesCount [document.theme_1_level_1] = 1
       }
     }
 
-    const countResult = Object.keys(categoriesCount)
-      .map(themeName => ({ name: themeName, count: categoriesCount[themeName] }))
+    const countResult = Object.keys(themesCount)
+      .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
 
     return countResult
   },
