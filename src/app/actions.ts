@@ -11,7 +11,7 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
     .documents()
     .search({
       q: '*',
-      limit: 5,
+      limit: 6,
       sort_by: 'published_at:desc'
     }
   )

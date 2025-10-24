@@ -18,7 +18,7 @@ export default async function Home() {
     return <div>Erro ao carregar as notícias.</div>
   }
   const latestNews = latestNewsResult.data
-  const lastArticle = latestNews[0]
+  const latestArticles = latestNews.slice(0, 2)
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,17 +28,19 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Featured news */}
-              <div className="lg:col-span-2">
-                <NewsCard
-                  theme_1_level_1={lastArticle.theme_1_level_1 || ''}
-                  date={lastArticle.published_at}
-                  internalUrl={`/artigos/${lastArticle.unique_id}`}
-                  imageUrl={lastArticle.image || ''}
-                  summary={lastArticle.title || ''}
-                  title={lastArticle.title || ''}
-                  isMain={true}
-                />
-              </div>
+              {latestArticles.map(article => (
+                <div key={article.unique_id} className="lg:col-span-1">
+                  <NewsCard
+                    theme_1_level_1={article.theme_1_level_1 || ''}
+                    date={article.published_at}
+                    internalUrl={`/artigos/${article.unique_id}`}
+                    imageUrl={article.image || ''}
+                    summary={article.title || ''}
+                    title={article.title || ''}
+                    isMain={true}
+                    />
+                </div>
+              ))}
 
               {/* Themes sidebar */}
               <div className="space-y-6">
@@ -94,7 +96,7 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {latestNews.slice(1).map((article, index) => (
+              {latestNews.slice(2).map((article, index) => (
                 <NewsCard
                   key={index}
                   internalUrl={`/artigos/${article.unique_id}`}
