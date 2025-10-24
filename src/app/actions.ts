@@ -61,15 +61,16 @@ export const getThemes = withResult(
 )
 
 export const countMonthlyNews = withResult(async (): Promise<number> => {
-  const thisMonth = startOfMonth(new Date()).getTime()
+  const thisMonth = (startOfMonth(new Date()).getTime()) / 1000
 
   const result = await typesense
     .collections<ArticleRow>('news')
     .documents()
     .search({
       q: '*',
-      filter_by: `published_at:<${thisMonth}`
+      filter_by: `published_at:>${thisMonth}`
     }
   )
-  return result.out_of
+
+  return result.found
 })
