@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { getArticles } from './actions'
+import ReactMarkdown from 'react-markdown'
+import THEME_ICONS from './constants'
 
 export default function ArticlesPage() {
   const searchParams = useSearchParams()
@@ -44,9 +46,27 @@ export default function ArticlesPage() {
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold">Últimas notícias</h2>
-        </div>
+        {!theme_1_level_1 &&
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold">Últimas notícias</h2>
+          </div>
+        }
+
+        {theme_1_level_1 &&
+          <div className="flex items-center gap-4 mb-8">
+            <img
+              alt={theme_1_level_1}
+              src={THEME_ICONS[theme_1_level_1].image}
+              style={{ height: 150, width: 150 }}
+            />
+            <div className="container">
+              <h2 className="text-2xl font-bold">{theme_1_level_1}</h2>
+              <div className="text-foreground leading-relaxed space-y-4 flex flex-col">
+                <ReactMarkdown>{THEME_ICONS[theme_1_level_1].description}</ReactMarkdown>
+              </div>
+            </div>
+          </div>
+        }
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {articles.map((article, index) => (
