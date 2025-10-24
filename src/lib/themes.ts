@@ -8,7 +8,7 @@ const THEME_ICONS: Record<string, { image: string, description: string}> = {
     description: "Inspirado nos círculos de cultura de Paulo Freire, o ícone representa o conhecimento compartilhado. O livro central simboliza a aprendizagem como ato coletivo, conectado por redes de saber que unem diferentes vozes e experiências.  *“Ninguém educa ninguém, ninguém educa a si mesmo, os homens se educam em comunhão, mediatizados pelo mundo.”*  — **Paulo Freire**, *Pedagogia do Oprimido* (1968)"
   },
   "03 - Saúde": {
-    image: "/03 - Saúde",
+    image: "/03 - Saúde.png",
     description: "Inspirado no princípio do cuidado mútuo que fundamenta o SUS, o ícone representa o ato coletivo de proteger e acolher. Saúde, aqui, não é apenas atendimento médico — é vínculo, presença e empatia. É sobre *cuidar do outro pra cuidar de todos*."
   },
   "04 - Segurança Pública": {
