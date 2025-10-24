@@ -32,7 +32,7 @@ const Header = () => {
               className="h-20 w-20"
             />
             <div>
-              <h1 className="text-xl font-bold">Destaques GOVBR</h1>
+              <h1 className="text-xl font-bold">Destaques GOV.BR</h1>
               <p className="text-sm text-muted-foreground">Governo Federal</p>
             </div>
           </Link>
