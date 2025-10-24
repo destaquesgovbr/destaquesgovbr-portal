@@ -3,6 +3,7 @@ import NewsCard from '@/components/NewsCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { getThemes, getLatestArticles, countMonthlyNews } from './actions'
+import { ArrowRight } from 'lucide-react'
 
 export default async function Home() {
   const latestNewsResult = await getLatestArticles()
@@ -59,6 +60,15 @@ export default async function Home() {
                         <Badge variant="secondary">{theme.count}</Badge>
                       </Link>
                     ))}
+                    <Link
+                      href="/temas"
+                      className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="font-medium">Ver todos</span>
+                      </div>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </div>
 
