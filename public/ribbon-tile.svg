@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="395" height="36" viewBox="0 0 395 36">
+  <!-- Fundo bege claro -->
+  <rect width="395" height="36" fill="#F7F3EB"/>
+
+  <!-- Bloco azul esquerda -->
+  <rect x="0" y="0" width="36" height="36" fill="#0057A4"/>
+
+  <!-- Semi círculo verde (meia-lua esquerda) -->
+  <path d="M36,0 A18,18 0 0 1 36,36 Z" fill="#007C3B"/>
+
+  <!-- Triângulo amarelo -->
+  <path d="M80,36 L116,0 L152,36 Z" fill="#FFC627"/>
+
+  <!-- Círculo vermelho -->
+  <circle cx="186" cy="18" r="12" fill="#E63B2E"/>
+
+  <!-- Retângulo azul fino -->
+  <rect x="210" y="0" width="16" height="36" fill="#0057A4"/>
+
+  <!-- Faixa diagonal verde -->
+  <path d="M240,0 L260,36 L280,36 L260,0 Z" fill="#007C3B"/>
+
+  <!-- Bloco modular amarelo e azul -->
+  <rect x="300" y="0" width="24" height="18" fill="#FFC627"/>
+  <rect x="300" y="18" width="24" height="18" fill="#0057A4"/>
+
+  <!-- Bloco vermelho final -->
+  <rect x="324" y="0" width="36" height="36" fill="#E63B2E"/>
+
+  <!-- Transição suave (meia-lua direita) -->
+  <path d="M360,0 A18,18 0 0 0 360,36 Z" fill="#007C3B"/>
+
+  <!-- Bloco amarelo final para continuidade -->
+  <rect x="377" y="0" width="18" height="36" fill="#FFC627"/>
+</svg>
