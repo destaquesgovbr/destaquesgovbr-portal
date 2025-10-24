@@ -60,9 +60,9 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-gradient-government rounded-lg text-white">
+                <div className="p-9 transparency-banner rounded-lg text-primary">
                   <h3 className="font-semibold mb-2">Transparência Pública</h3>
-                  <p className="text-sm mb-4 text-white/90">
+                  <p className="text-sm mb-4 text-primary/90">
                     Acesse dados e informações sobre gastos públicos e ações
                     governamentais.
                   </p>
