@@ -42,7 +42,8 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --color-government-geen: var(--government-green);
+  --color-government-green: var(--government-green);
+  --color-government-red: var(--government-red);
   --color-government-yellow: var(--government-yellow);
   --color-government-blue: var(--government-blue);
   --color-government-gray: var(--government-gray);
