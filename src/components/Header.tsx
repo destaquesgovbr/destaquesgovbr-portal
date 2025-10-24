@@ -2,6 +2,7 @@ import { Menu } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import SearchBar from './SearchBar'
+import Link from 'next/link'
 
 const Header = () => {
   return (
@@ -19,7 +20,10 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between p-2">
           {/* Logo and title */}
-          <div className="flex items-center space-x-4 hover:bg-gray-200 rounded-2xl hover:cursor-pointer pr-4">
+          <Link
+            href="/"
+            className="flex items-center space-x-4 hover:bg-gray-200 rounded-2xl hover:cursor-pointer pr-4"
+          >
             <Image
               src="/logo.png"
               alt="Selo do Governo Federal"
@@ -31,7 +35,7 @@ const Header = () => {
               <h1 className="text-xl font-bold">Destaques GOVBR</h1>
               <p className="text-sm text-muted-foreground">Governo Federal</p>
             </div>
-          </div>
+          </Link>
 
           {/* Search bar */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
