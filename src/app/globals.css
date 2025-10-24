@@ -68,7 +68,7 @@
   --popover-foreground: hsl(210 15% 20%);
 
   /* Brazilian government green */
-  --primary: hsl(142 65% 25%);
+  --primary: hsl(210, 9%, 15%);
   --primary-foreground: hsl(0 0% 98%);
 
   /* Professional blue for secondary actions */
@@ -90,16 +90,19 @@
   --ring: hsl(142 65% 25%);
 
   /* Government specific tokens */
-  --government-green: hsl(142 70% 30%);
-  --government-yellow: hsl(55 80% 45%);
-  --government-blue: hsl(220 85% 55%);
+  --government-green: hsl(146, 100%, 24%);
+  --government-yellow: hsl(44, 100%, 57%);
+  --government-blue: hsl(211, 100%, 32%);
   --government-gray: hsl(210 10% 95%);
+  --government-red: hsl(5, 80%, 55%);
 
   /* Gradients */
   --gradient-government: linear-gradient(
     135deg,
+    var(--government-blue),
     var(--government-green),
-    var(--government-blue)
+    var(--government-yellow),
+    var(--government-red)
   );
   --gradient-subtle: linear-gradient(
     180deg,
@@ -128,6 +131,22 @@
   --sidebar-border: hsl(220 13% 91%);
 
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+.header-banner {
+  width: 100%;
+  height: 36px;
+  background-color: #F7F3EB; /* cor central */
+  background-image:
+    url('/ribbon-tile.svg'),
+    url('/ribbon-tile.svg'); /* duas instâncias do mesmo SVG */
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto 36px, auto 36px; /* mantém proporção original */
+  background-position: left center, right center; /* uma à esquerda, outra à direita */
+}
+
+.transparency-banner {
+  background: url('/transparency-tile.svg') no-repeat center/cover;
 }
 
 @layer base {
