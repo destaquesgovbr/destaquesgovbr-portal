@@ -45,7 +45,7 @@ export default async function Home() {
               {/* Themes sidebar */}
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Temas</h2>
+                  <h2 className="text-xl font-semibold mb-4">Temas em alta</h2>
                   <div className="space-y-3">
                     {themes.map((theme) => (
                       <Link
