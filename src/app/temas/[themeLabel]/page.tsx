@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import THEME_ICONS from '@/lib/themes'
 import { useParams } from 'next/navigation'
 
-export default function Themes() {
+export default function ThemePage() {
   const params = useParams()
   const themeLabel = decodeURIComponent(params.themeLabel as string)
 

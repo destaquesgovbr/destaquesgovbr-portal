@@ -11,7 +11,7 @@ interface Props {
   params: Promise<{ articleId: string }>
 }
 
-export default async function Page({ params }: Props) {
+export default async function ArticlePage({ params }: Props) {
   const { articleId } = await params
   const articleResult = await getArticleById(articleId)
 
