@@ -1,4 +1,4 @@
-import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react'
+import { ExternalLink, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
 
 const Footer = () => {
@@ -7,14 +7,14 @@ const Footer = () => {
   return (
     <footer className="bg-government-gray border-t mt-16">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-60">
           {/* Government info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <Image
                 src="/logo.png"
-                width={32}
-                height={32}
+                width={100}
+                height={100}
                 alt="Selo do Governo Federal"
               />
               <div>
@@ -38,10 +38,6 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 <span>0800 123 4567</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-muted-foreground" />
-                <span>contato@gov.br</span>
-              </div>
             </div>
           </div>
 
@@ -51,26 +47,19 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
-                  className="hover:text-primary transition-colors flex items-center"
+                  href="https://www.gov.br/"
+                  target="_blank"
+                  className="hover:text-primary hover:underline transition-colors flex items-center"
                 >
-                  Portal gov.br
+                  GOV.BR
                   <ExternalLink className="w-3 h-3 ml-1" />
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  className="hover:text-primary transition-colors flex items-center"
-                >
-                  Planalto
-                  <ExternalLink className="w-3 h-3 ml-1" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-primary transition-colors flex items-center"
+                  href="https://portaldatransparencia.gov.br/"
+                  target="_blank"
+                  className="hover:text-primary hover:underline transition-colors flex items-center"
                 >
                   Transparência
                   <ExternalLink className="w-3 h-3 ml-1" />
@@ -78,38 +67,12 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
-                  className="hover:text-primary transition-colors flex items-center"
+                  href="https://www.gov.br/ouvidorias"
+                  target="_blank"
+                  className="hover:text-primary hover:underline transition-colors flex items-center"
                 >
                   Ouvidoria
                   <ExternalLink className="w-3 h-3 ml-1" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold mb-4">Serviços</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Arquivo de Notícias
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Newsletter
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  RSS Feed
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Acessibilidade
                 </a>
               </li>
             </ul>
