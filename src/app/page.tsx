@@ -50,7 +50,7 @@ export default async function Home() {
                     {themes.map((theme) => (
                       <Link
                         key={theme.name}
-                        href={`/artigos?tema=${encodeURIComponent(theme.name)}`}
+                        href={`/temas/${theme.name}`}
                         className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
                       >
                         <div className="flex items-center space-x-3">
