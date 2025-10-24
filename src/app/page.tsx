@@ -116,7 +116,7 @@ export default async function Home() {
             style={{ justifyContent: "space-around" }}
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">
+              <div className="text-3xl font-bold text-government-red mb-2">
                 {new Intl.NumberFormat('pt-BR').format(newsThisMonth.data ?? 0)}
               </div>
               <div className="text-sm text-muted-foreground">
@@ -124,13 +124,13 @@ export default async function Home() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">31</div>
+              <div className="text-3xl font-bold text-government-green mb-2">31</div>
               <div className="text-sm text-muted-foreground">
                 Ministérios ativos
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">24h</div>
+              <div className="text-3xl font-bold text-government-blue mb-2">24h</div>
               <div className="text-sm text-muted-foreground">
                 Atualização contínua
               </div>
