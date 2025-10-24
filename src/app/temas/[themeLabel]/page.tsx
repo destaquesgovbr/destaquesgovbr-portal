@@ -53,8 +53,8 @@ export default function ThemePage() {
             style={{ height: 150, width: 150 }}
           />
           <div className="container">
-            <h2 className="text-2xl font-bold">{themeLabel}</h2>
-            <div className="text-foreground leading-relaxed space-y-4 flex flex-col">
+            <h2 className="text-2xl text-primary font-bold py-4">{themeLabel}</h2>
+            <div className="text-primary leading-relaxed space-y-4 flex flex-col">
               <ReactMarkdown>{THEME_ICONS[themeLabel]?.description}</ReactMarkdown>
             </div>
           </div>
