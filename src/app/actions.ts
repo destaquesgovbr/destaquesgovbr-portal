@@ -53,6 +53,7 @@ export const getThemes = withResult(
 
     const countResult = Object.keys(themesCount)
       .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
+      .sort((a, b) => b.count - a.count)
       .slice(0, 4)
 
     return countResult
