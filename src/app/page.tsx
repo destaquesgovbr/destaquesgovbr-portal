@@ -66,13 +66,15 @@ export default async function Home() {
                     Acesse dados e informações sobre gastos públicos e ações
                     governamentais.
                   </p>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="bg-white text-foreground hover:bg-white/90"
-                  >
-                    Acessar portal
-                  </Button>
+                  <a href="https://portaldatransparencia.gov.br/" target="_blank">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="bg-white text-foreground hover:bg-white/90 hover:cursor-pointer"
+                      >
+                      Acessar portal
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
