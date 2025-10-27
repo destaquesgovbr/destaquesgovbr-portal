@@ -14,18 +14,18 @@ export default function ThemesPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {Object.keys(THEME_ICONS).map(theme => (
             <Link key={theme} href={`/temas/${theme}`}>
-              <Card className='hover:shadow-government transition-all cursor-pointer group h-full'>
+              <Card className="hover:shadow-government transition-all cursor-pointer group h-full">
                 <img
                   src={THEME_ICONS[theme].image}
                   alt={theme}
                 />
                 <CardHeader>
-                  <h3 className='font-semibold leading-tight group-hover:text-primary transition-colors text-base'>
+                  <h3 className="font-semibold leading-tight group-hover:text-primary transition-colors text-base">
                     {theme}
                   </h3>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-muted-foreground mb-4 text-sm line-clamp-3'>
+                  <div className="text-muted-foreground mb-4 text-sm line-clamp-3">
                     <ReactMarkdown>
                       {THEME_ICONS[theme].description}
                     </ReactMarkdown>
