@@ -5,21 +5,29 @@ import { useSearchParams } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { queryArticles } from './actions'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function QueryPage() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || undefined
 
-  function queryFn({ pageParam }: { pageParam: string | null }) {
-    return queryArticles({ cursor: pageParam ?? undefined, query })
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
+
+  function queryFn({ pageParam }: { pageParam: number | null }) {
+    return queryArticles({
+      query,
+      page: pageParam ?? 1,
+      startDate: startDate?.getTime(),
+      endDate: endDate?.getTime()
+    })
   }
 
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
     queryFn,
-    getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
-    initialPageParam: null
+    getNextPageParam: (lastPage) => lastPage.page ?? undefined,
+    initialPageParam: 1
   })
 
   const { ref } = useInView({
@@ -32,7 +40,7 @@ export default function QueryPage() {
 
   useEffect(() => {
     articlesQ.refetch()
-  }, [query])
+  }, [query, startDate, endDate])
 
   const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
 
