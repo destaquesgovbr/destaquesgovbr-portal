@@ -85,7 +85,7 @@ const THEME_ICONS: Record<string, { image: string, description: string}> = {
   },
   "Eventos Oficiais e Cerimônias": {
     image: "/22 - Eventos Oficiais e Cerimônias.png",
-    description: "As quatro faixas verticais, em vermelho, amarelo, verde e azul, evocam os pilares do Estado: Executivo, Legislativo, Judiciário e Sociedade Civil. No centro, uma linha dourada ascendente simboliza o eixo de equilíbrio e ordem que sustenta a vida pública. Com sua forma ereta e moderna, o pavilhão sugere grandeza e coesão, sem recorrer à pompa. Ele é uma homenagem à solenidade como linguagem do Estado — um símbolo do respeito às formas que sustentam o pacto nacional."
+    description: "O ícone expressa a solenidade e a continuidade da vida pública brasileira — momentos em que o país se reúne em torno de seus ritos cívicos e celebra o pacto democrático que o sustenta. Inspirado na subida da rampa do Palácio do Planalto, uma das cerimônias mais simbólicas da República, ele representa a ordem, a dignidade e a presença coletiva que marcam os grandes atos oficiais do Brasil."
   },
   "Estatísticas e Dados Públicos": {
     image: "/23 - Estatísticas e Dados Públicos.png",
@@ -93,11 +93,11 @@ const THEME_ICONS: Record<string, { image: string, description: string}> = {
   },
   "Minorias e Grupos Especiais": {
     image: "/24 - Minorias e Grupos Especiais.png",
-    description: ""
+    description: "O ícone reflete a horizontalidade do acolhimento brasileiro, onde todos se reconhecem como parte de um mesmo corpo social. As figuras que compõem a cena se inclinam umas às outras, simbolizando o gesto coletivo de estender os braços para quem ainda não teve sua voz plenamente ouvida."
   },
   "Habitação e Urbanismo": {
     image: "/25 - Habitação e Urbanismo.png",
-    description: ""
+    description: "Este ícone simboliza o planejamento urbano harmônico, onde o território, a cidade e o céu coexistem em equilíbrio. Três faixas horizontais representam terra, vida urbana e horizonte, atravessadas por linhas brancas que evocam ruas, fluxos e conexões humanas. No centro, pequenas formas geométricas azuis remetem a edifícios organizados, equilibrando modernidade e acolhimento."
   }
 }
 
