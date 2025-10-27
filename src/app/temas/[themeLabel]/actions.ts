@@ -4,7 +4,7 @@ import type { ArticleRow } from '@/lib/article-row'
 import { typesense } from '@/lib/typesense-client'
 
 export type GetArticlesArgs = {
-  theme_1_level_1?: string
+  theme_1_level_1: string
   page: number
 }
 
@@ -20,11 +20,9 @@ export async function getArticles(
 ): Promise<GetArticlesResult> {
   const { theme_1_level_1, page } = args
 
-  let filter_by: string[] = []
-
-  if (theme_1_level_1) {
-    filter_by.push(`theme_1_level_1:=${theme_1_level_1}`)
-  }
+  let filter_by: string[] = [
+    `theme_1_level_1:=${theme_1_level_1}`
+  ]
 
   // biome-ignore format: true
   const result = await typesense
