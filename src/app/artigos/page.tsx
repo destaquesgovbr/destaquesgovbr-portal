@@ -24,7 +24,7 @@ export default function ArticlesPage() {
     queryKey: ['articles'],
     queryFn,
     getNextPageParam: (lastPage) => lastPage.page ?? undefined,
-    initialPageParam: 1,
+    initialPageParam: 1
   })
 
   const { ref } = useInView({
@@ -32,7 +32,7 @@ export default function ArticlesPage() {
       if (inView && articlesQ.hasNextPage && !articlesQ.isFetchingNextPage) {
         articlesQ.fetchNextPage()
       }
-    },
+    }
   })
 
   const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
