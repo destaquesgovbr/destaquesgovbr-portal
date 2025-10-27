@@ -64,7 +64,7 @@ export default function QueryPage() {
 
           <div className="flex gap-4">
             <div>
-              <span>A partir de:</span>
+              <span className="text-primary font-semibold text-xs">Início da publicação:</span>
               <div className="relative w-full">
                 <Input
                   type="date"
@@ -82,7 +82,7 @@ export default function QueryPage() {
             </div>
 
             <div>
-              <span>Publicado até:</span>
+              <span className="text-primary font-semibold text-xs">Fim da publicação:</span>
               <div className="relative w-full">
                 <Input
                   type="date"
