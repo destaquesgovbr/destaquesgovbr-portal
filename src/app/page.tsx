@@ -47,27 +47,39 @@ export default async function Home() {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-xl font-semibold mb-4">Temas em alta</h2>
-                  <div className="space-y-3">
+                  <div className="flex flex-col gap-2">
                     {themes.map((theme) => (
                       <Link
                         key={theme.name}
                         href={`/temas/${theme.name}`}
-                        className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
+                        className="w-full py-1"
                       >
-                        <div className="flex items-center space-x-3">
-                          <span className="font-medium">{theme.name}</span>
-                        </div>
-                        <Badge variant="secondary">{theme.count}</Badge>
+                        <Button
+                          variant="ghost"
+                          size="lg"
+                          className="flex items-center justify-between p-3 w-full bg-card cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <span className="font-medium">{theme.name}</span>
+                          </div>
+                          <Badge variant="secondary">{theme.count}</Badge>
+                        </Button>
                       </Link>
                     ))}
                     <Link
                       href="/temas"
-                      className="flex items-center justify-between p-3 bg-card rounded-lg hover:shadow-card transition-shadow cursor-pointer"
+                      className="w-full py-1"
                     >
-                      <div className="flex items-center space-x-3">
-                        <span className="font-medium">Ver todos</span>
-                      </div>
-                      <ArrowRight className="w-4 h-4" />
+                      <Button
+                        variant="ghost"
+                        size="lg"
+                        className="flex items-center justify-between p-3 w-full bg-card cursor-pointer"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <span className="font-medium">Ver todos</span>
+                        </div>
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
                     </Link>
                   </div>
                 </div>
