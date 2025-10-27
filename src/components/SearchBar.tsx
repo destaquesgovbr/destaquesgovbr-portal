@@ -7,23 +7,25 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const SearchBar = () => {
   const searchParams = useSearchParams()
-  const [query, setQuery] = useState(searchParams.get("tema") || "")
   const router = useRouter()
+  const [query, setQuery] = useState(searchParams.get("q") || "")
 
   useEffect(() => {
-    if (!query) return
+    setQuery(searchParams.get("q") || "")
+  }, [searchParams])
 
+  useEffect(() => {
+    if (!query.trim()) return
     const handler = setTimeout(() => {
       router.push(`/busca?q=${encodeURIComponent(query)}`)
     }, 2000)
-
     return () => clearTimeout(handler)
   }, [query, router])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && query.trim()) {
-      e.preventDefault();
-      router.push(`/busca?q=${encodeURIComponent(query.trim())}`);
+      e.preventDefault()
+      router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
     }
   }
 
@@ -31,6 +33,7 @@ const SearchBar = () => {
     <div className="relative w-full">
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Buscar notícias..."
