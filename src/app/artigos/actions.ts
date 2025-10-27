@@ -5,7 +5,9 @@ import { typesense } from '@/lib/typesense-client'
 
 export type GetArticlesArgs = {
   theme_1_level_1?: string
-  cursor?: string
+  page: number
+  startDate?: number
+  endDate?: number
 }
 
 export type GetArticlesResult = {
@@ -18,17 +20,20 @@ const PAGE_SIZE = 40
 export async function getArticles(
   args: GetArticlesArgs,
 ): Promise<GetArticlesResult> {
-  const cursor = args.cursor ? decodeCursor(args.cursor) : null
+  const { page, theme_1_level_1, startDate, endDate } = args
 
-  let filter_by = ''
+  let filter_by: string[] = []
 
-  if (cursor) {
-    filter_by = `published_at:<${cursor.publishedAt} || (published_at:=${cursor.publishedAt} && unique_id:!=${cursor.id})`
-    if (args.theme_1_level_1) {
-      filter_by += ` && theme_1_level_1:=${args.theme_1_level_1}`
-    }
-  } else if (args.theme_1_level_1) {
-    filter_by = `theme_1_level_1:=${args.theme_1_level_1}`
+  if (theme_1_level_1) {
+    filter_by.push(`theme_1_level_1:=${theme_1_level_1}`)
+  }
+
+  if (startDate) {
+    filter_by.push(`published_at:>${startDate / 1000}`)
+  }
+
+  if (endDate) {
+    filter_by.push(`published_at:<${(endDate / 1000) + (60 * 60 * 3)}`)
   }
 
   // biome-ignore format: true
