@@ -92,9 +92,9 @@ export default async function Home() {
                   </p>
                   <a href="https://portaldatransparencia.gov.br/" target="_blank">
                     <Button
-                      variant="secondary"
+                      variant="ghost"
                       size="sm"
-                      className="bg-white text-foreground hover:bg-white/90 hover:cursor-pointer"
+                      className="bg-white text-primary cursor-pointer"
                       >
                       Acessar portal
                     </Button>
