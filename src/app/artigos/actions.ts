@@ -4,7 +4,6 @@ import type { ArticleRow } from '@/lib/article-row'
 import { typesense } from '@/lib/typesense-client'
 
 export type GetArticlesArgs = {
-  theme_1_level_1?: string
   page: number
   startDate?: number
   endDate?: number
@@ -20,13 +19,9 @@ const PAGE_SIZE = 40
 export async function getArticles(
   args: GetArticlesArgs,
 ): Promise<GetArticlesResult> {
-  const { page, theme_1_level_1, startDate, endDate } = args
+  const { page, startDate, endDate } = args
 
   let filter_by: string[] = []
-
-  if (theme_1_level_1) {
-    filter_by.push(`theme_1_level_1:=${theme_1_level_1}`)
-  }
 
   if (startDate) {
     filter_by.push(`published_at:>${startDate / 1000}`)
