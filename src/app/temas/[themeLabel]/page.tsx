@@ -12,15 +12,18 @@ export default function ThemePage() {
   const params = useParams()
   const themeLabel = decodeURIComponent(params.themeLabel as string)
 
-  function queryFn({ pageParam }: { pageParam: string | null }) {
-    return getArticles({ cursor: pageParam ?? undefined, theme_1_level_1: themeLabel })
+  function queryFn({ pageParam }: { pageParam: number | null }) {
+    return getArticles({
+      page: pageParam ?? 1,
+      theme_1_level_1: themeLabel
+    })
   }
 
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles'],
     queryFn,
-    getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
-    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.page ?? undefined,
+    initialPageParam: 1
   })
 
   const { ref } = useInView({
