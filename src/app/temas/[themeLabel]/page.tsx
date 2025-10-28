@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer'
 import ReactMarkdown from 'react-markdown'
 import THEME_ICONS from '@/lib/themes'
 import { useParams } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 export default function ThemePage() {
   const params = useParams()
@@ -20,7 +21,7 @@ export default function ThemePage() {
   }
 
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles'],
+    queryKey: ['articles', themeLabel],
     queryFn,
     getNextPageParam: (lastPage) => lastPage.page ?? undefined,
     initialPageParam: 1
@@ -46,24 +47,42 @@ export default function ThemePage() {
     )
   }
 
+  const themeData = THEME_ICONS[themeLabel]
+
   return (
-    <section className="py-12">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center gap-4 mb-8">
+    <section className="py-16 overflow-hidden">
+      {/* Cabeçalho institucional do tema */}
+      <div className="container mx-auto px-4 text-center mb-12">
+        <div className="flex flex-col items-center justify-center">
           <img
             alt={themeLabel}
-            src={THEME_ICONS[themeLabel].image}
-            style={{ height: 150, width: 150 }}
+            src={themeData.image}
+            className="w-28 h-28 mb-4 object-contain"
           />
-          <div className="container">
-            <h2 className="text-2xl text-primary font-bold py-4">{themeLabel}</h2>
-            <div className="text-primary leading-relaxed space-y-4 flex flex-col">
-              <ReactMarkdown>{THEME_ICONS[themeLabel]?.description}</ReactMarkdown>
-            </div>
-          </div>
-        </div>
+          <h2 className="text-3xl font-bold text-primary">{themeLabel}</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Linha divisória SVG */}
+          <div className="mx-auto mt-3 w-40">
+            <img src="/underscore.svg" alt="" />
+          </div>
+
+          {/* Descrição do tema */}
+          {themeData?.description && (
+            <div className="mt-6 text-base text-primary/80 leading-relaxed max-w-3xl mx-auto">
+              <ReactMarkdown>{themeData.description}</ReactMarkdown>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Grid de artigos relacionados */}
+      <div className="container mx-auto px-4">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           {articles.map((article, index) => (
             <NewsCard
               key={index}
@@ -76,7 +95,13 @@ export default function ThemePage() {
               imageUrl={article.image || ''}
             />
           ))}
-        </div>
+        </motion.div>
+
+        {articles.length === 0 && (
+          <p className="text-center text-primary/60 mt-12">
+            Nenhum artigo encontrado para este tema no momento.
+          </p>
+        )}
       </div>
     </section>
   )
