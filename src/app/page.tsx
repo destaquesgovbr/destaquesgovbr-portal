@@ -200,11 +200,13 @@ export default async function Home() {
               href="https://portaldatransparencia.gov.br/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-lg border bg-card overflow-hidden block transparency-banner-1 "
+              className="group rounded-lg border bg-card overflow-hidden block transition-all duration-300 hover:scale-[1.01] hover:shadow-xl hover:shadow-[#0D4C92]/20 transparency-banner-1"
             >
-              <div className="m-8 p-3 bg-white/80 rounded-xl">
-                <h3 className="font-semibold">Portal da Transparência</h3>
-                <p className="text-sm mt-1">
+              <div className="m-8 bg-white/80 p-3 transition-all rounded-xl group-hover:bg-white/90 duration-300 group-hover:-translate-y-[2px] group-hover:shadow-sm">
+                <h3 className="font-semibold text-lg transition-colors duration-300 group-hover:text-primary">
+                  Portal da Transparência
+                </h3>
+                <p className="text-sm mt-1 text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                   Consulte gastos públicos e execução orçamentária.
                 </p>
               </div>
@@ -215,11 +217,13 @@ export default async function Home() {
               href="https://dados.gov.br/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-lg border bg-card overflow-hidden block transparency-banner-2"
+              className="group rounded-lg border bg-card overflow-hidden block transition-all duration-300 hover:scale-[1.01] hover:shadow-xl hover:shadow-[#0D4C92]/20 transparency-banner-2"
             >
-              <div className="m-8 p-3 bg-white/80 rounded-xl">
-                <h3 className="font-semibold">Dados Abertos</h3>
-                <p className="text-sm mt-1">
+              <div className="m-8 bg-white/80 p-3 transition-all rounded-xl group-hover:bg-white/90 duration-300 group-hover:-translate-y-[2px] group-hover:shadow-sm">
+                <h3 className="font-semibold text-lg transition-colors duration-300 group-hover:text-primary">
+                  Dados Abertos
+                </h3>
+                <p className="text-sm mt-1 text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                   Catálogo de bases e APIs públicas do governo federal.
                 </p>
               </div>
@@ -230,11 +234,13 @@ export default async function Home() {
               href="https://www.gov.br/ouvidorias"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-lg border bg-card overflow-hidden block transparency-banner-3"
+              className="group rounded-lg border bg-card overflow-hidden block transition-all duration-300 hover:scale-[1.01] hover:shadow-xl hover:shadow-[#0D4C92]/20 transparency-banner-3"
             >
-              <div className="m-8 p-3 bg-white/80 rounded-xl">
-                <h3 className="font-semibold">Ouvidoria</h3>
-                <p className="text-sm mt-1">
+              <div className="m-8 bg-white/80 p-3 transition-all rounded-xl group-hover:bg-white/90 duration-300 group-hover:-translate-y-[2px] group-hover:shadow-sm">
+                <h3 className="font-semibold text-lg transition-colors duration-300 group-hover:text-primary">
+                  Ouvidoria
+                </h3>
+                <p className="text-sm mt-1 text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                   Registre manifestações e acompanhe o retorno dos órgãos.
                 </p>
               </div>
