@@ -101,7 +101,12 @@ export default async function Home() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Últimas notícias</h2>
+            <div>
+              <h2 className="text-2xl font-bold">Últimas notícias</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Acompanhe as informações mais recentes sobre as ações e políticas do Governo Federal.
+              </p>
+            </div>
             <Link href="/artigos">
               <Button variant="outline" className="cursor-pointer">
                 Ver todas
