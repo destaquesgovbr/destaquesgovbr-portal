@@ -101,11 +101,18 @@ export default async function Home() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-bold">Últimas notícias</h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Acompanhe as informações mais recentes sobre as ações e políticas do Governo Federal.
-              </p>
+            <div className="flex items-start">
+              <img
+                src="/vertical-ribbon.svg"
+                alt="decorativo"
+                className="w-2 h-14 mr-4 mt-1"
+              />
+              <div>
+                <h2 className="text-2xl font-bold">Últimas notícias</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Acompanhe as informações mais recentes sobre as ações e políticas do Governo Federal.
+                </p>
+              </div>
             </div>
             <Link href="/artigos">
               <Button variant="outline" className="cursor-pointer">
@@ -134,11 +141,18 @@ export default async function Home() {
       <section className="py-12 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-bold">Temas em foco</h2>
-              <p className="text-sm text-muted-foreground">
-                Os principais eixos de atuação e debate público, com notícias recentes.
-              </p>
+            <div className="flex items-start">
+              <img
+                src="/vertical-ribbon.svg"
+                alt="decorativo"
+                className="w-2 h-14 mr-4 mt-1"
+              />
+              <div>
+                <h2 className="text-2xl font-bold">Temas em foco</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Os principais eixos de atuação e debate público, com notícias recentes.
+                </p>
+              </div>
             </div>
             <Link href="/temas">
               <Button variant="outline" className="cursor-pointer">
@@ -231,11 +245,18 @@ export default async function Home() {
       {/* 4️⃣ TRANSPARÊNCIA / DADOS PÚBLICOS — 3 cards verticais com SVG de fundo */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold">Transparência e dados públicos</h2>
-            <p className="text-sm text-muted-foreground">
-              Acompanhe informações oficiais, dados abertos e canais de controle social.
-            </p>
+          <div className="flex items-start mb-8">
+            <img
+              src="/vertical-ribbon.svg"
+              alt="decorativo"
+              className="w-2 h-14 mr-4 mt-1"
+            />
+            <div>
+              <h2 className="text-2xl font-bold">Transparência e dados públicos</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Acompanhe informações oficiais, dados abertos e canais de controle social.
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

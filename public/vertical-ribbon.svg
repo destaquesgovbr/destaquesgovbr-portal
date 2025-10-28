@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="8" height="60" viewBox="0 0 8 60">
+  <!-- Bloco azul -->
+  <rect y="0" width="8" height="15" fill="#0057A4" />
+  <!-- Trapézio verde -->
+  <path d="M0,15 L8,12 L8,27 L0,30 Z" fill="#007C3B"/>
+  <!-- Retângulo amarelo -->
+  <rect y="30" width="8" height="12" fill="#FFC627" />
+  <!-- Triângulo vermelho -->
+  <path d="M0,42 L8,60 L0,60 Z" fill="#E63B2E"/>
+</svg>
