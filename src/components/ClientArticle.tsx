@@ -49,7 +49,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
           {/* Metadados */}
           <div className="flex flex-wrap justify-center items-center gap-3 mb-4 text-sm text-primary/70">
             {article.theme_1_level_1 && (
-              <Badge className="bg-[#F5E6D3] text-primary/90 font-medium">
+              <Badge className="bg-white text-primary/90 font-medium">
                 <Tag className="w-3 h-3 mr-1 text-primary/70" />
                 {article.theme_1_level_1}
               </Badge>

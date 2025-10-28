@@ -51,7 +51,7 @@ const NewsCard = ({
             {/* Badge de tema (somente se existir) */}
             {hasTheme && (
               <div className="absolute top-3 left-3">
-                <Badge className="bg-[#F5E6D3]/90 text-primary font-medium shadow-sm">
+                <Badge className="bg-white text-primary font-medium shadow-sm">
                   <Tag className="w-3 h-3 mr-1 text-primary/70" />
                   {theme_1_level_1}
                 </Badge>
