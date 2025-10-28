@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="395" height="172" viewBox="0 0 395 172">
+  <rect width="395" height="172" fill="#F7F3EB"/>
+
+  <!-- Faixa diagonal verde superior -->
+  <path d="M0,0 L395,0 L395,40 L0,90 Z" fill="#007C3B"/>
+
+  <!-- Círculo amarelo grande no centro -->
+  <circle cx="180" cy="86" r="60" fill="#FFC627"/>
+
+  <!-- Triângulo azul inferior esquerdo -->
+  <path d="M0,172 L90,172 L0,100 Z" fill="#0057A4"/>
+
+  <!-- Retângulo vermelho inclinado à direita -->
+  <path d="M260,120 L395,172 L395,100 Z" fill="#E63B2E"/>
+
+  <!-- Ponto de destaque no topo direito -->
+  <circle cx="350" cy="30" r="8" fill="#007C3B"/>
+</svg>

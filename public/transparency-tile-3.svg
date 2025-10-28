@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="395" height="172" viewBox="0 0 395 172">
+  <rect width="395" height="172" fill="#F7F3EB"/>
+
+  <!-- Arco azul superior esquerdo -->
+  <path d="M-30,0 A100,100 0 0,1 70,100 L-30,100 Z" fill="#0057A4"/>
+
+  <!-- Faixa vermelha inferior -->
+  <path d="M0,140 Q200,180 395,140 L395,172 L0,172 Z" fill="#E63B2E"/>
+
+  <!-- Trapézio verde superior direito -->
+  <path d="M395,0 L395,90 L320,70 L310,0 Z" fill="#007C3B"/>
+
+  <!-- Círculo amarelo no centro -->
+  <circle cx="220" cy="80" r="12" fill="#FFC627"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="395" height="172" viewBox="0 0 395 172">
+  <rect width="395" height="172" fill="#F7F3EB"/>
+
+  <!-- Círculo azul claro no topo esquerdo -->
+  <circle cx="20" cy="20" r="60" fill="#007C3B" opacity="0.9"/>
+
+  <!-- Semicírculo vermelho inferior esquerdo -->
+  <path d="M-40,172 A100,100 0 0,0 60,172 Z" fill="#E63B2E"/>
+
+  <!-- Forma amarela fluida superior direita -->
+  <path d="M395,0 L395,60 Q360,90 300,100 L300,0 Z" fill="#FFC627"/>
+
+  <!-- Trapézio azul no canto inferior direito -->
+  <path d="M395,172 L280,172 L395,100 Z" fill="#0057A4"/>
+
+  <!-- Detalhe pequeno circular no meio -->
+  <circle cx="210" cy="70" r="8" fill="#0057A4"/>
+</svg>
