@@ -158,6 +158,18 @@
   background: url('/transparency-tile-3.svg') no-repeat center/cover;
 }
 
+.theme-banner-1 {
+  background: url('/theme-tile-1.svg') no-repeat center/cover;
+}
+
+.theme-banner-2 {
+  background: url('/theme-tile-2.svg') no-repeat center/cover;
+}
+
+.theme-banner-3 {
+  background: url('/theme-tile-3.svg') no-repeat center/cover;
+}
+
 @layer base {
   * {
     @apply border-border;

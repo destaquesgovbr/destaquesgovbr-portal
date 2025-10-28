@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <!-- Fundo bege -->
+  <rect width="400" height="200" fill="#F7F3EB"/>
+
+  <!-- Retângulo azul inclinado (inferior direito) -->
+  <path d="M250,200 L400,200 L400,100 Z" fill="#0057A4"/>
+
+  <!-- Círculo verde translúcido (topo direito) -->
+  <circle cx="340" cy="40" r="45" fill="#007C3B" opacity="0.9"/>
+
+  <!-- Triângulo amarelo (inferior esquerdo) -->
+  <path d="M0,200 L100,200 L0,130 Z" fill="#FFC627"/>
+
+  <!-- Círculo vermelho pequeno (centro) -->
+  <circle cx="180" cy="90" r="25" fill="#E63B2E"/>
+
+  <!-- Linha branca fina (leve movimento) -->
+  <path d="M20,30 Q120,80 280,60 T400,100" stroke="#FFFFFF" stroke-width="5" fill="none" opacity="0.3"/>
+</svg>

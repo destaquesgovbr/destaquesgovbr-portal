@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <!-- Fundo bege -->
+  <rect width="400" height="200" fill="#F7F3EB"/>
+
+  <!-- Círculo vermelho (fora do canto superior esquerdo, apenas recorte visível) -->
+  <circle cx="-30" cy="30" r="80" fill="#E63B2E"/>
+
+  <!-- Círculo azul (fora do canto inferior esquerdo) -->
+  <circle cx="50" cy="200" r="80" fill="#0057A4"/>
+
+  <!-- Forma verde orgânica (canto superior direito) -->
+  <path d="M400,0 L400,80 Q370,70 320,120 L320,0 Z" fill="#007C3B"/>
+
+  <!-- Triângulo amarelo invertido (canto inferior direito) -->
+  <path d="M400,200 L320,200 L400,120 Z" fill="#FFC627"/>
+
+  <!-- Círculo amarelo pequeno (detalhe leve no topo) -->
+  <circle cx="240" cy="40" r="10" fill="#FFC627"/>
+</svg>
