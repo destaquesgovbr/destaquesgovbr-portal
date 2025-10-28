@@ -62,7 +62,7 @@ export default async function Home() {
                           <div className="flex items-center space-x-3">
                             <span className="font-medium">{theme.name}</span>
                           </div>
-                          <Badge variant="secondary">{theme.count}</Badge>
+                          <Badge>{theme.count}</Badge>
                         </Button>
                       </Link>
                     ))}

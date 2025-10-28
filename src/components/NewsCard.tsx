@@ -64,10 +64,7 @@ const NewsCard = ({
         <CardHeader className={isMain ? 'p-6' : 'p-4'}>
           {/* Badge caso não haja imagem */}
           {!imageUrl && hasTheme && (
-            <Badge
-              variant="secondary"
-              className="mb-2 bg-[#F5E6D3] text-primary/90 font-medium"
-            >
+            <Badge className="mb-2 bg-[#F5E6D3] text-primary/90 font-medium">
               <Tag className="w-3 h-3 mr-1 text-primary/70" />
               {theme_1_level_1}
             </Badge>
