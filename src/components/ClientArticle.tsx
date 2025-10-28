@@ -2,10 +2,10 @@
 
 import { ArrowLeft, Calendar, ExternalLink, Share2, Tag, Check } from 'lucide-react'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { MarkdownRenderer } from './MarkdownRenderer'
 
 export default function ClientArticle({ article, baseUrl, pageUrl }: { article: any; baseUrl: string; pageUrl: string }) {
   const [copied, setCopied] = useState(false)
@@ -136,7 +136,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
             }
           `}</style>
 
-          <ReactMarkdown>{article.content}</ReactMarkdown>
+          <MarkdownRenderer content={article.content}/>
         </article>
 
         {/* Rodapé */}

@@ -4,10 +4,10 @@ import NewsCard from '@/components/NewsCard'
 import { getArticles } from './actions'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
-import ReactMarkdown from 'react-markdown'
 import THEME_ICONS from '@/lib/themes'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 
 export default function ThemePage() {
   const params = useParams()
@@ -69,7 +69,7 @@ export default function ThemePage() {
           {/* Descrição do tema */}
           {themeData?.description && (
             <div className="mt-6 text-base text-primary/80 leading-relaxed max-w-3xl mx-auto">
-              <ReactMarkdown>{themeData.description}</ReactMarkdown>
+              <MarkdownRenderer content={themeData.description} />
             </div>
           )}
         </div>

@@ -3,8 +3,8 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import THEME_ICONS from '@/lib/themes'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
 import { motion } from 'framer-motion'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 
 export default function ThemesPage() {
   return (
@@ -43,9 +43,7 @@ export default function ThemesPage() {
                 </CardHeader>
                 <CardContent className="px-5 pb-5">
                   <div className="text-sm line-clamp-3">
-                    <ReactMarkdown>
-                      {THEME_ICONS[theme].description}
-                    </ReactMarkdown>
+                    <MarkdownRenderer content={THEME_ICONS[theme].description} />
                   </div>
                 </CardContent>
               </Card>
