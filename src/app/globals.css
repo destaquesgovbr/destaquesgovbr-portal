@@ -146,8 +146,16 @@
   background-position: left center, right center; /* uma à esquerda, outra à direita */
 }
 
-.transparency-banner {
-  background: url('/transparency-tile.svg') no-repeat center/cover;
+.transparency-banner-1 {
+  background: url('/transparency-tile-1.svg') no-repeat center/cover;
+}
+
+.transparency-banner-2 {
+  background: url('/transparency-tile-2.svg') no-repeat center/cover;
+}
+
+.transparency-banner-3 {
+  background: url('/transparency-tile-3.svg') no-repeat center/cover;
 }
 
 @layer base {
