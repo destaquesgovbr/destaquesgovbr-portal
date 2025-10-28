@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }: Props) {
           {article.published_at &&
             <div className="flex items-center text-sm text-muted-foreground">
               <Calendar className="w-4 h-4 mr-1" />
-              {new Date(article.published_at * 1000).toDateString() ?? ''}
+              {new Date(article.published_at * 1000).toLocaleDateString("pt-BR") ?? ''}
             </div>
           }
           <Button variant="ghost" size="sm">
