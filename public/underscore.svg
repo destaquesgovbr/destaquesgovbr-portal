@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="6" viewBox="0 0 180 6">
+  <!-- Bloco azul -->
+  <rect x="0" y="0" width="22" height="6" fill="#0D4C92"/>
+
+  <!-- Triângulo verde -->
+  <path d="M22 0 L38 6 L54 0 Z" fill="#2D9B78"/>
+
+  <!-- Faixa amarela -->
+  <rect x="54" y="0" width="28" height="6" fill="#F9C80E"/>
+
+  <!-- Círculo vermelho -->
+  <circle cx="96" cy="3" r="3" fill="#E63946"/>
+
+  <!-- Diagonal azul -->
+  <path d="M110 0 L122 6 L134 6 L122 0 Z" fill="#0D4C92"/>
+
+  <!-- Bloco verde final -->
+  <rect x="134" y="0" width="46" height="6" fill="#2D9B78"/>
+</svg>
