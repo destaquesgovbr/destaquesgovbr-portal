@@ -2,18 +2,18 @@
   <!-- Fundo bege -->
   <rect width="400" height="200" fill="#F7F3EB"/>
 
-  <!-- Retângulo azul inclinado (inferior direito) -->
-  <path d="M250,200 L400,200 L400,100 Z" fill="#0057A4"/>
+  <!-- Círculo azul (superior esquerdo) -->
+  <circle cx="60" cy="40" r="50" fill="#0057A4"/>
 
-  <!-- Círculo verde translúcido (topo direito) -->
-  <circle cx="340" cy="40" r="45" fill="#007C3B" opacity="0.9"/>
+  <!-- Trapézio amarelo (direita) -->
+  <path d="M400,0 L340,0 L400,120 Z" fill="#FFC627"/>
 
-  <!-- Triângulo amarelo (inferior esquerdo) -->
-  <path d="M0,200 L100,200 L0,130 Z" fill="#FFC627"/>
+  <!-- Faixa verde (inferior esquerda) -->
+  <path d="M0,150 Q60,180 160,200 L0,200 Z" fill="#007C3B"/>
 
-  <!-- Círculo vermelho pequeno (centro) -->
-  <circle cx="180" cy="90" r="25" fill="#E63B2E"/>
+  <!-- Círculo vermelho pequeno -->
+  <circle cx="320" cy="150" r="20" fill="#E63B2E"/>
 
-  <!-- Linha branca fina (leve movimento) -->
-  <path d="M20,30 Q120,80 280,60 T400,100" stroke="#FFFFFF" stroke-width="5" fill="none" opacity="0.3"/>
+  <!-- Linha branca suave -->
+  <path d="M0,100 Q100,130 300,80 T400,120" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.3"/>
 </svg>
