@@ -11,10 +11,9 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
     .documents()
     .search({
       q: '*',
-      limit: 6,
+      limit: 11,
       sort_by: 'published_at:desc'
-    }
-  )
+    })
   return result.hits?.map(hit => hit.document) as ArticleRow[]
 })
 
@@ -40,10 +39,10 @@ export const getThemes = withResult(
     const themesCount: Record<string, number> = {}
 
     for (const group of result.grouped_hits ?? []) {
-      themesCount [group.group_key[0]] = group.found ?? 0
+      themesCount[group.group_key[0]] = group.found ?? 0
     }
 
-    delete themesCount["undefined"]
+    delete themesCount['undefined']
 
     const countResult = Object.keys(themesCount)
       .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
@@ -55,7 +54,7 @@ export const getThemes = withResult(
 )
 
 export const countMonthlyNews = withResult(async (): Promise<number> => {
-  const thisMonth = (startOfMonth(new Date()).getTime()) / 1000
+  const thisMonth = startOfMonth(new Date()).getTime() / 1000
 
   const result = await typesense
     .collections<ArticleRow>('news')
@@ -63,8 +62,25 @@ export const countMonthlyNews = withResult(async (): Promise<number> => {
     .search({
       q: '*',
       filter_by: `published_at:>${thisMonth}`
-    }
-  )
+    })
 
   return result.found
 })
+
+export const getLatestByTheme = withResult(
+  async (theme: string, limit: number | null): Promise<ArticleRow[]> => {
+    if (!theme) return []
+
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: '*',
+        filter_by: `theme_1_level_1:=${theme}`,
+        sort_by: 'published_at:desc',
+        limit: limit ?? 2
+      })
+
+    return result.hits?.map(hit => hit.document) as ArticleRow[]
+  }
+)
