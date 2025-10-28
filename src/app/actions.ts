@@ -32,24 +32,18 @@ export const getThemes = withResult(
       .documents()
       .search({
         q: '*',
-        filter_by: `published_at:<${sevenDaysAgo}`,
-        include_fields: 'theme_1_level_1',
-        limit: 20
+        group_by: 'theme_1_level_1',
+        filter_by: `published_at:>${Math.floor(sevenDaysAgo / 1000)}`,
+        limit: 26
       })
 
     const themesCount: Record<string, number> = {}
 
-    for (const hit of result.hits ?? []) {
-      const document = hit.document
-
-      if (!document.theme_1_level_1) continue
-
-      if (themesCount[document.theme_1_level_1]) {
-        themesCount [document.theme_1_level_1] = themesCount [document.theme_1_level_1] + 1
-      } else {
-        themesCount [document.theme_1_level_1] = 1
-      }
+    for (const group of result.grouped_hits ?? []) {
+      themesCount [group.group_key[0]] = group.found ?? 0
     }
+
+    delete themesCount["undefined"]
 
     const countResult = Object.keys(themesCount)
       .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
