@@ -31,7 +31,7 @@ const NewsCard = ({
     <Link href={internalUrl} className="h-full" ref={ref}>
       <Card
         className={`transition-all overflow-hidden duration-300 h-full cursor-pointer group
-        hover:shadow-lg hover:shadow-[#0D4C92]/10 hover:scale-[1.01] bg-white/90 border border-[#F5E6D3]
+        hover:shadow-lg hover:shadow-[#0D4C92]/10 hover:scale-[1.01] bg-white/90
         ${isMain ? 'col-span-2 row-span-2' : ''}`}
       >
         {/* Imagem de capa */}
