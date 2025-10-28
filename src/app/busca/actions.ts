@@ -25,11 +25,11 @@ export async function queryArticles(
   let filter_by: string[] = []
 
   if (startDate) {
-    filter_by.push(`published_at:>${startDate / 1000}`)
+    filter_by.push(`published_at:>${Math.floor(startDate / 1000)}`)
   }
 
   if (endDate) {
-    filter_by.push(`published_at:<${(endDate / 1000) + (60 * 60 * 3)}`)
+    filter_by.push(`published_at:<${Math.floor((endDate / 1000) + (60 * 60 * 3))}`)
   }
 
   // biome-ignore format: true
