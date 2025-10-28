@@ -148,51 +148,83 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {themesWithNews.map(({ theme, articles }) => (
-              <div key={theme} className="rounded-lg border bg-card p-5 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={THEME_ICONS[theme]?.image}
-                    alt={theme}
-                    className="h-10 w-10 object-contain"
-                  />
+            {themesWithNews.map(({ theme, articles }, i) => (
+              <div
+                key={theme}
+                className="
+                  group relative rounded-xl border bg-card p-6 flex flex-col gap-4
+                  overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]
+                "
+              >
+                {/* SVG decorativo de fundo */}
+                <div
+                  className={`absolute inset-0 opacity-20 group-hover:opacity-30 theme-banner-${i + 1} scale-105 group-hover:scale-110 transition-all`}
+                  aria-hidden="true"
+                />
+
+                {/* Conteúdo do card */}
+                <div className="relative flex items-center gap-3">
+                  <div className="rounded-md bg-white/90 border">
+                    <img
+                      src={THEME_ICONS[theme]?.image}
+                      alt={theme}
+                      className="h-10 w-10 object-contain"
+                    />
+                  </div>
                   <Link href={`/temas/${theme}`} className="hover:underline">
-                    <h3 className="font-semibold">{theme}</h3>
+                    <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                      {theme}
+                    </h3>
                   </Link>
                 </div>
 
-                <ul className="space-y-3">
-                  {articles.map((a: any) => (
-                    <li key={a.unique_id} className="text-sm">
-                      <Link
-                        href={`/artigos/${a.unique_id}`}
-                        className="text-primary hover:underline"
-                      >
-                        {a.title}
-                      </Link>
-                      {a.published_at && (
-                        <span className="ml-2 text-muted-foreground">
-                          · {new Date(a.published_at * 1000).toLocaleDateString('pt-BR')}
-                        </span>
-                      )}
+                <ul className="relative space-y-2.5">
+                  {articles.length > 0 ? (
+                    articles.map((a: any) => (
+                      <li key={a.unique_id} className="text-sm leading-snug">
+                        <Link
+                          href={`/artigos/${a.unique_id}`}
+                          className="text-primary hover:underline"
+                        >
+                          {a.title}
+                        </Link>
+                        {a.published_at && (
+                          <span className="ml-2 text-muted-foreground">
+                            · {new Date(a.published_at * 1000).toLocaleDateString('pt-BR')}
+                          </span>
+                        )}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-sm text-muted-foreground">
+                      Sem notícias recentes.
                     </li>
-                  ))}
-                  {articles.length === 0 && (
-                    <li className="text-sm text-muted-foreground">Sem notícias recentes.</li>
                   )}
                 </ul>
 
-                <div>
+                <div className="relative mt-auto pt-2">
                   <Link href={`/temas/${theme}`}>
-                    <Button variant="ghost" size="sm" className="cursor-pointer">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="
+                        group-hover:text-primary
+                        group-hover:underline
+                        transition-colors
+                        flex
+                        items-center
+                        cursor-pointer
+                      "
+                    >
                       Ver mais
-                      <ArrowRight className="w-4 h-4 ml-1" />
+                      <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
                     </Button>
                   </Link>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
