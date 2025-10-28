@@ -133,11 +133,18 @@ export default async function Home() {
       {/* 3️⃣ TEMAS EM FOCO — 3 blocos com 2 notícias cada */}
       <section className="py-12 bg-muted/50">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold">Temas em foco</h2>
-            <p className="text-sm text-muted-foreground">
-              Os principais eixos de atuação e debate público, com notícias recentes.
-            </p>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold">Temas em foco</h2>
+              <p className="text-sm text-muted-foreground">
+                Os principais eixos de atuação e debate público, com notícias recentes.
+              </p>
+            </div>
+            <Link href="/temas">
+              <Button variant="outline" className="cursor-pointer">
+                Ver todos
+              </Button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
