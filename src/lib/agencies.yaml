@@ -1,0 +1,794 @@
+# Brazilian Government Agencies Database
+# Complete catalog of 156 government agencies with news feeds
+# Last updated: 2025-10-25
+#
+# Structure: Each entry contains:
+#   - name: Official name in Portuguese
+#   - type: Institutional classification (Ministério, Agência, Instituto, etc.)
+#   - parent: Parent organization key (use hierarchy.yaml for tree visualization)
+#   - url: News feed URL
+#
+# Note: 'presidencia' refers to Presidência da República (root, not in list as it has no news URL)
+# See hierarchy.yaml for complete organizational tree structure
+
+sources:
+  abc:
+    name: Agência Brasileira de Cooperação
+    parent: mre
+    type: Agência
+    url: https://www.gov.br/abc/pt-br/assuntos/noticias
+  abcd:
+    name: Autoridade Brasileira de Controle de Dopagem
+    parent: esporte
+    type: Autoridade
+    url: https://www.gov.br/abcd/pt-br/noticias
+  abin:
+    name: Agência Brasileira de Inteligência
+    parent: casacivil
+    type: Agência
+    url: https://www.gov.br/abin/pt-br/centrais-de-conteudo/noticias
+  acessoainformacao:
+    name: Portal de Acesso à Informação
+    parent: cgu
+    type: Portal
+    url: https://www.gov.br/acessoainformacao/pt-br/noticias
+  aeb:
+    name: Agência Espacial Brasileira
+    parent: mcti
+    type: Autarquia
+    url: https://www.gov.br/aeb/pt-br/assuntos/noticias
+  agricultura:
+    name: Ministério da Agricultura e Pecuária
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/agricultura/pt-br/assuntos/noticias
+  agu:
+    name: Advocacia-Geral da União
+    parent: presidencia
+    type: Órgão Superior
+    url: https://www.gov.br/agu/pt-br/comunicacao/noticias
+  aids:
+    name: Departamento de HIV/AIDS, Tuberculose, Hepatites Virais e Infecções Sexualmente Transmissíveis
+    parent: saude
+    type: Departamento
+    url: https://www.gov.br/aids/pt-br/assuntos/noticias
+  ana:
+    name: Agência Nacional de Águas e Saneamento Básico
+    parent: mdr
+    type: Agência
+    url: https://www.gov.br/ana/pt-br/assuntos/noticias-e-eventos/noticias
+  anac:
+    name: Agência Nacional de Aviação Civil
+    parent: portos-e-aeroportos
+    type: Agência
+    url: https://www.gov.br/anac/pt-br/noticias/ultimas-noticias-1
+  anatel:
+    name: Agência Nacional de Telecomunicações
+    parent: mcom
+    type: Agência
+    url: https://www.gov.br/anatel/pt-br/assuntos/noticias
+  ancine:
+    name: Agência Nacional do Cinema
+    parent: cultura
+    type: Agência
+    url: https://www.gov.br/ancine/pt-br/assuntos/noticias
+  aneel:
+    name: Agência Nacional de Energia Elétrica
+    parent: mme
+    type: Agência
+    url: https://www.gov.br/aneel/pt-br/assuntos/noticias
+  anm:
+    name: Agência Nacional de Mineração
+    parent: mme
+    type: Agência
+    url: https://www.gov.br/anm/pt-br/assuntos/noticias/ultimas-noticias
+  anp:
+    name: Agência Nacional do Petróleo, Gás Natural e Biocombustíveis
+    parent: mme
+    type: Agência
+    url: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados
+  anpd:
+    name: Autoridade Nacional de Proteção de Dados
+    parent: presidencia
+    type: Autoridade
+    url: https://www.gov.br/anpd/pt-br/assuntos/noticias
+  ans:
+    name: Agência Nacional de Saúde Suplementar
+    parent: saude
+    type: Agência
+    url: https://www.gov.br/ans/pt-br/assuntos/noticias
+  antaq:
+    name: Agência Nacional de Transportes Aquaviários
+    parent: transportes
+    type: Agência
+    url: https://www.gov.br/antaq/pt-br/noticias
+  antt:
+    name: Agência Nacional de Transportes Terrestres
+    parent: transportes
+    type: Agência
+    url: https://www.gov.br/antt/pt-br/assuntos/ultimas-noticias
+  anvisa:
+    name: Agência Nacional de Vigilância Sanitária
+    parent: saude
+    type: Agência
+    url: https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa
+  arquivonacional:
+    name: Arquivo Nacional
+    parent: gestao
+    type: Órgão Público
+    url: https://www.gov.br/arquivonacional/pt-br/canais_atendimento/imprensa/copy_of_noticias
+  bn:
+    name: Fundação Biblioteca Nacional
+    parent: cultura
+    type: Fundação
+    url: https://www.gov.br/bn/pt-br/central-de-conteudos/noticias
+  cade:
+    name: Conselho Administrativo de Defesa Econômica
+    parent: mj
+    type: Autarquia
+    url: https://www.gov.br/cade/pt-br/assuntos/noticias
+  capes:
+    name: Coordenação de Aperfeiçoamento de Pessoal de Nível Superior
+    parent: mec
+    type: Fundação
+    url: https://www.gov.br/capes/pt-br/assuntos/noticias
+  casacivil:
+    name: Casa Civil da Presidência da República
+    parent: presidencia
+    type: Órgão da Presidência
+    url: https://www.gov.br/casacivil/pt-br/assuntos/noticias
+  casaruibarbosa:
+    name: Fundação Casa de Rui Barbosa
+    parent: cultura
+    type: Fundação
+    url: https://www.gov.br/casaruibarbosa/pt-br/centrais-de-conteudo/noticias/2025
+  caslode:
+    name: Centro de Apoio a Sistemas Logísticos de Defesa
+    parent: defesa
+    type: Centro
+    url: https://www.gov.br/caslode/pt-br/noticias
+  cbpf:
+    name: Centro Brasileiro de Pesquisas Físicas
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/cbpf/pt-br/assuntos/noticias
+  cbtu:
+    name: Companhia Brasileira de Trens Urbanos
+    parent: cidades
+    type: Empresa Pública
+    url: https://www.gov.br/cbtu/pt-br/assuntos/noticias
+  cdtn:
+    name: Centro de Desenvolvimento da Tecnologia Nuclear
+    parent: cnen
+    type: Centro
+    url: https://www.gov.br/cdtn/pt-br/centrais-de-conteudo/noticias
+  cemaden:
+    name: Centro Nacional de Monitoramento e Alertas de Desastres Naturais
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/cemaden/pt-br/assuntos/noticias-cemaden/ultimas-noticias
+  censipam:
+    name: Centro Gestor e Operacional do Sistema de Proteção da Amazônia
+    parent: defesa
+    type: Centro
+    url: https://www.gov.br/censipam/pt-br/central-de-conteudos/noticias
+  cetem:
+    name: Centro de Tecnologia Mineral
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/cetem/pt-br/noticias
+  cetene:
+    name: Centro de Tecnologias Estratégicas do Nordeste
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/cetene/pt-br/assuntos/noticias
+  cgu:
+    name: Controladoria-Geral da União
+    parent: presidencia
+    type: Órgão de Controle
+    url: https://www.gov.br/cgu/pt-br/assuntos/noticias/ultimas-noticias
+  cidades:
+    name: Ministério das Cidades
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/cidades/pt-br/assuntos/noticias-1
+  cnen:
+    name: Comissão Nacional de Energia Nuclear
+    parent: mcti
+    type: Autarquia
+    url: https://www.gov.br/cnen/pt-br/assunto/ultimas-noticias
+  cnpq:
+    name: Conselho Nacional de Desenvolvimento Científico e Tecnológico
+    parent: mcti
+    type: Agência
+    url: https://www.gov.br/cnpq/pt-br/assuntos/noticias
+  coaf:
+    name: Conselho de Controle de Atividades Financeiras
+    parent: fazenda
+    type: Conselho
+    url: https://www.gov.br/coaf/pt-br/assuntos/noticias/ultimas-noticias
+  compras:
+    name: Portal de Compras do Governo Federal
+    parent: gestao
+    type: Portal
+    url: https://www.gov.br/compras/pt-br/acesso-a-informacao/noticias
+  conarq:
+    name: Conselho Nacional de Arquivos
+    parent: gestao
+    type: Conselho
+    url: https://www.gov.br/conarq/pt-br/assuntos/noticias
+  conitec:
+    name: Comissão Nacional de Incorporação de Tecnologias no Sistema Único de Saúde
+    parent: saude
+    type: Comissão
+    url: https://www.gov.br/conitec/pt-br/assuntos/noticias
+  conselho-nacional-de-saude:
+    name: Conselho Nacional de Saúde
+    parent: saude
+    type: Conselho
+    url: https://www.gov.br/conselho-nacional-de-saude/pt-br/assuntos/noticias
+  corregedorias:
+    name: Corregedoria-Geral da União
+    parent: cgu
+    type: Corregedoria
+    url: https://www.gov.br/corregedorias/pt-br/aconteceu-aqui/noticias
+  crcnne:
+    name: Centro Regional de Ciências Nucleares do Nordeste
+    parent: cnen
+    type: Centro
+    url: https://www.gov.br/crcnne/pt-br/assuntos/noticias
+  ctav:
+    name: Centro Técnico Audiovisual
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/ctav/pt-br/noticias
+  cti:
+    name: Centro de Tecnologia da Informação Renato Archer
+    parent: mcti
+    type: Centro
+    url: https://www.gov.br/cti/pt-br/assuntos/noticias
+  ctir:
+    name: Centro de Prevenção, Tratamento e Resposta a Incidentes Cibernéticos de Governo
+    parent: gsi
+    type: Centro
+    url: https://www.gov.br/ctir/pt-br/assuntos/noticias/2025
+  cultura:
+    name: Ministério da Cultura
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/cultura/pt-br/assuntos/noticias
+  culturaviva:
+    name: Política Nacional Cultura Viva
+    parent: cultura
+    type: Programa
+    url: https://www.gov.br/culturaviva/pt-br/acesso-a-informacao/noticias
+  cvm:
+    name: Comissão de Valores Mobiliários
+    parent: fazenda
+    type: Autarquia
+    url: https://www.gov.br/cvm/pt-br/assuntos/noticias
+  defesa:
+    name: Ministério da Defesa
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/defesa/pt-br/centrais-de-conteudo/noticias
+  dnit:
+    name: Departamento Nacional de Infraestrutura de Transportes
+    parent: transportes
+    type: Autarquia
+    url: https://www.gov.br/dnit/pt-br/assuntos/noticias/
+  dnocs:
+    name: Departamento Nacional de Obras Contra as Secas
+    parent: mdr
+    type: Autarquia
+    url: https://www.gov.br/dnocs/pt-br/assuntos/noticias
+  ebserh:
+    name: Empresa Brasileira de Serviços Hospitalares
+    parent: mec
+    type: Empresa Pública
+    url: https://www.gov.br/ebserh/pt-br/comunicacao/noticias
+  empresas-e-negocios:
+    name: Portal Empresas & Negócios
+    parent: memp
+    type: Portal
+    url: https://www.gov.br/empresas-e-negocios/pt-br/empreendedor/mais-noticias
+  esd:
+    name: Escola Superior de Defesa
+    parent: defesa
+    type: Escola
+    url: https://www.gov.br/esd/pt-br/central-de-conteudo/noticias
+  esg:
+    name: Escola Superior de Guerra
+    parent: defesa
+    type: Escola
+    url: https://www.gov.br/esg/pt-br/centrais-de-conteudo/noticias
+  esocial:
+    name: Sistema de Escrituração Digital das Obrigações Fiscais, Previdenciárias e Trabalhistas
+    parent: gestao
+    type: Sistema
+    url: https://www.gov.br/esocial/pt-br/noticias
+  esporte:
+    name: Ministério do Esporte
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/esporte/pt-br/noticias-e-conteudos/esporte
+  fazenda:
+    name: Ministério da Fazenda
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/fazenda/pt-br/assuntos/noticias
+  florestal:
+    name: Serviço Florestal Brasileiro
+    parent: mma
+    type: Autarquia
+    url: https://www.gov.br/florestal/pt-br/assuntos/noticias
+  fnde:
+    name: Fundo Nacional de Desenvolvimento da Educação
+    parent: mec
+    type: Autarquia
+    url: https://www.gov.br/fnde/pt-br/assuntos/noticias
+  funag:
+    name: Fundação Alexandre de Gusmão
+    parent: mre
+    type: Fundação
+    url: https://www.gov.br/funag/pt-br/centrais-de-conteudo/noticias
+  funai:
+    name: Fundação Nacional dos Povos Indígenas
+    parent: presidencia
+    type: Fundação
+    url: https://www.gov.br/funai/pt-br/assuntos/noticias/2025
+  funarte:
+    name: Fundação Nacional de Artes
+    parent: cultura
+    type: Fundação
+    url: https://www.gov.br/funarte/pt-br/assuntos/noticias/todas-noticias
+  fundacentro:
+    name: Fundação Jorge Duprat Figueiredo de Segurança e Medicina do Trabalho
+    parent: trabalho-e-emprego
+    type: Fundação
+    url: https://www.gov.br/fundacentro/pt-br/comunicacao/noticias/noticias/ultimas-noticias
+  fundaj:
+    name: Fundação Joaquim Nabuco
+    parent: mec
+    type: Fundação
+    url: https://www.gov.br/fundaj/pt-br/centrais-de-conteudo/noticias-1
+  gestao:
+    name: Ministério da Gestão e da Inovação em Serviços Públicos
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/gestao/pt-br/assuntos/noticias/noticias
+  governodigital:
+    name: Secretaria de Governo Digital
+    parent: gestao
+    type: Secretaria
+    url: https://www.gov.br/governodigital/pt-br/noticias
+  gsi:
+    name: Gabinete de Segurança Institucional da Presidência da República
+    parent: presidencia
+    type: Órgão da Presidência
+    url: https://www.gov.br/gsi/pt-br/centrais-de-conteudo/noticias/2025
+  hfa:
+    name: Hospital das Forças Armadas
+    parent: defesa
+    type: Hospital
+    url: https://www.gov.br/hfa/pt-br/noticias?b_start:int=0
+  ibama:
+    name: Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis
+    parent: mma
+    type: Instituto
+    url: https://www.gov.br/ibama/pt-br/assuntos/noticias/2025
+  ibc:
+    name: Instituto Benjamin Constant
+    parent: mec
+    type: Instituto
+    url: https://www.gov.br/ibc/pt-br/assuntos/noticias
+  ibict:
+    name: Instituto Brasileiro de Informação em Ciência e Tecnologia
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/ibict/pt-br/colecoes/colecao-de-todas-as-noticias-do-site
+  icmbio:
+    name: Instituto Chico Mendes de Conservação da Biodiversidade
+    parent: mma
+    type: Instituto
+    url: https://www.gov.br/icmbio/pt-br/assuntos/noticias/ultimas-noticias
+  iec:
+    name: Instituto Evandro Chagas
+    parent: saude
+    type: Instituto
+    url: https://www.gov.br/iec/pt-br/assuntos/noticias
+  ien:
+    name: Instituto de Engenharia Nuclear
+    parent: cnen
+    type: Instituto
+    url: https://www.gov.br/ien/pt-br/assuntos/noticias
+  igualdaderacial:
+    name: Ministério da Igualdade Racial
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/igualdaderacial/pt-br/assuntos/copy2_of_noticias
+  imprensanacional:
+    name: Imprensa Nacional
+    parent: presidencia
+    type: Órgão Público
+    url: https://www.gov.br/imprensanacional/pt-br/assuntos/noticias
+  inca:
+    name: Instituto Nacional de Câncer
+    parent: saude
+    type: Instituto
+    url: https://www.gov.br/inca/pt-br/assuntos/noticias
+  incra:
+    name: Instituto Nacional de Colonização e Reforma Agrária
+    parent: presidencia
+    type: Instituto
+    url: https://www.gov.br/incra/pt-br/assuntos/noticias
+  inep:
+    name: Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira
+    parent: presidencia
+    type: Instituto
+    url: https://www.gov.br/inep/pt-br/assuntos/noticias
+  ines:
+    name: Instituto Nacional de Educação de Surdos
+    parent: mec
+    type: Instituto
+    url: https://www.gov.br/ines/pt-br/central-de-conteudos/noticias
+  inma:
+    name: Instituto Nacional da Mata Atlântica
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/inma/pt-br/assuntos/noticias
+  inmetro:
+    name: Instituto Nacional de Metrologia, Qualidade e Tecnologia
+    parent: mdic
+    type: Instituto
+    url: https://www.gov.br/inmetro/pt-br/centrais-de-conteudo/noticias
+  inpa:
+    name: Instituto Nacional de Pesquisas da Amazônia
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/inpa/pt-br/assuntos/noticias
+  inpe:
+    name: Instituto Nacional de Pesquisas Espaciais
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias
+  inpi:
+    name: Instituto Nacional da Propriedade Industrial
+    parent: mdic
+    type: Instituto
+    url: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias
+  inpp:
+    name: Instituto Nacional de Pesquisa do Pantanal
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/inpp/pt-br/noticias
+  insa:
+    name: Instituto Nacional do Semiárido
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/insa/pt-br/assuntos/noticias
+  inss:
+    name: Instituto Nacional do Seguro Social
+    parent: previdencia
+    type: Instituto
+    url: https://www.gov.br/inss/pt-br/noticias/ultimas-noticias
+  int:
+    name: Instituto Nacional de Tecnologia
+    parent: mcti
+    type: Instituto
+    url: https://www.gov.br/int/pt-br/assuntos/noticias
+  iphan:
+    name: Instituto do Patrimônio Histórico e Artístico Nacional
+    parent: cultura
+    type: Instituto
+    url: https://www.gov.br/iphan/pt-br/assuntos/noticias
+  ird:
+    name: Instituto de Radioproteção e Dosimetria
+    parent: cnen
+    type: Instituto
+    url: https://www.gov.br/ird/pt-br/assuntos/noticias
+  iti:
+    name: Instituto Nacional de Tecnologia da Informação
+    parent: gestao
+    type: Instituto
+    url: https://www.gov.br/iti/pt-br/assuntos/noticias/indice-de-noticias/
+  jbrj:
+    name: Instituto de Pesquisas Jardim Botânico do Rio de Janeiro
+    parent: mma
+    type: Instituto
+    url: https://www.gov.br/jbrj/pt-br/assuntos/noticias
+  lapoc:
+    name: Laboratório de Poços de Caldas
+    parent: cnen
+    type: Laboratório
+    url: https://www.gov.br/lapoc/pt-br/assuntos/noticias
+  lna:
+    name: Laboratório Nacional de Astrofísica
+    parent: mcti
+    type: Laboratório
+    url: https://www.gov.br/lna/pt-br/assuntos/noticias
+  lncc:
+    name: Laboratório Nacional de Computação Científica
+    parent: mcti
+    type: Laboratório
+    url: https://www.gov.br/lncc/pt-br/assuntos/noticias/ultimas-noticias-1
+  mast:
+    name: Museu de Astronomia e Ciências Afins
+    parent: mcti
+    type: Museu
+    url: https://www.gov.br/mast/pt-br/assuntos/noticias
+  mcom:
+    name: Ministério das Comunicações
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mcom/pt-br/noticias
+  mcti:
+    name: Ministério da Ciência, Tecnologia e Inovação
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/noticias/ultimas-noticias
+  mda:
+    name: Ministério do Desenvolvimento Agrário e Agricultura Familiar
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mda/pt-br/noticias
+  mdh:
+    name: Ministério dos Direitos Humanos e da Cidadania
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mdh/pt-br/assuntos/noticias
+  mdic:
+    name: Ministério do Desenvolvimento, Indústria e Comércio Exterior
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mdic/pt-br/assuntos/noticias
+  mdr:
+    name: Ministério do Desenvolvimento Regional
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mdr/pt-br/noticias
+  mds:
+    name: Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mds/pt-br/noticias-e-conteudos/desenvolvimento-social/noticias-desenvolvimento-social
+  mec:
+    name: Ministério da Educação
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mec/pt-br/assuntos/noticias
+  memoriasreveladas:
+    name: Centro de Referência das Lutas Políticas no Brasil - Memórias Reveladas
+    parent: arquivonacional
+    type: Centro
+    url: https://www.gov.br/memoriasreveladas/pt-br/centrais-de-conteudo/destaques
+  memp:
+    name: Ministério do Empreendedorismo, da Microempresa e da Empresa de Pequeno Porte
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/memp/pt-br/assuntos/noticias
+  mj:
+    name: Ministério da Justiça e Segurança Pública
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mj/pt-br/assuntos/noticias
+  mma:
+    name: Ministério do Meio Ambiente e Mudança do Clima
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mma/pt-br/assuntos/noticias/ultimas-noticias
+  mme:
+    name: Ministério de Minas e Energia
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mme/pt-br/assuntos/noticias
+  mpa:
+    name: Ministério da Pesca e Aquicultura
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mpa/pt-br/assuntos/noticias
+  mre:
+    name: Ministério das Relações Exteriores
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mre/pt-br/assuntos/portal-consular/alertas%20e%20noticias/noticias
+  mulheres:
+    name: Ministério das Mulheres
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/mulheres/pt-br/central-de-conteudos/noticias
+  museudoindio:
+    name: Museu do Índio
+    parent: funai
+    type: Museu
+    url: https://www.gov.br/museudoindio/pt-br/assuntos/noticias
+  museugoeldi:
+    name: Museu Paraense Emílio Goeldi
+    parent: mcti
+    type: Museu
+    url: https://www.gov.br/museugoeldi/pt-br/arquivos/noticias
+  museus:
+    name: Instituto Brasileiro de Museus
+    parent: cultura
+    type: Instituto
+    url: https://www.gov.br/museus/pt-br/assuntos/noticias
+  nfse:
+    name: Portal Nacional da Nota Fiscal de Serviço Eletrônica
+    parent: receitafederal
+    type: Portal
+    url: https://www.gov.br/nfse/pt-br/noticias
+  observatorio:
+    name: Observatório Nacional
+    parent: mcti
+    type: Unidade de Pesquisa
+    url: https://www.gov.br/observatorio/pt-br/assuntos/noticias
+  ouvidorias:
+    name: Ouvidoria-Geral da União
+    parent: cgu
+    type: Ouvidoria
+    url: https://www.gov.br/ouvidorias/pt-br/assuntos/noticias
+  palmares:
+    name: Fundação Cultural Palmares
+    parent: cultura
+    type: Fundação
+    url: https://www.gov.br/palmares/pt-br/assuntos/noticias
+  patrimonio:
+    name: Secretaria do Patrimônio da União
+    parent: gestao
+    type: Secretaria
+    url: https://www.gov.br/patrimonio/pt-br/central-de-conteudo/noticias
+  pf:
+    name: Polícia Federal
+    parent: mj
+    type: Polícia
+    url: https://www.gov.br/pf/pt-br/assuntos/noticias/noticias-destaque
+  pgfn:
+    name: Procuradoria-Geral da Fazenda Nacional
+    parent: fazenda
+    type: Procuradoria
+    url: https://www.gov.br/pgfn/pt-br/assuntos/noticias
+  planalto:
+    name: Casa Civil da Presidência da República
+    parent: presidencia
+    type: Órgão da Presidência
+    url: https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias
+  planejamento:
+    name: Ministério do Planejamento e Orçamento
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/planejamento/pt-br/assuntos/noticias
+  plataformamaisbrasil:
+    name: TransfereGov.br (Plataforma +Brasil)
+    parent: gestao
+    type: Plataforma
+    url: https://www.gov.br/transferegov/pt-br/noticias/noticias/2025
+  pncp:
+    name: Portal Nacional de Contratações Públicas
+    parent: gestao
+    type: Portal
+    url: https://www.gov.br/pncp/pt-br/central-de-conteudo/noticias
+  portos-e-aeroportos:
+    name: Secretaria Nacional de Portos e Aeroportos
+    parent: presidencia
+    type: Secretaria
+    url: https://www.gov.br/portos-e-aeroportos/pt-br/assuntos/noticias
+  previc:
+    name: Superintendência Nacional de Previdência Complementar
+    parent: previdencia
+    type: Autarquia
+    url: https://www.gov.br/previc/pt-br/noticias
+  previdencia:
+    name: Ministério da Previdência Social
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/previdencia/pt-br/noticias
+  prf:
+    name: Polícia Rodoviária Federal
+    parent: mj
+    type: Polícia
+    url: https://www.gov.br/prf/pt-br/noticias/nacionais
+  propriedade-intelectual:
+    name: Estratégia Nacional de Propriedade Intelectual
+    parent: mdic
+    type: Programa
+    url: https://www.gov.br/propriedade-intelectual/pt-br/assuntos/noticias
+  receitafederal:
+    name: Secretaria Especial da Receita Federal do Brasil
+    parent: fazenda
+    type: Secretaria
+    url: https://www.gov.br/receitafederal/pt-br/assuntos/noticias
+  reconstrucaors:
+    name: Secretaria Extraordinária da Presidência da República para Apoio à Reconstrução do Rio Grande do Sul
+    parent: casacivil
+    type: Secretaria
+    url: https://www.gov.br/reconstrucaors/pt-br/acompanhe-a-reconstrucao/noticias
+  saude:
+    name: Ministério da Saúde
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/saude/pt-br/assuntos/noticias
+  secom:
+    name: Secretaria de Comunicação Social da Presidência da República
+    parent: presidencia
+    type: Secretaria
+    url: https://www.gov.br/secom/pt-br/assuntos/noticias
+  secretariageral:
+    name: Secretaria-Geral da Presidência da República
+    parent: presidencia
+    type: Secretaria
+    url: https://www.gov.br/secretariageral/pt-br/noticias
+  semanaenef:
+    name: Semana Nacional de Educação Financeira
+    parent: fazenda
+    type: Programa
+    url: https://www.gov.br/semanaenef/pt-br/noticias
+  senappen:
+    name: Secretaria Nacional de Políticas Penais
+    parent: mj
+    type: Secretaria
+    url: https://www.gov.br/senappen/pt-br/assuntos/noticias
+  servicoscompartilhados:
+    name: Secretaria de Serviços Compartilhados
+    parent: gestao
+    type: Secretaria
+    url: https://www.gov.br/servicoscompartilhados/pt-br/acesso-a-informacao/noticias
+  servidor:
+    name: Portal do Servidor
+    parent: gestao
+    type: Portal
+    url: https://www.gov.br/servidor/pt-br/assuntos/noticias
+  sri:
+    name: Secretaria de Relações Institucionais da Presidência da República
+    parent: presidencia
+    type: Secretaria
+    url: https://www.gov.br/sri/pt-br/noticias/mais-noticias/ultimas-noticias
+  sudam:
+    name: Superintendência do Desenvolvimento da Amazônia
+    parent: mdr
+    type: Autarquia
+    url: https://www.gov.br/sudam/pt-br/noticias-1
+  sudeco:
+    name: Superintendência do Desenvolvimento do Centro-Oeste
+    parent: mdr
+    type: Autarquia
+    url: https://www.gov.br/sudeco/pt-br/assuntos/noticias
+  sudene:
+    name: Superintendência do Desenvolvimento do Nordeste
+    parent: mdr
+    type: Autarquia
+    url: https://www.gov.br/sudene/pt-br/assuntos/noticias
+  suframa:
+    name: Superintendência da Zona Franca de Manaus
+    parent: mdic
+    type: Autarquia
+    url: https://www.gov.br/suframa/pt-br/assuntos/noticias
+  susep:
+    name: Superintendência de Seguros Privados
+    parent: fazenda
+    type: Autarquia
+    url: https://www.gov.br/susep/pt-br/central-de-conteudos/noticias
+  tesouronacional:
+    name: Secretaria do Tesouro Nacional
+    parent: fazenda
+    type: Secretaria
+    url: https://www.gov.br/tesouronacional/pt-br/noticias
+  trabalho-e-emprego:
+    name: Ministério do Trabalho e Emprego
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo
+  transferegov:
+    name: TransfereGov.br (Plataforma +Brasil)
+    parent: gestao
+    type: Plataforma
+    url: https://www.gov.br/transferegov/pt-br/noticias/noticias/2025
+  transportes:
+    name: Ministério dos Transportes
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/transportes/pt-br/assuntos/noticias
+  turismo:
+    name: Ministério do Turismo
+    parent: presidencia
+    type: Ministério
+    url: https://www.gov.br/turismo/pt-br/assuntos/noticias
