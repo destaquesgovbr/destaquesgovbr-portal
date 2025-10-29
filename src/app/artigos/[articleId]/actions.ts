@@ -1,6 +1,7 @@
 'use server'
 
 import type { ArticleRow } from '@/lib/article-row'
+import { getAgencyField } from '@/lib/getAgencyName'
 import { ResultError, withResult } from '@/lib/result'
 import { typesense } from '@/lib/typesense-client'
 
@@ -19,7 +20,12 @@ export const getArticleById = withResult(
     if (!result.hits || result.hits.length === 0)
       throw new ResultError<GetArticleError>('not_found')
 
-    return result.hits[0].document
+    const agencyName = await getAgencyField(result.hits[0].document.agency, 'name')
+
+    return {
+      ...result.hits[0].document,
+      agency: agencyName || 'Órgão público federal'
+    }
   },
   {} as GetArticleError,
 )
