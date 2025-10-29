@@ -28,8 +28,6 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
     }
   }
 
-  const agencyName = article.agency ? article.agency : 'Órgão público federal'
-
   return (
     <main className="py-16 overflow-hidden">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -144,7 +142,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
         {/* Rodapé */}
         <footer className="mt-16 border-t pt-8 text-primary/70 text-sm space-y-4">
           <div>
-            <strong>Fonte:</strong> {agencyName}
+            <strong>Fonte:</strong> {article.agency}
           </div>
 
           {article.url && (
