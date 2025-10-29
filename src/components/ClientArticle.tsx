@@ -6,16 +6,16 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { MarkdownRenderer } from './MarkdownRenderer'
+import { ArticleRow } from '@/lib/article-row'
 
-export default function ClientArticle({ article, baseUrl, pageUrl }: { article: any; baseUrl: string; pageUrl: string }) {
+export default function ClientArticle({ article, baseUrl, pageUrl }: { article: ArticleRow; baseUrl: string; pageUrl: string }) {
   const [copied, setCopied] = useState(false)
 
   async function handleShare() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: article.title,
-          text: article.summary || '',
+          title: article.title || '',
           url: pageUrl,
         })
       } else {
@@ -27,6 +27,8 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
       console.error('Erro ao compartilhar:', err)
     }
   }
+
+  const agencyName = article.agency ? article.agency : 'Órgão público federal'
 
   return (
     <main className="py-16 overflow-hidden">
@@ -136,13 +138,13 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
             }
           `}</style>
 
-          <MarkdownRenderer content={article.content}/>
+          <MarkdownRenderer content={article.content ?? ''}/>
         </article>
 
         {/* Rodapé */}
         <footer className="mt-16 border-t pt-8 text-primary/70 text-sm space-y-4">
           <div>
-            <strong>Fonte:</strong> {article.agency || 'Órgão público federal'}
+            <strong>Fonte:</strong> {agencyName}
           </div>
 
           {article.url && (
