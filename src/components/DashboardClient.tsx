@@ -1,0 +1,109 @@
+'use client'
+
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Legend,
+} from 'recharts'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+
+type Range = { start: number; end: number }
+
+export default function DashboardClient({
+  range,
+  kpis,
+  themes,
+  agencies,
+  timeline
+}: {
+  range: Range
+  kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
+  themes: { theme: string; count: number }[]
+  agencies: { agency: string; count: number }[]
+  timeline: { date: string; count: number }[]
+}) {
+
+  return (
+    <div className="space-y-10">
+      {/* KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <KpiCard title="Total de notícias" value={kpis.total.toLocaleString('pt-BR')} />
+        <KpiCard title="Temas ativos" value={kpis.temasAtivos.toString()} />
+        <KpiCard title="Órgãos emissores" value={kpis.orgaosAtivos.toString()} />
+        <KpiCard title="Média diária" value={kpis.mediaDiaria.toString()} />
+      </div>
+
+      {/* Timeline */}
+      <Card>
+        <CardHeader>
+          <h3 className="font-semibold text-lg">Evolução diária de publicações (últimos 30 dias)</h3>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={timeline}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Line type="monotone" dataKey="count" stroke="#0D4C92" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Temas + Órgãos (lado a lado) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <h3 className="font-semibold text-lg">Temas mais citados</h3>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={themes}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="theme" tick={{ fontSize: 12 }} />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#2D9B78" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <h3 className="font-semibold text-lg">Órgãos mais ativos</h3>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={agencies}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="agency" tick={{ fontSize: 12 }} />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#F9C80E" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function KpiCard({ title, value }: { title: string; value: string }) {
+  return (
+    <Card className="shadow-sm">
+      <CardHeader>
+        <h4 className="text-sm text-muted-foreground">{title}</h4>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-semibold">{value}</div>
+      </CardContent>
+    </Card>
+  )
+}
