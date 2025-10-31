@@ -9,6 +9,5 @@ export type ArticleRow = {
   tags: string[] | null
   content: string | null
   extracted_at: number | null
-  time_1_level_1: string | null
   created_at: number
 }
