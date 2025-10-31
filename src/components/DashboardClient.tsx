@@ -1,25 +1,30 @@
 'use client'
 
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Legend,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+  BarChart,
+  Bar
 } from 'recharts'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 type Range = { start: number; end: number }
 
-export default function DashboardClient({
-  range,
-  kpis,
-  themes,
-  agencies,
-  timeline
-}: {
+type DashboardClientProps = {
   range: Range
   kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
   themes: { theme: string; count: number }[]
   agencies: { agency: string; count: number }[]
   timeline: { date: string; count: number }[]
-}) {
+}
+
+export default function DashboardClient(props: DashboardClientProps) {
+  const {range, kpis, themes, agencies, timeline} = props
 
   return (
     <div className="space-y-10">
