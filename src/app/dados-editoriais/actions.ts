@@ -27,7 +27,7 @@ export const getKpis = withResult(async (range: Interval) => {
     q: '*',
     filter_by: BASE_FILTER(range),
     group_by: 'theme_1_level_1',
-    per_page: 1,
+    per_page: 250
   })
   const temasAtivos = (temasRes.grouped_hits ?? []).filter(g => g.group_key?.[0]).length
 
@@ -36,7 +36,7 @@ export const getKpis = withResult(async (range: Interval) => {
     q: '*',
     filter_by: BASE_FILTER(range),
     group_by: 'agency',
-    per_page: 1,
+    per_page: 250
   })
   const orgaosAtivos = (orgaosRes.grouped_hits ?? []).filter(g => g.group_key?.[0]).length
 
