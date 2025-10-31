@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import SearchBar from './SearchBar'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 const Header = () => {
   return (
@@ -38,9 +39,11 @@ const Header = () => {
           </Link>
 
           {/* Search bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8">
-            <SearchBar />
-          </div>
+          <Suspense>
+            <div className="hidden md:flex flex-1 max-w-md mx-8">
+              <SearchBar />
+            </div>
+          </Suspense>
 
           {/* Mobile menu button */}
           <Button variant="ghost" size="icon" className="md:hidden">
