@@ -2,8 +2,7 @@
 
 import { typesense } from '@/lib/typesense-client'
 import { withResult } from '@/lib/result'
-
-type Range = { start: number; end: number }
+import { differenceInDays, differenceInHours, getUnixTime, Interval } from 'date-fns'
 
 type ArticleRow = {
   unique_id: string
@@ -14,10 +13,15 @@ type ArticleRow = {
   published_at: number // epoch seconds
 }
 
-const BASE_FILTER = (r: Range) =>
-  `published_at:>=${r.start} && published_at:<${r.end} && image:!=null && image:!=""`
+const BASE_FILTER = (r: Interval) => {
+  const { start, end } = r
+  const startSeconds = new Date(start).getTime() / 1000
+  const endSeconds = new Date(end).getTime() / 1000
 
-export const getKpis = withResult(async (range: Range) => {
+  return `published_at:>=${startSeconds} && published_at:<${endSeconds} && image:!=null && image:!=""`
+}
+
+export const getKpis = withResult(async (range: Interval) => {
   // total
   const totalRes = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
@@ -44,7 +48,7 @@ export const getKpis = withResult(async (range: Range) => {
   const orgaosAtivos = (orgaosRes.grouped_hits ?? []).filter(g => g.group_key?.[0]).length
 
   // média diária (aprox.)
-  const days = Math.max(1, Math.ceil((range.end - range.start) / 86400))
+  const days = Math.max(1, differenceInHours(range.end, range.start) / 24)
   const mediaDiaria = Math.round((totalRes.found ?? 0) / days)
 
   return {
@@ -55,7 +59,7 @@ export const getKpis = withResult(async (range: Range) => {
   }
 })
 
-export const getTopThemes = withResult(async (range: Range, limit: number = 8) => {
+export const getTopThemes = withResult(async (range: Interval, limit: number = 8) => {
   const res = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
     filter_by: BASE_FILTER(range),
@@ -74,7 +78,7 @@ export const getTopThemes = withResult(async (range: Range, limit: number = 8) =
   return rows
 })
 
-export const getTopAgencies = withResult(async (range: Range, limit: number = 8) => {
+export const getTopAgencies = withResult(async (range: Interval, limit: number = 8) => {
   const res = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
     filter_by: BASE_FILTER(range),
@@ -93,14 +97,14 @@ export const getTopAgencies = withResult(async (range: Range, limit: number = 8)
   return rows
 })
 
-export const getTimelineDaily = withResult(async (range: Range) => {
+export const getTimelineDaily = withResult(async (range: Interval) => {
   // Fase de teste: varremos 30 buckets (1 consulta por dia).
   // Em produção, ideal indexar um campo "published_day" (YYYY-MM-DD) para facet.
   const buckets: { date: string; count: number }[] = []
   const daySec = 86400
-  for (let t = range.start; t < range.end; t += daySec) {
+  for (let t = getUnixTime(range.start); t < getUnixTime(range.end); t += daySec) {
     const dayStart = t
-    const dayEnd = Math.min(t + daySec, range.end)
+    const dayEnd = Math.min(t + daySec, getUnixTime(range.end))
     const res = await typesense.collections<ArticleRow>('news').documents().search({
       q: '*',
       filter_by: `published_at:>=${dayStart} && published_at:<${dayEnd} && image:!=null && image:!=""`,

@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic' // sem cache agressivo para testes
 export default async function DashboardPage() {
   const end = startOfDay(new Date())
   const start = startOfDay(subDays(end, 29)) // 30 dias (inclui hoje)
-  const range = { start: Math.floor(start.getTime() / 1000), end: Math.floor(addDays(end, 1).getTime() / 1000) }
+  const range = { start: start, end: addDays(end, 1) }
 
   const [kpisR, themesR, agenciesR, timelineR] = await Promise.all([
     getKpis(range),
@@ -42,7 +42,6 @@ export default async function DashboardPage() {
         </div>
 
         <DashboardClient
-          range={range}
           kpis={kpis}
           themes={themes}
           agencies={agencies}
