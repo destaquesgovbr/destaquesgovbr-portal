@@ -156,7 +156,8 @@ presidencia:
     - conselho-nacional-de-saude
     - iec
     - inca
-  - secom
+  - secom:
+    - ebc
   - secretariageral
   - sri
   - trabalho-e-emprego:

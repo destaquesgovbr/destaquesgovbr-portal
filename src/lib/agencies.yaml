@@ -282,6 +282,11 @@ sources:
     parent: mdr
     type: Autarquia
     url: https://www.gov.br/dnocs/pt-br/assuntos/noticias
+  ebc:
+    name: Empresa Brasil de Comunicação
+    parent: secom
+    type: Empresa Pública
+    url: https://memoria.ebc.com.br/noticias
   ebserh:
     name: Empresa Brasileira de Serviços Hospitalares
     parent: mec
