@@ -2,7 +2,7 @@
 
 import { typesense } from '@/lib/typesense-client'
 import { withResult } from '@/lib/result'
-import { differenceInDays, differenceInHours, getUnixTime, Interval } from 'date-fns'
+import { differenceInHours, getUnixTime, Interval } from 'date-fns'
 
 type ArticleRow = {
   unique_id: string
