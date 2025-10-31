@@ -3,15 +3,7 @@
 import { typesense } from '@/lib/typesense-client'
 import { withResult } from '@/lib/result'
 import { differenceInHours, getUnixTime, Interval } from 'date-fns'
-
-type ArticleRow = {
-  unique_id: string
-  title: string
-  image?: string | null
-  theme_1_level_1?: string | null
-  agency?: string | null
-  published_at: number // epoch seconds
-}
+import { ArticleRow } from '@/lib/article-row'
 
 const BASE_FILTER = (r: Interval) => {
   const { start, end } = r
