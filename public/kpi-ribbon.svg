@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="6" height="98" viewBox="0 0 6 98">
+  <!-- Bloco azul superior -->
+  <rect y="0" width="6" height="12" fill="#0057A4"/>
+
+  <!-- Faixa verde diagonal -->
+  <path d="M0 20 L6 12 L6 28 L0 36 Z" fill="#007C3B"/>
+
+  <!-- Retângulo amarelo -->
+  <rect y="42" width="6" height="10" fill="#FFC627"/>
+
+  <!-- Círculo vermelho pequeno -->
+  <circle cx="3" cy="60" r="2.2" fill="#E63B2E"/>
+
+  <!-- Retângulo azul interno -->
+  <rect y="70" width="6" height="14" fill="#0057A4"/>
+
+  <!-- Barra verde inferior inclinada -->
+  <path d="M0 88 L6 82 L6 98 L0 98 Z" fill="#007C3B"/>
+</svg>

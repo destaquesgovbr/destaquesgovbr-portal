@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="6" height="48" viewBox="0 0 6 48">
+  <!-- Azul topo -->
+  <rect y="0" width="6" height="10" fill="#0057A4"/>
+
+  <!-- Verde meio (leve diagonal) -->
+  <path d="M0 18 L6 14 L6 28 L0 32 Z" fill="#007C3B"/>
+
+  <!-- Amarelo pequeno -->
+  <circle cy="36" cx="3" r="2" fill="#FFC627"/>
+
+  <!-- Vermelho base -->
+  <rect y="42" width="6" height="6" fill="#E63B2E"/>
+</svg>
