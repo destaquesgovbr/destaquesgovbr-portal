@@ -13,6 +13,8 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import KpiCard from './KpiCard'
+import { ChartTooltip } from './ChartTooltip'
+import { addDays } from 'date-fns'
 
 type DashboardClientProps = {
   kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
@@ -58,7 +60,15 @@ export default function DashboardClient(props: DashboardClientProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
-                <Tooltip />
+                <Tooltip
+                    content={
+                      <ChartTooltip
+                        dataKey="date"
+                        itemName="publicações"
+                        formatLabel={(label) => addDays(new Date(label), 1).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      />
+                  }
+                  />
                 <Line type="monotone" dataKey="count" stroke="#0D4C92" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
@@ -91,7 +101,9 @@ export default function DashboardClient(props: DashboardClientProps) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="theme" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
-                  <Tooltip />
+                  <Tooltip
+                    content={<ChartTooltip dataKey="theme" itemName="publicações"/>}
+                  />
                   <Bar dataKey="count" fill="#2D9B78" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -122,7 +134,9 @@ export default function DashboardClient(props: DashboardClientProps) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="agency" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
-                  <Tooltip />
+                  <Tooltip
+                    content={<ChartTooltip dataKey="agencyName" itemName="publicações"/>}
+                  />
                   <Bar dataKey="count" fill="#F9C80E" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
