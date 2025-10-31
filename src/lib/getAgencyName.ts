@@ -13,7 +13,7 @@ type Agency = {
 
 let fullFile: { sources: Record<string, Agency>} | null = null
 
-function getAgenciesByName(): Record<string, Agency> {
+export async function getAgenciesByName(): Promise<Record<string, Agency>> {
   if (fullFile) return fullFile.sources
 
   const filePath = path.join(process.cwd(), 'src', 'lib', 'agencies.yaml')
@@ -32,7 +32,7 @@ export async function getAgencyField(
   field: keyof Agency = 'name'
 ): Promise<string | undefined> {
   if (!agency) return undefined
-  const sources = getAgenciesByName()
+  const sources = await getAgenciesByName()
   return sources[agency]?.[field]
 }
 
@@ -41,6 +41,6 @@ export async function getAgencyField(
  */
 export async function getAgency(agency: string | null | undefined): Promise<Agency | undefined> {
   if (!agency) return undefined
-  const sources = getAgenciesByName()
+  const sources = await getAgenciesByName()
   return sources[agency]
 }
