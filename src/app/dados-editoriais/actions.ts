@@ -4,6 +4,7 @@ import { typesense } from '@/lib/typesense-client'
 import { withResult } from '@/lib/result'
 import { differenceInHours, getUnixTime, Interval } from 'date-fns'
 import { ArticleRow } from '@/lib/article-row'
+import { getAgenciesByName } from '@/lib/getAgencyName'
 
 const BASE_FILTER = (r: Interval) => {
   const { start, end } = r
@@ -79,9 +80,15 @@ export const getTopAgencies = withResult(async (range: Interval, limit: number =
     per_page: 100,
   })
 
+  const agenciesMap = await getAgenciesByName()
+
   const rows =
     (res.grouped_hits ?? [])
-      .map(g => ({ agency: g.group_key?.[0] ?? '—', count: g.found ?? 0 }))
+      .map(g => ({
+        agency: g.group_key[0] ?? '—',
+        count: g.found ?? 0,
+        agencyName: agenciesMap[g.group_key[0]]?.name ?? '-'
+      }))
       .filter(r => r.agency && r.agency !== 'undefined')
       .sort((a, b) => b.count - a.count)
       .slice(0, limit)
