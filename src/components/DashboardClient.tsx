@@ -13,10 +13,7 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
-type Range = { start: number; end: number }
-
 type DashboardClientProps = {
-  range: Range
   kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
   themes: { theme: string; count: number }[]
   agencies: { agency: string; count: number }[]
@@ -24,7 +21,7 @@ type DashboardClientProps = {
 }
 
 export default function DashboardClient(props: DashboardClientProps) {
-  const {range, kpis, themes, agencies, timeline} = props
+  const { kpis, themes, agencies, timeline} = props
 
   return (
     <div className="space-y-10">
