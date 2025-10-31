@@ -12,6 +12,7 @@ import {
   Bar
 } from 'recharts'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import KpiCard from './KpiCard'
 
 type DashboardClientProps = {
   kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
@@ -36,7 +37,19 @@ export default function DashboardClient(props: DashboardClientProps) {
       {/* Timeline */}
       <Card>
         <CardHeader>
-          <h3 className="font-semibold text-lg">Evolução diária de publicações (últimos 30 dias)</h3>
+          <div className="flex items-start">
+            <img
+              src="/charts-ribbon.svg"
+              alt="decorativo"
+              className="w-2 h-12 mr-2 mt-1"
+            />
+            <div>
+              <h3 className="font-semibold text-lg">Ritmo de publicações</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Conheça a cadência diária das notícias divulgadas pelo Governo Federal.
+              </p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="h-64">
@@ -57,7 +70,19 @@ export default function DashboardClient(props: DashboardClientProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-lg">Temas mais citados</h3>
+            <div className="flex items-start">
+              <img
+                src="/charts-ribbon.svg"
+                alt="decorativo"
+                className="w-2 h-12 mr-2 mt-1"
+              />
+              <div>
+                <h3 className="font-semibold text-lg">Temas identificados</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Veja quais áreas concentram mais publicações no período analisado.
+                </p>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -76,7 +101,19 @@ export default function DashboardClient(props: DashboardClientProps) {
 
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-lg">Órgãos mais ativos</h3>
+            <div className="flex items-start">
+              <img
+                src="/charts-ribbon.svg"
+                alt="decorativo"
+                className="w-2 h-12 mr-2 mt-1"
+              />
+              <div>
+                <h3 className="font-semibold text-lg">Órgãos mais ativos</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Identifique quais instituições tiveram maior presença nas publicações recentes.
+                </p>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -94,18 +131,5 @@ export default function DashboardClient(props: DashboardClientProps) {
         </Card>
       </div>
     </div>
-  )
-}
-
-function KpiCard({ title, value }: { title: string; value: string }) {
-  return (
-    <Card className="shadow-sm">
-      <CardHeader>
-        <h4 className="text-sm text-muted-foreground">{title}</h4>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-semibold">{value}</div>
-      </CardContent>
-    </Card>
   )
 }
