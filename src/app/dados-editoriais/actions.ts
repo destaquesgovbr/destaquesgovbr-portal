@@ -19,7 +19,7 @@ export const getKpis = withResult(async (range: Interval) => {
   const totalRes = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
     filter_by: BASE_FILTER(range),
-    per_page: 1,
+    per_page: 1
   })
 
   // temas ativos
@@ -48,7 +48,7 @@ export const getKpis = withResult(async (range: Interval) => {
     total: totalRes.found ?? 0,
     temasAtivos,
     orgaosAtivos,
-    mediaDiaria,
+    mediaDiaria
   }
 })
 
@@ -58,7 +58,7 @@ export const getTopThemes = withResult(async (range: Interval, limit: number = 8
     filter_by: BASE_FILTER(range),
     group_by: 'theme_1_level_1',
     group_limit: 1,
-    per_page: 100, // suficiente para ranking
+    per_page: 100 // suficiente para ranking
   })
 
   const rows =
@@ -77,7 +77,7 @@ export const getTopAgencies = withResult(async (range: Interval, limit: number =
     filter_by: BASE_FILTER(range),
     group_by: 'agency',
     group_limit: 1,
-    per_page: 100,
+    per_page: 100
   })
 
   const agenciesMap = await getAgenciesByName()
@@ -107,7 +107,7 @@ export const getTimelineDaily = withResult(async (range: Interval) => {
     const res = await typesense.collections<ArticleRow>('news').documents().search({
       q: '*',
       filter_by: `published_at:>=${dayStart} && published_at:<${dayEnd} && image:!=null && image:!=""`,
-      per_page: 1,
+      per_page: 1
     })
     const date = new Date(dayStart * 1000).toISOString().slice(0, 10)
     buckets.push({ date, count: res.found ?? 0 })
