@@ -21,7 +21,7 @@ export async function getArticles(
   const { theme_1_level_1, page } = args
 
   let filter_by: string[] = [
-    `theme_1_level_1:=${theme_1_level_1}`
+    `theme_1_level_1_label:=${theme_1_level_1}`
   ]
 
   // biome-ignore format: true

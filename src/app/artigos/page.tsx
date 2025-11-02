@@ -122,7 +122,7 @@ export default function ArticlesPage() {
             <NewsCard
               key={index}
               internalUrl={`/artigos/${article.unique_id}`}
-              theme_1_level_1={article.theme_1_level_1 || ''}
+              theme_1_level_1={article.theme_1_level_1_label || ''}
               date={article.published_at}
               ref={index === articles.length - 1 ? ref : undefined}
               summary={article.title || ''}
