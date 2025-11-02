@@ -23,7 +23,7 @@ const Footer = () => {
                   Governo Federal do Brasil
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Portal Oficial de Notícias
+                  Portal de Notícias Oficiais
                 </p>
               </div>
             </div>

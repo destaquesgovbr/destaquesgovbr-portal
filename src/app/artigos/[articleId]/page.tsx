@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props) {
 
   if (articleResult.type !== 'ok') {
     return {
-      title: 'Notícia não encontrada — Destaques GOV.BR',
+      title: 'Notícia não encontrada — DestaquesGovBr',
       description: 'Esta notícia não está disponível no momento.',
     }
   }
@@ -23,22 +23,22 @@ export async function generateMetadata({ params }: Props) {
 
   const title =
     article.title ||
-    'Notícia — Destaques GOV.BR'
+    'Notícia — DestaquesGovBr'
   const description = 'Acompanhe as ações, programas e políticas públicas do Governo Federal do Brasil.'
   const image = article.image
     ? article.image
     : `${siteUrl}/fallback.png`
 
   return {
-    title: `${title} — Destaques GOV.BR`,
+    title: `${title} — DestaquesGovBr`,
     description,
     openGraph: {
-      title: `${title} — Destaques GOV.BR`,
+      title: `${title} — DestaquesGovBr`,
       description,
       url: pageUrl,
       type: 'article',
       locale: 'pt_BR',
-      siteName: 'Destaques GOV.BR',
+      siteName: 'DestaquesGovBr',
       images: [
         {
           url: image,
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} — Destaques GOV.BR`,
+      title: `${title} — DestaquesGovBr`,
       description,
       images: [image],
     },
