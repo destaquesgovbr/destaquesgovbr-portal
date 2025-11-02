@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { getExcerpt } from '@/lib/utils'
 
 export default function ArticlesPage() {
   const [startDate, setStartDate] = useState<Date>()
@@ -125,7 +126,7 @@ export default function ArticlesPage() {
               theme_1_level_1={article.theme_1_level_1_label || ''}
               date={article.published_at}
               ref={index === articles.length - 1 ? ref : undefined}
-              summary={article.title || ''}
+              summary={getExcerpt(article.content || '', 150)}
               title={article.title || ''}
               imageUrl={article.image || ''}
             />

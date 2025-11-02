@@ -9,6 +9,7 @@ import {
 } from './actions'
 import { ArrowRight } from 'lucide-react'
 import THEME_ICONS from '@/lib/themes'
+import { getExcerpt } from '@/lib/utils'
 
 export default async function Home() {
   // ===== Fetch principal =====
@@ -57,7 +58,7 @@ export default async function Home() {
               date={featuredMain.published_at}
               internalUrl={`/artigos/${featuredMain.unique_id}`}
               imageUrl={featuredMain.image || ''}
-              summary={featuredMain.content || ''}
+              summary={getExcerpt(featuredMain.content || '', 250)}
               title={featuredMain.title || ''}
               isMain
             />
@@ -70,7 +71,7 @@ export default async function Home() {
                   date={article.published_at}
                   internalUrl={`/artigos/${article.unique_id}`}
                   imageUrl=''
-                  summary={article.content || ''}
+                  summary={getExcerpt(article.content || '', 150)}
                   title={article.title || ''}
                 />
               )}
@@ -88,7 +89,7 @@ export default async function Home() {
                     date={article.published_at}
                     internalUrl={`/artigos/${article.unique_id}`}
                     imageUrl={article.image || ''}
-                    summary={article.content || ''}
+                    summary={getExcerpt(article.content || '', 150)}
                     title={article.title || ''}
                   />
                 )
@@ -128,7 +129,7 @@ export default async function Home() {
                 internalUrl={`/artigos/${article.unique_id}`}
                 theme_1_level_1={article.theme_1_level_1_label || ''}
                 date={article.published_at}
-                summary={article.content || ''}
+                summary={getExcerpt(article.content || '', 200)}
                 title={article.title || ''}
                 imageUrl={article.image || ''}
               />
