@@ -26,7 +26,7 @@ export const getKpis = withResult(async (range: Interval) => {
   const temasRes = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
     filter_by: BASE_FILTER(range),
-    group_by: 'theme_1_level_1',
+    group_by: 'theme_1_level_1_label',
     per_page: 250
   })
   const temasAtivos = (temasRes.grouped_hits ?? []).filter(g => g.group_key?.[0]).length
@@ -56,7 +56,7 @@ export const getTopThemes = withResult(async (range: Interval, limit: number = 8
   const res = await typesense.collections<ArticleRow>('news').documents().search({
     q: '*',
     filter_by: BASE_FILTER(range),
-    group_by: 'theme_1_level_1',
+    group_by: 'theme_1_level_1_label',
     group_limit: 1,
     per_page: 100 // suficiente para ranking
   })
@@ -64,7 +64,7 @@ export const getTopThemes = withResult(async (range: Interval, limit: number = 8
   const rows =
     (res.grouped_hits ?? [])
       .map(g => ({ theme: g.group_key?.[0] ?? '—', count: g.found ?? 0 }))
-      .filter(r => r.theme && r.theme !== 'undefined')
+      .filter(r => r.theme && r.theme !== 'undefined' && r.theme !== '')
       .sort((a, b) => b.count - a.count)
       .slice(0, limit)
 

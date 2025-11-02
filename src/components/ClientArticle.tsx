@@ -48,10 +48,10 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
         <header className="text-center mb-12">
           {/* Metadados */}
           <div className="flex flex-wrap justify-center items-center gap-3 mb-4 text-sm text-primary/70">
-            {article.theme_1_level_1 && (
+            {article.theme_1_level_1_label && (
               <Badge className="bg-white text-primary/90 font-medium">
                 <Tag className="w-3 h-3 mr-1 text-primary/70" />
-                {article.theme_1_level_1}
+                {article.theme_1_level_1_label}
               </Badge>
             )}
 

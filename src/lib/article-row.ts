@@ -5,9 +5,21 @@ export type ArticleRow = {
   title: string | null
   url: string | null
   image: string | null
-  theme_1_level_1: string | null
-  tags: string[] | null
+  category: string | null
   content: string | null
+  summary: string | null
   extracted_at: number | null
-  created_at: number
+  theme_1_level_1_code: string | null
+  theme_1_level_1_label: string | null
+  theme_1_level_2_code: string | null
+  theme_1_level_2_label: string | null
+  theme_1_level_3_code: string | null
+  theme_1_level_3_label: string | null
+  most_specific_theme_code: string | null
+  most_specific_theme_label: string | null
+  published_year: number | null
+  published_month: number | null
+  published_week: number | null
+  // Manter theme_1_level_1 como alias para compatibilidade
+  theme_1_level_1?: string | null
 }

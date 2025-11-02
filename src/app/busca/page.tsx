@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { getExcerpt } from '@/lib/utils'
 
 export default function QueryPage() {
   const searchParams = useSearchParams()
@@ -129,10 +130,10 @@ export default function QueryPage() {
             <NewsCard
               key={index}
               internalUrl={`/artigos/${article.unique_id}`}
-              theme_1_level_1={article.theme_1_level_1 || ''}
+              theme_1_level_1={article.theme_1_level_1_label || ''}
               date={article.published_at}
               ref={index === articles.length - 1 ? ref : undefined}
-              summary={article.title || ''}
+              summary={getExcerpt(article.content || '', 150)}
               title={article.title || ''}
               imageUrl={article.image || ''}
             />

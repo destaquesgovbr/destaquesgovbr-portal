@@ -31,7 +31,7 @@ export const getThemes = withResult(
       .documents()
       .search({
         q: '*',
-        group_by: 'theme_1_level_1',
+        group_by: 'theme_1_level_1_label',
         filter_by: `published_at:>${Math.floor(sevenDaysAgo / 1000)}`,
         limit: 26
       })
@@ -43,6 +43,7 @@ export const getThemes = withResult(
     }
 
     delete themesCount['undefined']
+    delete themesCount['']
 
     const countResult = Object.keys(themesCount)
       .map(themeName => ({ name: themeName, count: themesCount[themeName] }))
@@ -76,7 +77,7 @@ export const getLatestByTheme = withResult(
       .documents()
       .search({
         q: '*',
-        filter_by: `theme_1_level_1:=${theme}`,
+        filter_by: `theme_1_level_1_label:=${theme}`,
         sort_by: 'published_at:desc',
         limit: limit ?? 2
       })
