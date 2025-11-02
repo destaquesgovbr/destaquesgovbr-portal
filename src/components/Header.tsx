@@ -12,7 +12,7 @@ const Header = () => {
       <div className="header-banner py-2">
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-primary font-semibold">
-            Portal Oficial de Notícias do Governo Federal do Brasil
+            Todas as Notícias do Governo Federal em Um Só Lugar
           </p>
         </div>
       </div>
@@ -33,7 +33,7 @@ const Header = () => {
               className="h-20 w-20"
             />
             <div>
-              <h1 className="text-xl font-bold">Destaques GOV.BR</h1>
+              <h1 className="text-xl font-bold">DestaquesGovBr</h1>
               <p className="text-sm text-muted-foreground">Governo Federal</p>
             </div>
           </Link>
