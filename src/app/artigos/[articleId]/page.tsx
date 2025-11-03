@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import { getArticleById } from './actions'
 import ClientArticle from '@/components/ClientArticle'
+import { getSiteUrl } from '@/lib/site-url'
+import { headers } from 'next/headers'
 
 interface Props {
   params: Promise<{ articleId: string }>
@@ -18,7 +20,8 @@ export async function generateMetadata({ params }: Props) {
   }
 
   const article = articleResult.data
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!
+  const headersList = await headers()
+  const siteUrl = getSiteUrl(headersList)
   const pageUrl = `${siteUrl}/artigos/${article.unique_id}`
 
   const title =
@@ -74,7 +77,9 @@ export default async function ArticlePage({ params }: Props) {
   const article = articleResult.data
   const articleUrl = new URL(article.url || '', 'https://www.gov.br')
   const baseUrl = articleUrl.hostname.replace('www.', '')
-  const pageUrl = `${process.env.NEXT_PUBLIC_SITE_URL!}/artigos/${article.unique_id}`
+  const headersList = await headers()
+  const siteUrl = getSiteUrl(headersList)
+  const pageUrl = `${siteUrl}/artigos/${article.unique_id}`
 
   return <ClientArticle article={article} baseUrl={baseUrl} pageUrl={pageUrl} />
 }
