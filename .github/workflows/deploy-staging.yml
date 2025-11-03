@@ -1,0 +1,117 @@
+name: Deploy to Staging (Cloud Run)
+
+on:
+  push:
+    branches:
+      - staging
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggers
+
+env:
+  PROJECT_ID: inspire-7-finep
+  REGION: southamerica-east1
+  SERVICE_NAME: destaquesgovbr-portal-staging
+  REGISTRY: southamerica-east1-docker.pkg.dev
+  REPOSITORY: destaquesgovbr-portal
+
+jobs:
+  deploy:
+    name: Build and Deploy to Staging
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write  # To comment on PRs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker to use gcloud as credential helper
+        run: |
+          gcloud auth configure-docker ${{ env.REGISTRY }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_TYPESENSE_HOST=${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }} \
+            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=${{ secrets.NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY }} \
+            --build-arg NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL_STAGING }} \
+            --tag ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-latest \
+            .
+
+      - name: Push Docker image to Artifact Registry
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-latest
+
+      - name: Deploy to Cloud Run (Staging)
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --min-instances 0 \
+            --max-instances 3 \
+            --memory 512Mi \
+            --cpu 1 \
+            --timeout 300 \
+            --set-env-vars "NODE_ENV=production" \
+            --set-env-vars "NEXT_PUBLIC_TYPESENSE_HOST=${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
+            --set-env-vars "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL_STAGING }}" \
+            --set-secrets "NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=typesense-search-only-api-key:latest" \
+            --quiet
+
+      - name: Get service URL
+        id: get-url
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format 'value(status.url)')
+          echo "url=$SERVICE_URL" >> $GITHUB_OUTPUT
+          echo "🚀 Deployed to: $SERVICE_URL"
+
+      - name: Test deployment
+        run: |
+          echo "Testing deployment health..."
+          curl -f ${{ steps.get-url.outputs.url }} || exit 1
+          echo "✅ Deployment is healthy!"
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `
+            ### 🎭 Staging Deployment Ready!
+
+            **Preview URL:** ${{ steps.get-url.outputs.url }}
+            **Image:** \`portal:staging-${{ github.sha }}\`
+            **Region:** ${{ env.REGION }}
+
+            This is a preview deployment for testing. It will be automatically updated on new commits.
+
+            Deploy completed at: ${new Date().toISOString()}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
