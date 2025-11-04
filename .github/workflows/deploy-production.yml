@@ -38,19 +38,12 @@ jobs:
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGISTRY }}
 
-      - name: Get Typesense API Key from Secret Manager
-        id: get-api-key
-        run: |
-          API_KEY=$(gcloud secrets versions access latest --secret="typesense-search-only-api-key")
-          echo "::add-mask::$API_KEY"
-          echo "api_key=$API_KEY" >> $GITHUB_OUTPUT
-
       - name: Build Docker image
         run: |
           docker buildx build \
             --platform linux/amd64 \
             --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
-            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ steps.get-api-key.outputs.api_key }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ secrets.NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY }}" \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:latest \
             --load \
