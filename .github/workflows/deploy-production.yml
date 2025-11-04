@@ -32,17 +32,21 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGISTRY }}
 
       - name: Build Docker image
         run: |
-          docker build \
+          docker buildx build \
             --platform linux/amd64 \
             --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
             --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="placeholder" \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:latest \
+            --load \
             .
 
       - name: Push Docker image
