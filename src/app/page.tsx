@@ -11,6 +11,9 @@ import { ArrowRight } from 'lucide-react'
 import THEME_ICONS from '@/lib/themes'
 import { getExcerpt } from '@/lib/utils'
 
+// Revalidate every 10 minutes (600 seconds)
+export const revalidate = 600
+
 export default async function Home() {
   // ===== Fetch principal =====
   const [latestNewsResult, themesResult, newsThisMonth] = await Promise.all([
