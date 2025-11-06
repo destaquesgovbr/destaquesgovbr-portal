@@ -5,6 +5,7 @@ import {
   getLatestArticles,
   getThemes,
   countMonthlyNews,
+  countTotalNews,
   getLatestByTheme,
 } from './actions'
 import { ArrowRight } from 'lucide-react'
@@ -16,10 +17,11 @@ export const revalidate = 600
 
 export default async function Home() {
   // ===== Fetch principal =====
-  const [latestNewsResult, themesResult, newsThisMonth] = await Promise.all([
+  const [latestNewsResult, themesResult, newsThisMonth, totalNews] = await Promise.all([
     getLatestArticles(),
     getThemes(),
     countMonthlyNews(),
+    countTotalNews(),
   ])
 
   if (themesResult.type !== 'ok') return <div>Erro ao carregar os temas.</div>
@@ -342,13 +344,21 @@ export default async function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-government-red mb-1">
                 {new Intl.NumberFormat('pt-BR').format(newsThisMonth.data ?? 0)}
               </div>
               <div className="text-sm text-muted-foreground">
                 Notícias publicadas este mês
+              </div>
+            </div>
+            <div className="border-l md:border-l md:pl-8">
+              <div className="text-3xl font-bold text-government-blue mb-1">
+                {new Intl.NumberFormat('pt-BR').format(totalNews.data ?? 0)}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Total de notícias no portal
               </div>
             </div>
             <div className="border-l md:border-l md:pl-8">

@@ -68,6 +68,18 @@ export const countMonthlyNews = withResult(async (): Promise<number> => {
   return result.found
 })
 
+export const countTotalNews = withResult(async (): Promise<number> => {
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: '*',
+      limit: 0
+    })
+
+  return result.found
+})
+
 export const getLatestByTheme = withResult(
   async (theme: string, limit: number | null): Promise<ArticleRow[]> => {
     if (!theme) return []
