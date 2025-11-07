@@ -122,7 +122,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Sidebar - Filters */}
-          <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8">
+          <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8 relative z-40">
             <div className="sticky top-4">
               <h3 className="text-lg font-semibold text-primary mb-6">Filtros</h3>
 
