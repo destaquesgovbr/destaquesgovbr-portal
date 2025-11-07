@@ -34,25 +34,27 @@ function DateFilter({ label, value, onChange }: DateFilterProps) {
 }
 
 type ArticleFiltersProps = {
-  agencies: AgencyOption[]
+  agencies?: AgencyOption[]
   startDate: Date | undefined
   endDate: Date | undefined
-  selectedAgencies: string[]
+  selectedAgencies?: string[]
   onStartDateChange: (date: Date | undefined) => void
   onEndDateChange: (date: Date | undefined) => void
-  onAgenciesChange: (agencies: string[]) => void
-  getAgencyName: (key: string) => string
+  onAgenciesChange?: (agencies: string[]) => void
+  getAgencyName?: (key: string) => string
+  showAgencyFilter?: boolean
 }
 
 export function ArticleFilters({
-  agencies,
+  agencies = [],
   startDate,
   endDate,
-  selectedAgencies,
+  selectedAgencies = [],
   onStartDateChange,
   onEndDateChange,
   onAgenciesChange,
   getAgencyName,
+  showAgencyFilter = true,
 }: ArticleFiltersProps) {
   return (
     <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8 relative z-40">
@@ -73,54 +75,58 @@ export function ArticleFilters({
           />
 
           {/* Agency Filter */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-semibold text-primary">
-              Órgãos
-            </label>
-            <AgencyMultiSelect
-              agencies={agencies}
-              selectedAgencies={selectedAgencies}
-              onSelectedAgenciesChange={onAgenciesChange}
-              showBadges={false}
-            />
-          </div>
-
-          {/* Selected Agencies List */}
-          {selectedAgencies.length > 0 && (
-            <div className="pt-4 border-t border-border">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-primary">
-                  Órgãos selecionados ({selectedAgencies.length})
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onAgenciesChange([])}
-                  className="text-xs text-muted-foreground hover:text-primary underline"
-                >
-                  Limpar todos
-                </button>
+          {showAgencyFilter && onAgenciesChange && getAgencyName && (
+            <>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-primary">
+                  Órgãos
+                </label>
+                <AgencyMultiSelect
+                  agencies={agencies}
+                  selectedAgencies={selectedAgencies}
+                  onSelectedAgenciesChange={onAgenciesChange}
+                  showBadges={false}
+                />
               </div>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {selectedAgencies.map((key) => (
-                  <div
-                    key={key}
-                    className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group"
-                  >
-                    <span className="truncate text-primary/90 flex-1 min-w-0">
-                      {getAgencyName(key)}
+
+              {/* Selected Agencies List */}
+              {selectedAgencies.length > 0 && (
+                <div className="pt-4 border-t border-border">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-semibold text-primary">
+                      Órgãos selecionados ({selectedAgencies.length})
                     </span>
                     <button
                       type="button"
-                      onClick={() => onAgenciesChange(selectedAgencies.filter((k) => k !== key))}
-                      className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
-                      aria-label={`Remover ${getAgencyName(key)}`}
+                      onClick={() => onAgenciesChange([])}
+                      className="text-xs text-muted-foreground hover:text-primary underline"
                     >
-                      <X className="h-4 w-4" />
+                      Limpar todos
                     </button>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {selectedAgencies.map((key) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group"
+                      >
+                        <span className="truncate text-primary/90 flex-1 min-w-0">
+                          {getAgencyName(key)}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => onAgenciesChange(selectedAgencies.filter((k) => k !== key))}
+                          className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                          aria-label={`Remover ${getAgencyName(key)}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
