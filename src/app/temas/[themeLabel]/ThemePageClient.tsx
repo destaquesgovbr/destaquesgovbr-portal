@@ -11,7 +11,7 @@ import { motion } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
-import type { AgencyOption } from '@/lib/get-agencies-list'
+import { AgencyOption } from '@/lib/agencies-utils'
 
 type ThemePageClientProps = {
   themeLabel: string

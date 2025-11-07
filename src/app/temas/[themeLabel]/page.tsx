@@ -1,4 +1,4 @@
-import { getAgenciesList } from '@/lib/get-agencies-list'
+import { getAgenciesList } from '@/lib/agencies-utils'
 import ThemePageClient from './ThemePageClient'
 
 type ThemePageProps = {

@@ -1,4 +1,4 @@
-import { getAgenciesByName } from '@/lib/get-agency-name'
+import { getAgenciesByName } from '@/lib/agencies-utils'
 import AgencyPageClient from './AgencyPageClient'
 import { notFound } from 'next/navigation'
 

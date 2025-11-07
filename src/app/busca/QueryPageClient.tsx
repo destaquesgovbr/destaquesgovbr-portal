@@ -9,7 +9,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
-import type { AgencyOption } from '@/lib/get-agencies-list'
+import { AgencyOption } from '@/lib/agencies-utils'
 
 type QueryPageClientProps = {
   agencies: AgencyOption[]

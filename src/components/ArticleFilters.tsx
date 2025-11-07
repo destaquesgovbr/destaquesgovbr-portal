@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { AgencyMultiSelect } from '@/components/AgencyMultiSelect'
-import type { AgencyOption } from '@/lib/get-agencies-list'
+import { AgencyOption } from '@/lib/agencies-utils'
 
 type DateFilterProps = {
   label: string
