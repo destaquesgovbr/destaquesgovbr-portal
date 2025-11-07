@@ -1,7 +1,7 @@
 'use server'
 
 import type { ArticleRow } from '@/lib/article-row'
-import { getAgencyField } from '@/lib/getAgencyName'
+import { getAgencyField } from '@/lib/get-agency-name'
 import { ResultError, withResult } from '@/lib/result'
 import { typesense } from '@/lib/typesense-client'
 

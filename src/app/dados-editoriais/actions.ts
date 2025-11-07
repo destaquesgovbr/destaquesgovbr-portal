@@ -4,7 +4,7 @@ import { typesense } from '@/lib/typesense-client'
 import { withResult } from '@/lib/result'
 import { differenceInHours, getUnixTime, Interval } from 'date-fns'
 import { ArticleRow } from '@/lib/article-row'
-import { getAgenciesByName } from '@/lib/getAgencyName'
+import { getAgenciesByName } from '@/lib/get-agency-name'
 
 const BASE_FILTER = (r: Interval) => {
   const { start, end } = r
