@@ -1,11 +1,11 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
 import { queryArticles } from './actions'
-import { useEffect, useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -47,11 +47,84 @@ function DateFilter({ label, value, onChange }: DateFilterProps) {
 
 export default function QueryPageClient({ agencies }: QueryPageClientProps) {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const query = searchParams.get('q') || undefined
 
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
-  const [selectedAgencies, setSelectedAgencies] = useState<string[]>([])
+  // Initialize state from URL params
+  const [startDate, setStartDate] = useState<Date | undefined>(() => {
+    const dataInicio = searchParams.get('dataInicio')
+    return dataInicio ? new Date(dataInicio) : undefined
+  })
+
+  const [endDate, setEndDate] = useState<Date | undefined>(() => {
+    const dataFim = searchParams.get('dataFim')
+    return dataFim ? new Date(dataFim) : undefined
+  })
+
+  const [selectedAgencies, setSelectedAgencies] = useState<string[]>(() => {
+    const agencias = searchParams.get('agencias')
+    return agencias ? agencias.split(',') : []
+  })
+
+  // Function to update URL params
+  const updateUrlParams = useCallback(
+    (updates: {
+      dataInicio?: string | null
+      dataFim?: string | null
+      agencias?: string | null
+    }) => {
+      const params = new URLSearchParams(searchParams.toString())
+
+      // Keep the search query
+      if (query) {
+        params.set('q', query)
+      }
+
+      // Update or remove each param
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value)
+        } else {
+          params.delete(key)
+        }
+      })
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    },
+    [searchParams, query, pathname, router]
+  )
+
+  // Wrapped setters that update URL
+  const handleStartDateChange = useCallback(
+    (date: Date | undefined) => {
+      setStartDate(date)
+      updateUrlParams({
+        dataInicio: date ? date.toISOString().split('T')[0] : null,
+      })
+    },
+    [updateUrlParams]
+  )
+
+  const handleEndDateChange = useCallback(
+    (date: Date | undefined) => {
+      setEndDate(date)
+      updateUrlParams({
+        dataFim: date ? date.toISOString().split('T')[0] : null,
+      })
+    },
+    [updateUrlParams]
+  )
+
+  const handleAgenciesChange = useCallback(
+    (agenciesList: string[]) => {
+      setSelectedAgencies(agenciesList)
+      updateUrlParams({
+        agencias: agenciesList.length > 0 ? agenciesList.join(',') : null,
+      })
+    },
+    [updateUrlParams]
+  )
 
   const articlesQ = useInfiniteQuery({
     queryKey: ['articles', query, startDate, endDate, selectedAgencies],
@@ -74,10 +147,6 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
       }
     },
   })
-
-  useEffect(() => {
-    articlesQ.refetch()
-  }, [query, startDate, endDate, selectedAgencies, articlesQ])
 
   const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
 
@@ -130,13 +199,13 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                 <DateFilter
                   label="Início da publicação"
                   value={startDate}
-                  onChange={setStartDate}
+                  onChange={handleStartDateChange}
                 />
 
                 <DateFilter
                   label="Fim da publicação"
                   value={endDate}
-                  onChange={setEndDate}
+                  onChange={handleEndDateChange}
                 />
 
                 {/* Agency Filter */}
@@ -147,7 +216,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                   <AgencyMultiSelect
                     agencies={agencies}
                     selectedAgencies={selectedAgencies}
-                    onSelectedAgenciesChange={setSelectedAgencies}
+                    onSelectedAgenciesChange={handleAgenciesChange}
                     showBadges={false}
                   />
                 </div>
@@ -161,7 +230,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                       </span>
                       <button
                         type="button"
-                        onClick={() => setSelectedAgencies([])}
+                        onClick={() => handleAgenciesChange([])}
                         className="text-xs text-muted-foreground hover:text-primary underline"
                       >
                         Limpar todas
@@ -178,7 +247,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                           </span>
                           <button
                             type="button"
-                            onClick={() => setSelectedAgencies(selectedAgencies.filter((k) => k !== key))}
+                            onClick={() => handleAgenciesChange(selectedAgencies.filter((k) => k !== key))}
                             className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                             aria-label={`Remover ${getAgencyName(key)}`}
                           >
