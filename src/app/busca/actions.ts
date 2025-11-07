@@ -8,6 +8,7 @@ export type QueryArticlesArgs = {
   page: number
   startDate?: number
   endDate?: number
+  agencies?: string[]
 }
 
 export type QueryArticlesResult = {
@@ -20,7 +21,7 @@ const PAGE_SIZE = 40
 export async function queryArticles(
   args: QueryArticlesArgs,
 ): Promise<QueryArticlesResult> {
-  const { page, query, startDate, endDate } = args
+  const { page, query, startDate, endDate, agencies } = args
 
   let filter_by: string[] = []
 
@@ -30,6 +31,10 @@ export async function queryArticles(
 
   if (endDate) {
     filter_by.push(`published_at:<${Math.floor((endDate / 1000) + (60 * 60 * 3))}`)
+  }
+
+  if (agencies && agencies.length > 0) {
+    filter_by.push(`agency:[${agencies.join(',')}]`)
   }
 
   // biome-ignore format: true
