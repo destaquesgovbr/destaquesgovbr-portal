@@ -1,0 +1,1421 @@
+themes:
+  - label: Economia e Finanças
+    code: "01"
+    children:
+      - label: Política Econômica
+        code: "01.01"
+        children:
+          - label: Política Fiscal
+            code: "01.01.01"
+          - label: Autonomia Econômica
+            code: "01.01.02"
+          - label: Análise Econômica
+            code: "01.01.03"
+          - label: Boletim Econômico
+            code: "01.01.04"
+      - label: Fiscalização e Tributação
+        code: "01.02"
+        children:
+          - label: Fiscalização Econômica
+            code: "01.02.01"
+          - label: Tributação e Impostos
+            code: "01.02.02"
+          - label: Combate à Evasão Fiscal
+            code: "01.02.03"
+          - label: Regulamentação Financeira
+            code: "01.02.04"
+      - label: Investimentos e Comércio Exterior
+        code: "01.03"
+        children:
+          - label: Atração de Investimentos
+            code: "01.03.01"
+          - label: Investimentos no Exterior
+            code: "01.03.02"
+          - label: Investimentos Verdes
+            code: "01.03.03"
+          - label: Balança Comercial
+            code: "01.03.04"
+          - label: Política de Comércio Internacional
+            code: "01.03.05"
+      - label: Financiamento e Apoio Financeiro
+        code: "01.04"
+        children:
+          - label: Apoio Financeiro a Pequenas Empresas
+            code: "01.04.01"
+          - label: Apoio Financeiro para Inovação
+            code: "01.04.02"
+          - label: Financiamento de Infraestrutura
+            code: "01.04.03"
+          - label: Microcrédito e Inclusão Financeira
+            code: "01.04.04"
+      - label: Novas Economias e Inovações Financeiras
+        code: "01.05"
+        children:
+          - label: Economia Circular
+            code: "01.05.01"
+          - label: Economia Digital
+            code: "01.05.02"
+          - label: Economia Solidária
+            code: "01.05.03"
+          - label: Criptomoedas e Finanças Descentralizadas
+            code: "01.05.04"
+  - label: Educação
+    code: "02"
+    children:
+      - label: Ensino Básico
+        code: "02.01"
+        children:
+          - label: Educação Infantil
+            code: "02.01.01"
+          - label: Ensino Fundamental
+            code: "02.01.02"
+          - label: Alimentação Escolar
+            code: "02.01.03"
+          - label: Internet nas Escolas
+            code: "02.01.04"
+      - label: Ensino Superior
+        code: "02.02"
+        children:
+          - label: Pesquisa Acadêmica e Inovação
+            code: "02.02.01"
+      - label: Educação Profissional e Capacitação
+        code: "02.03"
+        children:
+          - label: Aprendizagem Profissional
+            code: "02.03.01"
+          - label: Capacitação Profissional
+            code: "02.03.02"
+          - label: Formação Profissional
+            code: "02.03.03"
+          - label: Políticas de Incentivo à Educação Profissional
+            code: "02.03.04"
+      - label: Programas e Políticas Educacionais
+        code: "02.04"
+        children:
+          - label: Políticas Educacionais
+            code: "02.04.01"
+          - label: Campanhas Educativas
+            code: "02.04.02"
+          - label: Bolsas e Incentivos
+            code: "02.04.03"
+          - label: Educação Inclusiva
+            code: "02.04.04"
+          - label: Apoio e Desenvolvimento Acadêmico
+            code: "02.04.05"
+  - label: Saúde
+    code: "03"
+    children:
+      - label: Sistema Único de Saúde (SUS)
+        code: "03.01"
+        children:
+          - label: Atenção Primária
+            code: "03.01.01"
+          - label: Assistência em Saúde
+            code: "03.01.02"
+          - label: Atenção Integral
+            code: "03.01.03"
+          - label: Linhas de Cuidado
+            code: "03.01.04"
+          - label: Manejo Clínico
+            code: "03.01.05"
+      - label: Campanhas de Saúde Pública
+        code: "03.02"
+        children:
+          - label: Combate à Dengue
+            code: "03.02.01"
+          - label: Saúde da Criança
+            code: "03.02.02"
+          - label: Saúde Mental
+            code: "03.02.03"
+          - label: Alimentação Saudável
+            code: "03.02.04"
+      - label: Vigilância Sanitária
+        code: "03.03"
+        children:
+          - label: Vigilância em Saúde
+            code: "03.03.01"
+          - label: Inovação em Saúde
+            code: "03.03.02"
+          - label: Controle de Doenças
+            code: "03.03.03"
+          - label: Inspeção de Produtos
+            code: "03.03.04"
+          - label: Fiscalização de Serviços de Saúde
+            code: "03.03.05"
+      - label: Saúde Pública
+        code: "03.04"
+        children:
+          - label: Políticas de Saúde Pública
+            code: "03.04.01"
+          - label: Epidemiologia
+            code: "03.04.02"
+          - label: Educação em Saúde
+            code: "03.04.03"
+          - label: Controle de Fatores Ambientais
+            code: "03.04.04"
+      - label: Programas e Projetos em Saúde
+        code: "03.05"
+        children:
+          - label: Saúde Bucal
+            code: "03.05.01"
+          - label: Saúde do Idoso
+            code: "03.05.02"
+          - label: Saúde do Trabalhador
+            code: "03.05.03"
+          - label: Pesquisa e Desenvolvimento em Saúde
+            code: "03.05.04"
+  - label: Segurança Pública
+    code: "04"
+    children:
+      - label: Policiamento
+        code: "04.01"
+        children:
+          - label: Policiamento Ostensivo
+            code: "04.01.01"
+          - label: Policiamento Comunitário
+            code: "04.01.02"
+          - label: Policiamento Preventivo
+            code: "04.01.03"
+          - label: Patrulhamento Urbano
+            code: "04.01.04"
+          - label: Policiamento em Áreas Rurais
+            code: "04.01.05"
+      - label: Combate ao Crime Organizado
+        code: "04.02"
+        children:
+          - label: Investigação de Organizações Criminosas
+            code: "04.02.01"
+          - label: Operações Contra o Tráfico de Drogas
+            code: "04.02.02"
+          - label: Combate ao Tráfico de Armas
+            code: "04.02.03"
+          - label: Combate ao Crime Cibernético
+            code: "04.02.04"
+          - label: Repressão a Facções Criminosas
+            code: "04.02.05"
+      - label: Prevenção e Enfrentamento à Violência
+        code: "04.03"
+        children:
+          - label: Prevenção à Violência
+            code: "04.03.01"
+          - label: Campanhas de Conscientização
+            code: "04.03.02"
+          - label: Enfrentamento à Violência Doméstica
+            code: "04.03.03"
+          - label: Enfrentamento ao Bullying e Cyberbullying
+            code: "04.03.04"
+          - label: Resolução de Conflitos
+            code: "04.03.05"
+      - label: Justiça e Segurança
+        code: "04.04"
+        children:
+          - label: Cooperação entre Polícia e Sistema Judiciário
+            code: "04.04.01"
+          - label: Execução Penal e Reintegração Social
+            code: "04.04.02"
+          - label: Garantia de Direitos Humanos no Sistema Penal
+            code: "04.04.03"
+          - label: Atuação da Defensoria Pública
+            code: "04.04.04"
+          - label: Investigação de Crimes de Colarinho Branco
+            code: "04.04.05"
+  - label: Meio Ambiente e Sustentabilidade
+    code: "05"
+    children:
+      - label: Conservação Ambiental
+        code: "05.01"
+        children:
+          - label: Proteção da Vida Selvagem
+            code: "05.01.01"
+          - label: Conservação Marinha
+            code: "05.01.02"
+          - label: Qualidade da Água
+            code: "05.01.03"
+          - label: Qualidade do Ar
+            code: "05.01.04"
+          - label: Recursos Hídricos
+            code: "05.01.05"
+          - label: Agricultura Sustentável
+            code: "05.01.06"
+      - label: Mudanças Climáticas
+        code: "05.02"
+        children:
+          - label: Catástrofes Climáticas
+            code: "05.02.01"
+          - label: Justiça Climática
+            code: "05.02.02"
+          - label: Educação Ambiental
+            code: "05.02.03"
+          - label: Desenvolvimento Sustentável
+            code: "05.02.04"
+      - label: Energia Renovável e Limpa
+        code: "05.03"
+        children:
+          - label: Energia Renovável
+            code: "05.03.01"
+          - label: Energia Limpa
+            code: "05.03.02"
+      - label: Gestão de Resíduos e Licenciamento
+        code: "05.04"
+        children:
+          - label: Gestão de Resíduos
+            code: "05.04.01"
+          - label: Licenciamento Ambiental
+            code: "05.04.02"
+  - label: Ciência, Tecnologia e Inovação
+    code: "06"
+    children:
+      - label: Pesquisa Científica
+        code: "06.01"
+        children:
+          - label: Ciência Aberta
+            code: "06.01.01"
+          - label: Ciência e Democracia
+            code: "06.01.02"
+          - label: Inteligência em Dados
+            code: "06.01.03"
+      - label: Desenvolvimento Tecnológico
+        code: "06.02"
+        children:
+          - label: Inteligência Artificial
+            code: "06.02.01"
+          - label: Propriedade Intelectual
+            code: "06.02.02"
+          - label: Novas Tecnologias
+            code: "06.02.03"
+          - label: Transferência de Tecnologia
+            code: "06.02.04"
+      - label: Inovação
+        code: "06.03"
+        children:
+          - label: Inovação e Startups
+            code: "06.03.01"
+          - label: Inovação Aberta
+            code: "06.03.02"
+          - label: Inovação em Rede
+            code: "06.03.03"
+          - label: Política de Inovação
+            code: "06.03.04"
+      - label: Sustentabilidade e Descarbonização
+        code: "06.04"
+        children:
+          - label: Inovação e Sustentabilidade
+            code: "06.04.01"
+          - label: Inovação e Descarbonização
+            code: "06.04.02"
+          - label: Tecnologias Verdes
+            code: "06.04.03"
+      - label: Política e Regulação
+        code: "06.05"
+        children:
+          - label: Políticas de Ciência e Tecnologia
+            code: "06.05.01"
+          - label: Regulação Tecnológica
+            code: "06.05.02"
+          - label: Ética em Tecnologia e Inovação
+            code: "06.05.03"
+  - label: Infraestrutura e Transportes
+    code: "07"
+    children:
+      - label: Obras Públicas
+        code: "07.01"
+        children:
+          - label: Construção de Estradas
+            code: "07.01.01"
+          - label: Construção de Pontes e Viadutos
+            code: "07.01.02"
+          - label: Infraestrutura de Qualidade
+            code: "07.01.03"
+          - label: Saneamento e Drenagem
+            code: "07.01.04"
+          - label: Urbanização de Áreas
+            code: "07.01.05"
+      - label: Mobilidade Urbana
+        code: "07.02"
+        children:
+          - label: Transporte Público
+            code: "07.02.01"
+          - label: Inovação e Mobilidade Verde
+            code: "07.02.02"
+          - label: Ciclovias e Pedestres
+            code: "07.02.03"
+          - label: Infraestrutura para Bicicletas
+            code: "07.02.04"
+          - label: Acessibilidade Urbana
+            code: "07.02.05"
+      - label: Logística e Transporte
+        code: "07.03"
+        children:
+          - label: Transporte Rodoviário
+            code: "07.03.01"
+          - label: Transporte Ferroviário
+            code: "07.03.02"
+          - label: Transporte Aquaviário
+            code: "07.03.03"
+          - label: Transporte de Cargas
+            code: "07.03.04"
+          - label: Logística Integrada
+            code: "07.03.05"
+      - label: Aviação Civil
+        code: "07.04"
+        children:
+          - label: Infraestrutura Aeroportuária
+            code: "07.04.01"
+          - label: Conectividade e Infraestrutura
+            code: "07.04.02"
+          - label: Segurança e Regulamentação
+            code: "07.04.03"
+          - label: Serviços Aeroportuários
+            code: "07.04.04"
+          - label: Expansão da Malha Aérea
+            code: "07.04.05"
+      - label: Malha Ferroviária
+        code: "07.05"
+        children:
+          - label: Expansão da Malha Ferroviária
+            code: "07.05.01"
+          - label: Modernização de Infraestrutura Ferroviária
+            code: "07.05.02"
+          - label: Segurança no Transporte Ferroviário
+            code: "07.05.03"
+          - label: Concessões Ferroviárias
+            code: "07.05.04"
+          - label: Transporte de Passageiros e Cargas
+            code: "07.05.05"
+  - label: Cultura, Artes e Patrimônio
+    code: "08"
+    children:
+      - label: Eventos Culturais
+        code: "08.01"
+        children:
+          - label: Festivais e Feiras
+            code: "08.01.01"
+          - label: Mostras e Exposições
+            code: "08.01.02"
+          - label: Apresentações Artísticas
+            code: "08.01.03"
+          - label: Eventos Tradicionais
+            code: "08.01.04"
+          - label: Encontros Comunitários
+            code: "08.01.05"
+      - label: Preservação do Patrimônio
+        code: "08.02"
+        children:
+          - label: Patrimônio Histórico
+            code: "08.02.01"
+          - label: Patrimônio Imaterial
+            code: "08.02.02"
+          - label: Patrimônio Natural
+            code: "08.02.03"
+          - label: Educação Patrimonial
+            code: "08.02.04"
+          - label: Restauração e Conservação
+            code: "08.02.05"
+      - label: Incentivo às Artes
+        code: "08.03"
+        children:
+          - label: Apoio a Artistas
+            code: "08.03.01"
+          - label: Financiamento e Editais
+            code: "08.03.02"
+          - label: Formação e Capacitação Artística
+            code: "08.03.03"
+          - label: Produção Audiovisual
+            code: "08.03.04"
+          - label: Artes Plásticas
+            code: "08.03.05"
+      - label: Cultura e Identidade Nacional
+        code: "08.04"
+        children:
+          - label: Artesanato Brasileiro
+            code: "08.04.01"
+          - label: Língua e Cultura
+            code: "08.04.02"
+          - label: Tradições e Costumes
+            code: "08.04.03"
+          - label: Cultura Popular
+            code: "08.04.04"
+          - label: Diversidade Cultural
+            code: "08.04.05"
+          - label: Mestres e Mestras da Cultura
+            code: "08.04.06"
+      - label: Cultura e Inovação
+        code: "08.05"
+        children:
+          - label: Cultura Digital
+            code: "08.05.01"
+          - label: Economia Criativa
+            code: "08.05.02"
+          - label: Integração Cultural
+            code: "08.05.03"
+          - label: Intercâmbio Cultural
+            code: "08.05.04"
+          - label: Pontos de Cultura
+            code: "08.05.05"
+          - label: Agentes Culturais Comunitários
+            code: "08.05.06"
+  - label: Esportes e Lazer
+    code: "09"
+    children:
+      - label: Competições Esportivas
+        code: "09.01"
+        children:
+          - label: Jogos Olímpicos
+            code: "09.01.01"
+          - label: Jogos Paralímpicos
+            code: "09.01.02"
+          - label: Jogos de Inverno
+            code: "09.01.03"
+          - label: Competições Nacionais
+            code: "09.01.04"
+          - label: Competições Internacionais
+            code: "09.01.05"
+      - label: Políticas de Lazer
+        code: "09.02"
+        children:
+          - label: Lazer Comunitário
+            code: "09.02.01"
+          - label: Infraestrutura de Lazer
+            code: "09.02.02"
+          - label: Festivais e Eventos Recreativos
+            code: "09.02.03"
+          - label: Parques e Espaços Públicos
+            code: "09.02.04"
+          - label: Campanhas de Lazer Saudável
+            code: "09.02.05"
+      - label: Incentivo ao Esporte
+        code: "09.03"
+        children:
+          - label: Financiamento Esportivo
+            code: "09.03.01"
+          - label: Desenvolvimento Esportivo
+            code: "09.03.02"
+          - label: Apoio a Atletas
+            code: "09.03.03"
+          - label: Educação e Formação no Esporte
+            code: "09.03.04"
+          - label: Parcerias e Patrocínios
+            code: "09.03.05"
+      - label: Esporte e Inclusão
+        code: "09.04"
+        children:
+          - label: Inclusão Social no Esporte
+            code: "09.04.01"
+          - label: Esporte para Pessoas com Deficiência
+            code: "09.04.02"
+          - label: Esporte para Idosos
+            code: "09.04.03"
+          - label: Diversidade no Esporte
+            code: "09.04.04"
+          - label: Acessibilidade em Infraestruturas Esportivas
+            code: "09.04.05"
+      - label: Integridade Esportiva
+        code: "09.05"
+        children:
+          - label: Combate à Manipulação de Resultados
+            code: "09.05.01"
+          - label: Antidoping e Controle de Substâncias
+            code: "09.05.02"
+          - label: Ética e Conduta Esportiva
+            code: "09.05.03"
+          - label: Transparência em Organizações Esportivas
+            code: "09.05.04"
+          - label: Proteção de Jovens Atletas
+            code: "09.05.05"
+  - label: Agricultura, Pecuária e Abastecimento
+    code: "10"
+    children:
+      - label: Agronegócio
+        code: "10.01"
+        children:
+          - label: Produção de Alimentos
+            code: "10.01.01"
+          - label: Desenvolvimento Rural
+            code: "10.01.02"
+          - label: Agricultura e Pecuária
+            code: "10.01.03"
+      - label: Segurança Alimentar
+        code: "10.02"
+        children:
+          - label: Abastecimento e Distribuição de Alimentos
+            code: "10.02.01"
+          - label: Combate à Fome
+            code: "10.02.02"
+          - label: Nutrição e Sustentabilidade
+            code: "10.02.03"
+      - label: Política Agrícola
+        code: "10.03"
+        children:
+          - label: Incentivos e Subsídios
+            code: "10.03.01"
+          - label: Crédito Agrícola
+            code: "10.03.02"
+          - label: Seguros Rurais
+            code: "10.03.03"
+      - label: Agricultura Familiar
+        code: "10.04"
+        children:
+          - label: Assistência Técnica e Extensão Rural
+            code: "10.04.01"
+          - label: Cooperativismo e Associativismo
+            code: "10.04.02"
+          - label: Apoio a Pequenos Produtores
+            code: "10.04.03"
+      - label: Sanidade
+        code: "10.05"
+        children:
+          - label: Sanidade Animal
+            code: "10.05.01"
+          - label: Sanidade Vegetal
+            code: "10.05.02"
+          - label: Controle de Pragas e Doenças
+            code: "10.05.03"
+  - label: Indústria e Comércio
+    code: "11"
+    children:
+      - label: Desenvolvimento Industrial
+        code: "11.01"
+        children:
+          - label: Inovação Tecnológica
+            code: "11.01.01"
+          - label: Políticas de Incentivo
+            code: "11.01.02"
+          - label: Capacitação Profissional
+            code: "11.01.03"
+          - label: Sustentabilidade Industrial
+            code: "11.01.04"
+          - label: Indústria 4.0
+            code: "11.01.05"
+      - label: Comércio Interno e Exterior
+        code: "11.02"
+        children:
+          - label: Exportação e Importação
+            code: "11.02.01"
+          - label: Acordos Comerciais
+            code: "11.02.02"
+          - label: Competitividade
+            code: "11.02.03"
+          - label: Tarifas e Barreiras Comerciais
+            code: "11.02.04"
+          - label: Feiras e Eventos Comerciais
+            code: "11.02.05"
+      - label: Pequenas e Médias Empresas
+        code: "11.03"
+        children:
+          - label: Crédito e Financiamento
+            code: "11.03.01"
+          - label: Formalização e Regularização
+            code: "11.03.02"
+          - label: Empreendedorismo e Startups
+            code: "11.03.03"
+          - label: Capacitação para Pequenos Negócios
+            code: "11.03.04"
+          - label: Redes de Apoio e Parcerias
+            code: "11.03.05"
+      - label: Cadeia Produtiva
+        code: "11.04"
+        children:
+          - label: Logística e Distribuição
+            code: "11.04.01"
+          - label: Fornecedores e Subcontratados
+            code: "11.04.02"
+          - label: Gestão de Qualidade
+            code: "11.04.03"
+          - label: Sustentabilidade na Cadeia Produtiva
+            code: "11.04.04"
+          - label: Processos de Produção
+            code: "11.04.05"
+      - label: Integridade Empresarial
+        code: "11.05"
+        children:
+          - label: Compliance e Ética
+            code: "11.05.01"
+          - label: Transparência Corporativa
+            code: "11.05.02"
+          - label: Anticorrupção
+            code: "11.05.03"
+          - label: Gestão de Riscos
+            code: "11.05.04"
+          - label: Responsabilidade Social Empresarial
+            code: "11.05.05"
+  - label: Relações Internacionais e Diplomacia
+    code: "12"
+    children:
+      - label: Acordos Internacionais
+        code: "12.01"
+        children:
+          - label: Acordos Comerciais
+            code: "12.01.01"
+          - label: Acordos de Cooperação Técnica
+            code: "12.01.02"
+          - label: Acordos Ambientais
+            code: "12.01.03"
+          - label: Acordos Culturais
+            code: "12.01.04"
+          - label: Acordos de Defesa e Segurança
+            code: "12.01.05"
+      - label: Cooperação Internacional
+        code: "12.02"
+        children:
+          - label: Assistência Humanitária
+            code: "12.02.01"
+          - label: Cooperação Técnica para o Desenvolvimento
+            code: "12.02.02"
+          - label: Parcerias de Pesquisa e Educação
+            code: "12.02.03"
+          - label: Capacitação e Treinamento
+            code: "12.02.04"
+          - label: Cooperação em Saúde Pública
+            code: "12.02.05"
+      - label: Política Externa
+        code: "12.03"
+        children:
+          - label: Estratégia Geopolítica
+            code: "12.03.01"
+          - label: Relações Bilaterais
+            code: "12.03.02"
+          - label: Relações Multilaterais
+            code: "12.03.03"
+          - label: Representações Diplomáticas
+            code: "12.03.04"
+          - label: Política Externa Econômica
+            code: "12.03.05"
+      - label: Integração Regional
+        code: "12.04"
+        children:
+          - label: Mercosul
+            code: "12.04.01"
+          - label: Aliança para o Pacífico
+            code: "12.04.02"
+          - label: Integração Energética
+            code: "12.04.03"
+          - label: Infraestrutura e Logística Regional
+            code: "12.04.04"
+          - label: Integração Cultural e Educacional
+            code: "12.04.05"
+      - label: Eventos e Conferências Internacionais
+        code: "12.05"
+        children:
+          - label: Reuniões de Alto Nível
+            code: "12.05.01"
+          - label: Eventos de Promoção Comercial
+            code: "12.05.02"
+  - label: Justiça e Direitos Humanos
+    code: "13"
+    children:
+      - label: Sistema Judiciário
+        code: "13.01"
+        children:
+          - label: Advocacia Pública
+            code: "13.01.01"
+          - label: Direitos do Consumidor
+            code: "13.01.02"
+          - label: Justiça e Lei
+            code: "13.01.03"
+          - label: Prevenção e Combate à Corrupção
+            code: "13.01.04"
+      - label: Direitos Humanos
+        code: "13.02"
+        children:
+          - label: Direitos das Crianças
+            code: "13.02.01"
+          - label: Justiça Social
+            code: "13.02.02"
+          - label: Liberdade Religiosa
+            code: "13.02.03"
+          - label: Políticas Antidiscriminatórias
+            code: "13.02.04"
+          - label: Justiça Climática
+            code: "13.02.05"
+      - label: Direitos Fundamentais
+        code: "13.03"
+        children:
+          - label: Direitos das Crianças
+            code: "13.03.01"
+          - label: Liberdade Religiosa
+            code: "13.03.02"
+  - label: Trabalho e Emprego
+    code: "14"
+    children:
+      - label: Mercado de Trabalho
+        code: "14.01"
+        children:
+          - label: Emprego e Renda
+            code: "14.01.01"
+          - label: Inserção no Mercado
+            code: "14.01.02"
+          - label: Intermediação de Mão de Obra
+            code: "14.01.03"
+          - label: Carreira Profissional
+            code: "14.01.04"
+          - label: Conferência Internacional do Trabalho
+            code: "14.01.05"
+      - label: Legislação Trabalhista
+        code: "14.02"
+        children:
+          - label: Direitos Trabalhistas
+            code: "14.02.01"
+          - label: Contratos de Trabalho
+            code: "14.02.02"
+          - label: Carteira de Trabalho Digital
+            code: "14.02.03"
+          - label: Acordos e Convenções Coletivas
+            code: "14.02.04"
+          - label: Rescisão Contratual
+            code: "14.02.05"
+      - label: Programas de Emprego
+        code: "14.03"
+        children:
+          - label: Qualificação Profissional
+            code: "14.03.01"
+          - label: Incentivos ao Emprego
+            code: "14.03.02"
+          - label: Políticas Ativas de Emprego
+            code: "14.03.03"
+          - label: Inclusão no Trabalho
+            code: "14.03.04"
+          - label: Apoio ao Primeiro Emprego
+            code: "14.03.05"
+      - label: Auditoria e Inspeção do Trabalho
+        code: "14.04"
+        children:
+          - label: Auditoria Fiscal do Trabalho
+            code: "14.04.01"
+          - label: Inspeção do Trabalho
+            code: "14.04.02"
+          - label: Combate ao Trabalho Infantil
+            code: "14.04.03"
+          - label: Combate ao Trabalho Escravo
+            code: "14.04.04"
+          - label: Monitoramento de Condições de Trabalho
+            code: "14.04.05"
+      - label: Segurança e Saúde no Trabalho
+        code: "14.05"
+        children:
+          - label: Normas Regulamentadoras (NRs)
+            code: "14.05.01"
+          - label: Prevenção de Acidentes de Trabalho
+            code: "14.05.02"
+          - label: Condições Ambientais de Trabalho
+            code: "14.05.03"
+          - label: Ergonomia no Trabalho
+            code: "14.05.04"
+          - label: Saúde Ocupacional
+            code: "14.05.05"
+  - label: Desenvolvimento Social
+    code: "15"
+    children:
+      - label: Programas Sociais
+        code: "15.01"
+        children:
+          - label: Bolsa Família
+            code: "15.01.01"
+          - label: Iniciativa Social
+            code: "15.01.02"
+          - label: Juventude no Campo
+            code: "15.01.03"
+          - label: Programas para a Juventude
+            code: "15.01.04"
+          - label: Juventude Rural
+            code: "15.01.05"
+          - label: Atenção ao Idoso
+            code: "15.01.06"
+      - label: Combate à Pobreza
+        code: "15.02"
+        children:
+          - label: Combate à Desigualdade
+            code: "15.02.01"
+          - label: Combate à Fome
+            code: "15.02.02"
+          - label: Apoio Emergencial
+            code: "15.02.03"
+          - label: Igualdade Social
+            code: "15.02.04"
+      - label: Previdência Social
+        code: "15.03"
+        children:
+          - label: Benefícios Previdenciários
+            code: "15.03.01"
+          - label: Assistência à Aposentadoria
+            code: "15.03.02"
+  - label: Turismo
+    code: "16"
+    children:
+      - label: Promoção Turística
+        code: "16.01"
+        children:
+          - label: Campanhas de Divulgação
+            code: "16.01.01"
+          - label: Parcerias e Cooperação Internacional
+            code: "16.01.02"
+          - label: Promoção de Destinos Nacionais
+            code: "16.01.03"
+          - label: Promoção de Destinos Regionais
+            code: "16.01.04"
+      - label: Infraestrutura Turística
+        code: "16.02"
+        children:
+          - label: Investimentos em Hospedagem
+            code: "16.02.01"
+          - label: Transporte e Acessibilidade
+            code: "16.02.02"
+          - label: Centros de Informação Turística
+            code: "16.02.03"
+          - label: Infraestrutura em Parques Naturais e Áreas de Lazer
+            code: "16.02.04"
+      - label: Eventos Turísticos
+        code: "16.03"
+        children:
+          - label: Feiras e Exposições
+            code: "16.03.01"
+          - label: Festivais e Celebrações Locais
+            code: "16.03.02"
+          - label: Eventos Esportivos de Turismo
+            code: "16.03.03"
+          - label: Congressos e Conferências
+            code: "16.03.04"
+      - label: Sustentabilidade no Turismo
+        code: "16.04"
+        children:
+          - label: Turismo Ecológico e de Natureza
+            code: "16.04.01"
+          - label: Práticas Sustentáveis em Destinos Turísticos
+            code: "16.04.02"
+          - label: Proteção de Patrimônio Cultural e Natural
+            code: "16.04.03"
+      - label: Capacitação e Qualificação
+        code: "16.05"
+        children:
+          - label: Formação Profissional em Turismo
+            code: "16.05.01"
+          - label: Qualificação de Guias Turísticos
+            code: "16.05.02"
+          - label: Cursos de Atendimento ao Cliente
+            code: "16.05.03"
+          - label: Treinamentos para Hotéis e Restaurantes
+            code: "16.05.04"
+          - label: Idiomas para Profissionais do Turismo
+            code: "16.05.05"
+  - label: Energia e Recursos Minerais
+    code: "17"
+    children:
+      - label: Petróleo e Gás
+        code: "17.01"
+        children:
+          - label: Exploração de Petróleo
+            code: "17.01.01"
+          - label: Produção e Refino de Petróleo
+            code: "17.01.02"
+          - label: Exploração de Gás Natural
+            code: "17.01.03"
+          - label: Logística e Distribuição
+            code: "17.01.04"
+          - label: Investimentos no Setor de Petróleo e Gás
+            code: "17.01.05"
+      - label: Mineração
+        code: "17.02"
+        children:
+          - label: Extração de Minerais
+            code: "17.02.01"
+          - label: Processamento Mineral
+            code: "17.02.02"
+          - label: Pesquisa e Desenvolvimento Mineral
+            code: "17.02.03"
+          - label: Levantamento Geológico
+            code: "17.02.04"
+          - label: Sustentabilidade e Impacto Ambiental
+            code: "17.02.05"
+      - label: Políticas Energéticas
+        code: "17.03"
+        children:
+          - label: Regulação e Legislação Energética
+            code: "17.03.01"
+          - label: Subsídios e Incentivos
+            code: "17.03.02"
+          - label: Planejamento Energético Nacional
+            code: "17.03.03"
+          - label: Parcerias e Acordos Internacionais
+            code: "17.03.04"
+          - label: Luz para Todos
+            code: "17.03.05"
+      - label: Energias Renováveis
+        code: "17.04"
+        children:
+          - label: Energia Solar
+            code: "17.04.01"
+          - label: Energia Eólica
+            code: "17.04.02"
+          - label: Energia Hidrelétrica
+            code: "17.04.03"
+          - label: Biomassa e Biocombustíveis
+            code: "17.04.04"
+          - label: Pesquisa e Inovação em Energias Renováveis
+            code: "17.04.05"
+      - label: Infraestrutura e Investimentos
+        code: "17.05"
+        children:
+          - label: Investimentos em Transmissão e Distribuição
+            code: "17.05.01"
+          - label: Modernização da Infraestrutura Energética
+            code: "17.05.02"
+          - label: Redes de Energia Inteligente
+            code: "17.05.03"
+          - label: Manutenção e Expansão da Infraestrutura
+            code: "17.05.04"
+          - label: Parcerias Público-Privadas no Setor Energético
+            code: "17.05.05"
+  - label: Comunicações e Mídia
+    code: "18"
+    children:
+      - label: Telecomunicações
+        code: "18.01"
+        children:
+          - label: Serviços Digitais
+            code: "18.01.01"
+          - label: Ligações Indesejadas
+            code: "18.01.02"
+          - label: Inclusão Digital
+            code: "18.01.03"
+          - label: Segurança da Informação
+            code: "18.01.04"
+          - label: Proteção de Dados
+            code: "18.01.05"
+      - label: Regulamentação da Mídia
+        code: "18.02"
+        children:
+          - label: Liberdade de Imprensa
+            code: "18.02.01"
+          - label: Linha Editorial
+            code: "18.02.02"
+          - label: Integridade da Informação
+            code: "18.02.03"
+          - label: Combate à Desinformação
+            code: "18.02.04"
+          - label: Linguagem Simples
+            code: "18.02.05"
+      - label: Comunicação Digital
+        code: "18.03"
+        children:
+          - label: Interação Digital
+            code: "18.03.01"
+          - label: Cidadania Digital
+            code: "18.03.02"
+          - label: Comunicação Antirracista
+            code: "18.03.03"
+          - label: Comunicação Pública
+            code: "18.03.04"
+          - label: Comunicação Digital
+            code: "18.03.05"
+  - label: Defesa e Forças Armadas
+    code: "19"
+    children:
+      - label: Segurança Nacional
+        code: "19.01"
+        children:
+          - label: Inteligência e Contrainteligência
+            code: "19.01.01"
+          - label: Proteção de Infraestruturas Críticas
+            code: "19.01.02"
+          - label: Combate ao Terrorismo
+            code: "19.01.03"
+          - label: Segurança de Fronteiras
+            code: "19.01.04"
+          - label: Controle do Espaço Aéreo e Marítimo
+            code: "19.01.05"
+      - label: Missões Militares
+        code: "19.02"
+        children:
+          - label: Operações de Paz
+            code: "19.02.01"
+          - label: Operações no Exterior
+            code: "19.02.02"
+          - label: Cooperação Internacional em Defesa
+            code: "19.02.03"
+          - label: Treinamentos e Exercícios Militares
+            code: "19.02.04"
+          - label: Operações Antidrogas
+            code: "19.02.05"
+      - label: Defesa Civil
+        code: "19.03"
+        children:
+          - label: Preparação para Desastres
+            code: "19.03.01"
+          - label: Planejamento de Evacuação
+            code: "19.03.02"
+          - label: Resposta a Desastres
+            code: "19.03.03"
+          - label: Monitoramento de Riscos Naturais
+            code: "19.03.04"
+          - label: Gestão de Abrigos
+            code: "19.03.05"
+      - label: Situações de Emergência
+        code: "19.04"
+        children:
+          - label: Resgate e Salvamento
+            code: "19.04.01"
+          - label: Logística de Emergência
+            code: "19.04.02"
+          - label: Ações Humanitárias
+            code: "19.04.03"
+          - label: Reconstrução Pós-Desastre
+            code: "19.04.04"
+          - label: Assistência a Deslocados Internos
+            code: "19.04.05"
+      - label: Políticas e Estratégias de Defesa
+        code: "19.05"
+        children:
+          - label: Planejamento de Defesa Nacional
+            code: "19.05.01"
+          - label: Modernização das Forças Armadas
+            code: "19.05.02"
+          - label: Estratégia de Defesa Cibernética
+            code: "19.05.03"
+          - label: Desenvolvimento Militar
+            code: "19.05.04"
+          - label: Relações com a Indústria de Defesa
+            code: "19.05.05"
+  - label: Políticas Públicas e Governança
+    code: "20"
+    children:
+      - label: Transparência e Prestação de Contas
+        code: "20.01"
+        children:
+          - label: Controle Interno
+            code: "20.01.01"
+          - label: Controle Social
+            code: "20.01.02"
+          - label: Integridade Pública
+            code: "20.01.03"
+      - label: Planejamento Governamental
+        code: "20.02"
+        children:
+          - label: Fortalecimento Institucional
+            code: "20.02.01"
+          - label: Reforma Administrativa
+            code: "20.02.02"
+          - label: Melhorias na Gestão
+            code: "20.02.03"
+      - label: Gestão Pública
+        code: "20.03"
+        children:
+          - label: Recursos Humanos
+            code: "20.03.01"
+          - label: Capacitação de Servidores
+            code: "20.03.02"
+          - label: Licitações e Contratos
+            code: "20.03.03"
+      - label: Administração Pública
+        code: "20.04"
+        children:
+          - label: Concursos Públicos
+            code: "20.04.01"
+          - label: Serviços Públicos
+            code: "20.04.02"
+          - label: Atendimento à População
+            code: "20.04.03"
+      - label: Participação e Colaboração Social
+        code: "20.05"
+        children:
+          - label: Sociedade Civil
+            code: "20.05.01"
+          - label: Transparência e Diálogo
+            code: "20.05.02"
+  - label: Legislação e Regulamentação
+    code: "21"
+    children:
+      - label: Novas Leis e Decretos
+        code: "21.01"
+        children:
+          - label: Publicação de Leis e Decretos
+            code: "21.01.01"
+          - label: Aplicação e Vigência
+            code: "21.01.02"
+          - label: Alterações e Ajustes Normativos
+            code: "21.01.03"
+          - label: Regulamentações Complementares
+            code: "21.01.04"
+      - label: Reformas Legislativas
+        code: "21.02"
+        children:
+          - label: Propostas de Reforma
+            code: "21.02.01"
+          - label: Análise de Impacto das Reformas
+            code: "21.02.02"
+          - label: Aprovação de Reformas
+            code: "21.02.03"
+          - label: Implementação das Reformas
+            code: "21.02.04"
+      - label: Consultas Públicas
+        code: "21.03"
+        children:
+          - label: Abertura de Consultas
+            code: "21.03.01"
+          - label: Recebimento de Contribuições
+            code: "21.03.02"
+          - label: Análise de Contribuições
+            code: "21.03.03"
+          - label: Resultados de Consultas
+            code: "21.03.04"
+      - label: Avaliação Regulatória
+        code: "21.04"
+        children:
+          - label: Revisão de Normas e Regulamentos
+            code: "21.04.01"
+          - label: Análise de Impacto Regulatório
+            code: "21.04.02"
+          - label: Monitoramento da Implementação
+            code: "21.04.03"
+          - label: Relatórios de Desempenho Regulatórios
+            code: "21.04.04"
+      - label: Boas Práticas e Inovação Regulatória
+        code: "21.05"
+        children:
+          - label: Boas Práticas Regulatórias
+            code: "21.05.01"
+          - label: Inovação Jurídica e Regulatória
+            code: "21.05.02"
+          - label: Política Regulatória
+            code: "21.05.03"
+          - label: Cooperação Internacional em Regulação
+            code: "21.05.04"
+  - label: Eventos Oficiais e Cerimônias
+    code: "22"
+    children:
+      - label: Discursos Oficiais
+        code: "22.01"
+        children:
+          - label: Pronunciamento em Rede Nacional
+            code: "22.01.01"
+          - label: Discursos em Cerimônias Públicas
+            code: "22.01.02"
+          - label: Entrevistas e Coletivas de Imprensa
+            code: "22.01.03"
+          - label: Discursos em Eventos Internacionais
+            code: "22.01.04"
+          - label: Mensagens de Fim de Ano e Comemorações
+            code: "22.01.05"
+      - label: Inaugurações
+        code: "22.02"
+        children:
+          - label: Inauguração de Obras Públicas
+            code: "22.02.01"
+          - label: Lançamento de Programas e Projetos
+            code: "22.02.02"
+          - label: Inauguração de Equipamentos Públicos
+            code: "22.02.03"
+          - label: Eventos de Entrega de Infraestrutura
+            code: "22.02.04"
+          - label: Cerimônias de Descerramento de Placas
+            code: "22.02.05"
+      - label: Visitas Oficiais
+        code: "22.03"
+        children:
+          - label: Visitas Internacionais de Chefes de Estado
+            code: "22.03.01"
+          - label: Visitas a Estados e Municípios
+            code: "22.03.02"
+          - label: Recepção de Dignitários Estrangeiros
+            code: "22.03.03"
+          - label: Encontros Bilaterais e Multilaterais
+            code: "22.03.04"
+          - label: Inspeções e Visitas Técnicas
+            code: "22.03.05"
+      - label: Luto Oficial
+        code: "22.04"
+        children:
+          - label: Declarações de Luto Nacional
+            code: "22.04.01"
+          - label: Homenagens Oficiais
+            code: "22.04.02"
+          - label: Cerimônias de Condolências
+            code: "22.04.03"
+      - label: Comemorações e Datas Festivas
+        code: "22.05"
+        children:
+          - label: Comemoração de Datas Cívicas
+            code: "22.05.01"
+          - label: Celebrações de Efemérides
+            code: "22.05.02"
+          - label: Eventos Comemorativos de Instituições Públicas
+            code: "22.05.03"
+          - label: Cerimônias de Posse e Aniversários de Instituições
+            code: "22.05.04"
+          - label: Homenagens e Reconhecimentos Públicos
+            code: "22.05.05"
+  - label: Estatísticas e Dados Públicos
+    code: "23"
+    children:
+      - label: Censos e Pesquisas
+        code: "23.01"
+        children:
+          - label: Censo Demográfico
+            code: "23.01.01"
+          - label: Censo Agropecuário
+            code: "23.01.02"
+          - label: Pesquisa de Emprego e Renda
+            code: "23.01.03"
+          - label: Pesquisa de Saúde
+            code: "23.01.04"
+          - label: Pesquisa de Educação
+            code: "23.01.05"
+      - label: Indicadores Econômicos e Sociais
+        code: "23.02"
+        children:
+          - label: Índice de Preços
+            code: "23.02.01"
+          - label: Indicadores de Pobreza
+            code: "23.02.02"
+          - label: Índice de Desenvolvimento Humano (IDH)
+            code: "23.02.03"
+          - label: Taxa de Desemprego
+            code: "23.02.04"
+          - label: Taxa de Escolaridade
+            code: "23.02.05"
+      - label: Interoperabilidade
+        code: "23.03"
+        children:
+          - label: Dados Abertos
+            code: "23.03.01"
+          - label: Infraestrutura de Dados Públicos (IDP)
+            code: "23.03.02"
+          - label: Integração de Bases de Dados
+            code: "23.03.03"
+      - label: Transparência e Acesso à Informação
+        code: "23.04"
+        children:
+          - label: Portal da Transparência
+            code: "23.04.01"
+          - label: Lei de Acesso à Informação (LAI)
+            code: "23.04.02"
+          - label: Relatórios de Prestação de Contas
+            code: "23.04.03"
+          - label: Auditorias e Fiscalizações Públicas
+            code: "23.04.04"
+          - label: Dados sobre Licitações e Contratos Públicos
+            code: "23.04.05"
+  - label: Minorias e Grupos Especiais
+    code: "24"
+    children:
+      - label: Políticas para Mulheres
+        code: "24.01"
+        children:
+          - label: Igualdade de Gênero
+            code: "24.01.01"
+          - label: Liderança Feminina
+            code: "24.01.02"
+          - label: Violência contra Mulheres
+            code: "24.01.03"
+          - label: Saúde da Mulher
+            code: "24.01.04"
+          - label: Educação e Empoderamento Feminino
+            code: "24.01.05"
+      - label: Populações Indígenas
+        code: "24.02"
+        children:
+          - label: Direitos Territoriais
+            code: "24.02.01"
+          - label: Saúde e Bem-Estar Indígena
+            code: "24.02.02"
+          - label: Educação Indígena
+            code: "24.02.03"
+      - label: Comunidade LGBTQIA+
+        code: "24.03"
+        children:
+          - label: Direitos e Políticas LGBTQIA+
+            code: "24.03.01"
+          - label: Saúde LGBTQIA+
+            code: "24.03.02"
+          - label: Combate à Discriminação
+            code: "24.03.03"
+          - label: Visibilidade e Inclusão
+            code: "24.03.04"
+      - label: Comunidades Tradicionais
+        code: "24.04"
+        children:
+          - label: Quilombolas
+            code: "24.04.01"
+          - label: Povos Ribeirinhos
+            code: "24.04.02"
+          - label: Povos de Terreiro
+            code: "24.04.03"
+          - label: Preservação Cultural e Patrimônio
+            code: "24.04.04"
+          - label: Acesso a Recursos Naturais
+            code: "24.04.05"
+      - label: Direitos das Pessoas com Deficiência
+        code: "24.05"
+        children:
+          - label: Acessibilidade e Inclusão
+            code: "24.05.01"
+          - label: Saúde e Reabilitação
+            code: "24.05.02"
+          - label: Inclusão no Mercado de Trabalho
+            code: "24.05.03"
+          - label: Direitos e Políticas Públicas para Deficientes
+            code: "24.05.04"
+  - label: Habitação e Urbanismo
+    code: "25"
+    children:
+      - label: Programas Habitacionais
+        code: "25.01"
+        children:
+          - label: Minha Casa Minha Vida
+            code: "25.01.01"
+          - label: Parcerias Público-Privadas em Habitação
+            code: "25.01.02"
+          - label: Financiamento Habitacional
+            code: "25.01.03"
+          - label: Regularização Fundiária
+            code: "25.01.04"
+          - label: Moradia de Interesse Social
+            code: "25.01.05"
+      - label: Planejamento Urbano
+        code: "25.02"
+        children:
+          - label: Zoneamento Urbano
+            code: "25.02.01"
+          - label: Uso e Ocupação do Solo
+            code: "25.02.02"
+          - label: Áreas de Preservação e Espaços Verdes
+            code: "25.02.03"
+          - label: Licenciamento Urbano
+            code: "25.02.04"
+      - label: Saneamento Básico
+        code: "25.03"
+        children:
+          - label: Abastecimento de Água
+            code: "25.03.01"
+          - label: Coleta e Tratamento de Esgoto
+            code: "25.03.02"
+          - label: Gestão de Resíduos Sólidos
+            code: "25.03.03"
+          - label: Drenagem Urbana
+            code: "25.03.04"
+          - label: Saneamento Rural
+            code: "25.03.05"
+      - label: Desenvolvimento Urbano
+        code: "25.04"
+        children:
+          - label: Revitalização de Áreas Urbanas
+            code: "25.04.01"
+          - label: Sustentabilidade Urbana
+            code: "25.04.02"
+          - label: Projetos de Reurbanização
+            code: "25.04.03"
+          - label: Parcerias para Desenvolvimento Local
+            code: "25.04.04"
+          - label: Governança Metropolitana
+            code: "25.04.05"
+      - label: Infraestrutura Urbana
+        code: "25.05"
+        children:
+          - label: Obras Públicas e Infraestrutura Viária
+            code: "25.05.01"
+          - label: Iluminação Pública
+            code: "25.05.02"
+          - label: Equipamentos Urbanos (praças, parques)
+            code: "25.05.03"
+          - label: Acessibilidade Urbana
+            code: "25.05.04"
+          - label: Conservação e Manutenção Urbana
+            code: "25.05.05"
