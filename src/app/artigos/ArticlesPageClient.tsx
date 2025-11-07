@@ -4,22 +4,21 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
-import { queryArticles } from './actions'
+import { getArticles } from './actions'
 import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
 import type { AgencyOption } from '@/lib/get-agencies-list'
 
-type QueryPageClientProps = {
+type ArticlesPageClientProps = {
   agencies: AgencyOption[]
 }
 
-export default function QueryPageClient({ agencies }: QueryPageClientProps) {
+export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const query = searchParams.get('q') || undefined
 
   // Initialize state from URL params
   const [startDate, setStartDate] = useState<Date | undefined>(() => {
@@ -46,11 +45,6 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
     }) => {
       const params = new URLSearchParams(searchParams.toString())
 
-      // Keep the search query
-      if (query) {
-        params.set('q', query)
-      }
-
       // Update or remove each param
       Object.entries(updates).forEach(([key, value]) => {
         if (value) {
@@ -60,9 +54,10 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
         }
       })
 
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+      router.replace(newUrl, { scroll: false })
     },
-    [searchParams, query, pathname, router]
+    [searchParams, pathname, router]
   )
 
   // Wrapped setters that update URL
@@ -97,10 +92,9 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
   )
 
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', query, startDate, endDate, selectedAgencies],
+    queryKey: ['articles', startDate, endDate, selectedAgencies],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
-      queryArticles({
-        query,
+      getArticles({
         page: pageParam ?? 1,
         startDate: startDate?.getTime(),
         endDate: endDate?.getTime(),
@@ -132,7 +126,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
     return (
       <div className="container mx-auto px-4 py-8">
         <p className="text-center text-red-500">
-          Ocorreu um erro ao carregar os resultados.
+          Ocorreu um erro ao carregar os artigos.
         </p>
       </div>
     )
@@ -142,18 +136,16 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
     <section className="py-16">
       {/* Cabeçalho institucional */}
       <div className="container mx-auto px-4 text-center mb-12">
-        <h2 className="text-3xl font-bold text-primary">
-          Resultados para "{query}"
-        </h2>
+        <h2 className="text-3xl font-bold text-primary">Notícias</h2>
 
         {/* Linha divisória SVG */}
         <div className="mx-auto mt-3 w-40">
           <img src="/underscore.svg" alt="" />
         </div>
 
-        {/* Frase de apoio */}
+        {/* Subtítulo institucional */}
         <p className="mt-4 text-base text-primary/80">
-          Veja os artigos e publicações que correspondem à sua busca no portal.
+          Acompanhe as últimas notícias, atualizações e comunicados oficiais do portal.
         </p>
       </div>
 

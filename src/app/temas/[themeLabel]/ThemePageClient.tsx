@@ -1,25 +1,27 @@
 'use client'
 
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
-import { queryArticles } from './actions'
+import { getArticles } from './actions'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInView } from 'react-intersection-observer'
+import THEME_ICONS from '@/lib/themes'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
 import type { AgencyOption } from '@/lib/get-agencies-list'
 
-type QueryPageClientProps = {
+type ThemePageClientProps = {
+  themeLabel: string
   agencies: AgencyOption[]
 }
 
-export default function QueryPageClient({ agencies }: QueryPageClientProps) {
+export default function ThemePageClient({ themeLabel, agencies }: ThemePageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const query = searchParams.get('q') || undefined
 
   // Initialize state from URL params
   const [startDate, setStartDate] = useState<Date | undefined>(() => {
@@ -46,11 +48,6 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
     }) => {
       const params = new URLSearchParams(searchParams.toString())
 
-      // Keep the search query
-      if (query) {
-        params.set('q', query)
-      }
-
       // Update or remove each param
       Object.entries(updates).forEach(([key, value]) => {
         if (value) {
@@ -60,9 +57,10 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
         }
       })
 
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+      router.replace(newUrl, { scroll: false })
     },
-    [searchParams, query, pathname, router]
+    [searchParams, pathname, router]
   )
 
   // Wrapped setters that update URL
@@ -97,11 +95,11 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
   )
 
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', query, startDate, endDate, selectedAgencies],
+    queryKey: ['articles', themeLabel, startDate, endDate, selectedAgencies],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
-      queryArticles({
-        query,
+      getArticles({
         page: pageParam ?? 1,
+        theme_1_level_1: themeLabel,
         startDate: startDate?.getTime(),
         endDate: endDate?.getTime(),
         agencies: selectedAgencies.length > 0 ? selectedAgencies : undefined,
@@ -132,29 +130,38 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
     return (
       <div className="container mx-auto px-4 py-8">
         <p className="text-center text-red-500">
-          Ocorreu um erro ao carregar os resultados.
+          Ocorreu um erro ao carregar os artigos.
         </p>
       </div>
     )
   }
 
+  const themeData = THEME_ICONS[themeLabel]
+
   return (
     <section className="py-16">
-      {/* Cabeçalho institucional */}
+      {/* Cabeçalho institucional do tema */}
       <div className="container mx-auto px-4 text-center mb-12">
-        <h2 className="text-3xl font-bold text-primary">
-          Resultados para "{query}"
-        </h2>
+        <div className="flex flex-col items-center justify-center">
+          <img
+            alt={themeLabel}
+            src={themeData.image}
+            className="w-28 h-28 mb-4 object-contain"
+          />
+          <h2 className="text-3xl font-bold text-primary">{themeLabel}</h2>
 
-        {/* Linha divisória SVG */}
-        <div className="mx-auto mt-3 w-40">
-          <img src="/underscore.svg" alt="" />
+          {/* Linha divisória SVG */}
+          <div className="mx-auto mt-3 w-40">
+            <img src="/underscore.svg" alt="" />
+          </div>
+
+          {/* Descrição do tema */}
+          {themeData?.description && (
+            <div className="mt-6 text-base text-primary/80 leading-relaxed max-w-3xl mx-auto">
+              <MarkdownRenderer content={themeData.description} />
+            </div>
+          )}
         </div>
-
-        {/* Frase de apoio */}
-        <p className="mt-4 text-base text-primary/80">
-          Veja os artigos e publicações que correspondem à sua busca no portal.
-        </p>
       </div>
 
       {/* Main Content with Sidebar */}
@@ -193,6 +200,12 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                 />
               ))}
             </motion.div>
+
+            {articles.length === 0 && (
+              <p className="text-center text-primary/60 mt-12">
+                Nenhum artigo encontrado para este tema no momento.
+              </p>
+            )}
           </main>
         </div>
       </div>
