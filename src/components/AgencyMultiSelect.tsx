@@ -13,18 +13,20 @@ type AgencyMultiSelectProps = {
   agencies: Agency[]
   selectedAgencies: string[]
   onSelectedAgenciesChange: (agencies: string[]) => void
+  showBadges?: boolean
 }
 
 export function AgencyMultiSelect({
   agencies,
   selectedAgencies,
   onSelectedAgenciesChange,
+  showBadges = true,
 }: AgencyMultiSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const dropdownRef = React.useRef<HTMLDivElement>(null)
 
-  // Group agencies by type
+  // Group and sort agencies by type
   const agenciesByType = React.useMemo(() => {
     const grouped: Record<string, Agency[]> = {}
     for (const agency of agencies) {
@@ -36,36 +38,49 @@ export function AgencyMultiSelect({
     return grouped
   }, [agencies])
 
-  const sortedTypes = Object.keys(agenciesByType).sort()
+  // Filter agencies by search term
+  const { filteredAgenciesByType, filteredTypes } = React.useMemo(() => {
+    let result = agenciesByType
 
-  // Filter agencies by search
-  const filteredTypes = React.useMemo(() => {
-    if (!searchTerm) return sortedTypes
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase()
+      const filtered: Record<string, Agency[]> = {}
 
-    const filtered: Record<string, Agency[]> = {}
-    for (const type of sortedTypes) {
-      const matchingAgencies = agenciesByType[type].filter(agency =>
-        agency.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      if (matchingAgencies.length > 0) {
-        filtered[type] = matchingAgencies
+      for (const [type, typeAgencies] of Object.entries(agenciesByType)) {
+        const matchingAgencies = typeAgencies.filter((agency) =>
+          agency.name.toLowerCase().includes(searchLower)
+        )
+        if (matchingAgencies.length > 0) {
+          filtered[type] = matchingAgencies
+        }
       }
+      result = filtered
     }
-    return Object.keys(filtered)
-  }, [searchTerm, sortedTypes, agenciesByType])
 
-  const toggleAgency = (agencyKey: string) => {
-    if (selectedAgencies.includes(agencyKey)) {
-      onSelectedAgenciesChange(selectedAgencies.filter((key) => key !== agencyKey))
-    } else {
-      onSelectedAgenciesChange([...selectedAgencies, agencyKey])
+    return {
+      filteredAgenciesByType: result,
+      filteredTypes: Object.keys(result).sort(),
     }
-  }
+  }, [searchTerm, agenciesByType])
 
-  const getAgencyName = (key: string) => {
-    const agency = agencies.find((a) => a.key === key)
-    return agency?.name || key
-  }
+  const toggleAgency = React.useCallback(
+    (agencyKey: string) => {
+      onSelectedAgenciesChange(
+        selectedAgencies.includes(agencyKey)
+          ? selectedAgencies.filter((key) => key !== agencyKey)
+          : [...selectedAgencies, agencyKey]
+      )
+    },
+    [selectedAgencies, onSelectedAgenciesChange]
+  )
+
+  const getAgencyName = React.useCallback(
+    (key: string) => {
+      const agency = agencies.find((a) => a.key === key)
+      return agency?.name || key
+    },
+    [agencies]
+  )
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -79,34 +94,23 @@ export function AgencyMultiSelect({
   }, [])
 
   return (
-    <div className="relative w-[300px]" ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       {/* Trigger Button */}
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className={`w-full h-10 px-3 py-2 border border-input rounded-md text-left text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${selectedAgencies.length > 0 ? 'pr-9' : ''}`}
-        >
-          <span className={selectedAgencies.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
-            {selectedAgencies.length === 0
-              ? 'Selecione agências...'
-              : `${selectedAgencies.length} selecionada${selectedAgencies.length > 1 ? 's' : ''}`}
-          </span>
-        </button>
-        {selectedAgencies.length > 0 && (
-          <X
-            onClick={(e) => {
-              e.stopPropagation()
-              onSelectedAgenciesChange([])
-            }}
-            className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 hover:cursor-pointer"
-          />
-        )}
-      </div>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full h-10 px-3 py-2 border border-input rounded-md text-left text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+      >
+        <span className={selectedAgencies.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
+          {selectedAgencies.length === 0
+            ? 'Selecione agências...'
+            : `${selectedAgencies.length} selecionada${selectedAgencies.length > 1 ? 's' : ''}`}
+        </span>
+      </button>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full mt-1 w-[400px] bg-white border border-border rounded-md shadow-lg z-[9999] animate-in fade-in-0 zoom-in-95">
+        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-[9999] animate-in fade-in-0 zoom-in-95">
           {/* Search */}
           <div className="p-3 border-b border-border">
             <input
@@ -132,24 +136,22 @@ export function AgencyMultiSelect({
                     {type}
                   </div>
                   <div className="mt-1">
-                    {agenciesByType[type]
-                      .filter(agency =>
-                        !searchTerm || agency.name.toLowerCase().includes(searchTerm.toLowerCase())
-                      )
-                      .map((agency) => (
-                        <label
-                          key={agency.key}
-                          className="flex items-center px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-sm transition-colors group"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedAgencies.includes(agency.key)}
-                            onChange={() => toggleAgency(agency.key)}
-                            className="mr-3 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-                          />
-                          <span className="truncate text-sm group-hover:font-medium transition-all">{agency.name}</span>
-                        </label>
-                      ))}
+                    {filteredAgenciesByType[type].map((agency) => (
+                      <label
+                        key={agency.key}
+                        className="flex items-center px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-sm transition-colors group"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedAgencies.includes(agency.key)}
+                          onChange={() => toggleAgency(agency.key)}
+                          className="mr-3 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                        />
+                        <span className="truncate text-sm group-hover:font-medium transition-all">
+                          {agency.name}
+                        </span>
+                      </label>
+                    ))}
                   </div>
                 </div>
               ))
@@ -159,7 +161,7 @@ export function AgencyMultiSelect({
       )}
 
       {/* Selected badges */}
-      {selectedAgencies.length > 0 && (
+      {showBadges && selectedAgencies.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-3">
           {selectedAgencies.map((key) => (
             <span
