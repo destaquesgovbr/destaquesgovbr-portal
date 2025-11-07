@@ -103,8 +103,8 @@ export function AgencyMultiSelect({
       >
         <span className={selectedAgencies.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
           {selectedAgencies.length === 0
-            ? 'Selecione agências...'
-            : `${selectedAgencies.length} selecionada${selectedAgencies.length > 1 ? 's' : ''}`}
+            ? 'Selecione órgãos...'
+            : `${selectedAgencies.length} selecionado${selectedAgencies.length > 1 ? 's' : ''}`}
         </span>
       </button>
 
@@ -115,7 +115,7 @@ export function AgencyMultiSelect({
           <div className="p-3 border-b border-border">
             <input
               type="text"
-              placeholder="Buscar agências..."
+              placeholder="Buscar órgãos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-3 py-2 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
@@ -127,7 +127,7 @@ export function AgencyMultiSelect({
           <div className="max-h-[300px] overflow-y-auto p-2">
             {filteredTypes.length === 0 ? (
               <div className="text-sm text-muted-foreground py-4 text-center">
-                Nenhuma agência encontrada
+                Nenhum órgão encontrado
               </div>
             ) : (
               filteredTypes.map((type) => (

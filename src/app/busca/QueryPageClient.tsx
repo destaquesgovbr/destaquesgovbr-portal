@@ -211,7 +211,7 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                 {/* Agency Filter */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold text-primary">
-                    Agências
+                    Órgãos
                   </label>
                   <AgencyMultiSelect
                     agencies={agencies}
@@ -226,14 +226,14 @@ export default function QueryPageClient({ agencies }: QueryPageClientProps) {
                   <div className="pt-4 border-t border-border">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm font-semibold text-primary">
-                        Agências selecionadas ({selectedAgencies.length})
+                        Órgãos selecionados ({selectedAgencies.length})
                       </span>
                       <button
                         type="button"
                         onClick={() => handleAgenciesChange([])}
                         className="text-xs text-muted-foreground hover:text-primary underline"
                       >
-                        Limpar todas
+                        Limpar todos
                       </button>
                     </div>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
