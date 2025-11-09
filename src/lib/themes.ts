@@ -1,14 +1,6 @@
-// Helper function to encode image paths for production compatibility
-function encodeImagePath(path: string): string {
-  const parts = path.split('/')
-  const filename = parts[parts.length - 1]
-  const encodedFilename = encodeURIComponent(filename)
-  return parts.slice(0, -1).concat(encodedFilename).join('/')
-}
-
 const THEME_ICONS: Record<string, { image: string; description: string }> = {
   "Economia e Finanças": {
-    image: encodeImagePath("/01 - Economia e Finanças.png"),
+    image: "/01 - Economia e Finanças.png",
     description: `Inspirado na moeda de um real, o ícone representa a solidez e a identidade econômica do Brasil em uma leitura moderna e institucional.`,
   },
   "Educação": {
@@ -39,7 +31,7 @@ Segurança é, antes de tudo, **um pacto de convivência** — o compromisso de 
 O lobo em vermelho ocupa o centro, cercado por folhas tropicais nas cores verde, amarela e azul — expressão da vida que floresce quando há respeito entre sociedade e meio ambiente.`,
   },
   "Ciência, Tecnologia e Inovação": {
-    image: encodeImagePath("/06 - Ciência, Tecnologia e Inovação.png"),
+    image: "/06 - Ciência, Tecnologia e Inovação.png",
     description: `Inspirado na harmonia dos sistemas dinâmicos, o ícone representa o conhecimento como movimento contínuo.
 O centro azul simboliza o saber público, enquanto as órbitas coloridas em verde, amarelo e vermelho expressam o fluxo de ideias, pessoas e tecnologias que impulsionam o país.`,
   },
@@ -51,7 +43,7 @@ As linhas coloridas convergem para o centro azul, simbolizando o planejamento qu
 A imagem expressa o Brasil em movimento — um território interligado por caminhos que constroem desenvolvimento, acesso e pertencimento.`,
   },
   "Cultura, Artes e Patrimônio": {
-    image: encodeImagePath("/08 - Cultura, Artes e Patrimônio.png"),
+    image: "/08 - Cultura, Artes e Patrimônio.png",
     description: `Inspirado na força dos sons e formas brasileiras, o ícone representa a cultura como movimento vivo — o ritmo que nasce de dentro e se espalha em múltiplas vozes.
 As formas geométricas coloridas evocam instrumentos, danças e expressões que compõem o mosaico cultural do país.`,
   },
@@ -64,7 +56,7 @@ O esporte e o lazer são expressões de saúde e convivência — o tempo do cor
 Aqui, o movimento não é disputa: é bem-estar, celebração e vida em comunidade.`,
   },
   "Agricultura, Pecuária e Abastecimento": {
-    image: encodeImagePath("/10 - Agricultura, Pecuária e Abastecimento.png"),
+    image: "/10 - Agricultura, Pecuária e Abastecimento.png",
     description: `O ícone celebra as famílias agricultoras — pessoas que vivem da terra e fazem dela o alimento de todos.
 Representa o trabalho coletivo que nutre o país e mantém viva a relação entre gente, natureza e comunidade.`,
   },
