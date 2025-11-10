@@ -57,9 +57,32 @@ export function AgencyMultiSelect({
       result = filtered
     }
 
+    // Custom sort: Ministérios first, then Agências, then alphabetically
+    const sortedTypes = Object.keys(result).sort((a, b) => {
+      const aLower = a.toLowerCase()
+      const bLower = b.toLowerCase()
+
+      // Check if they start with "ministério" or "agência"
+      const aIsMinistry = aLower.startsWith('ministério')
+      const bIsMinistry = bLower.startsWith('ministério')
+      const aIsAgency = aLower.startsWith('agência')
+      const bIsAgency = bLower.startsWith('agência')
+
+      // Ministérios come first
+      if (aIsMinistry && !bIsMinistry) return -1
+      if (!aIsMinistry && bIsMinistry) return 1
+
+      // Then Agências
+      if (aIsAgency && !bIsAgency && !bIsMinistry) return -1
+      if (!aIsAgency && bIsAgency && !aIsMinistry) return 1
+
+      // Otherwise alphabetical
+      return a.localeCompare(b, 'pt-BR')
+    })
+
     return {
       filteredAgenciesByType: result,
-      filteredTypes: Object.keys(result).sort(),
+      filteredTypes: sortedTypes,
     }
   }, [searchTerm, agenciesByType])
 
