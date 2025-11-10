@@ -3,11 +3,12 @@
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 const SearchBar = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const pathname = usePathname()
   const [query, setQuery] = useState(searchParams.get("q") || "")
 
   useEffect(() => {
@@ -34,8 +35,15 @@ const SearchBar = () => {
     // Remove apenas o parâmetro 'q' da URL, mantendo os outros filtros
     const params = new URLSearchParams(searchParams.toString())
     params.delete('q')
-    const newUrl = params.toString() ? `/busca?${params.toString()}` : '/'
-    router.push(newUrl)
+
+    // Se estiver na página de busca e houver outros filtros, mantenha na página de busca
+    // Caso contrário, volte para a home
+    if (pathname === '/busca' && params.toString()) {
+      router.push(`/busca?${params.toString()}`)
+    } else if (pathname === '/busca') {
+      router.push('/')
+    }
+    // Se não estiver na página de busca, apenas limpa o campo (não navega)
   }
 
   return (
