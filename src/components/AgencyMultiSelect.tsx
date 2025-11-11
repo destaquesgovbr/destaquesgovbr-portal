@@ -170,7 +170,7 @@ export function AgencyMultiSelect({
   )
 
   return (
-    <div className="relative w-full z-50" ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -186,7 +186,7 @@ export function AgencyMultiSelect({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-[99999] animate-in fade-in-0 zoom-in-95">
+        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-[200] animate-in fade-in-0 zoom-in-95">
           {/* Search and Expand Button */}
           <div className="p-3 border-b border-border flex gap-2">
             <input
@@ -220,7 +220,7 @@ export function AgencyMultiSelect({
       {/* Expanded Modal */}
       {isExpanded && (
         <div
-          className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4"
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4"
           onClick={() => setIsExpanded(false)}
         >
           <div
