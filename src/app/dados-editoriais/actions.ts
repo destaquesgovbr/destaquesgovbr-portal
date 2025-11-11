@@ -114,3 +114,67 @@ export const getTimelineDaily = withResult(async (range: Interval) => {
   }
   return buckets
 })
+
+// Comparison: get theme growth (current vs previous period)
+export const getThemeComparison = withResult(async (current: Interval, previous: Interval) => {
+  const [currentThemes, previousThemes] = await Promise.all([
+    getTopThemes(current, 20),
+    getTopThemes(previous, 20)
+  ])
+
+  if (currentThemes.type !== 'ok' || previousThemes.type !== 'ok') {
+    return { growing: [], declining: [] }
+  }
+
+  const prevMap = new Map(previousThemes.data.map(t => [t.theme, t.count]))
+
+  const withGrowth = currentThemes.data.map(curr => {
+    const prevCount = prevMap.get(curr.theme) ?? 0
+    const growth = prevCount > 0 ? ((curr.count - prevCount) / prevCount) * 100 : 100
+    return { ...curr, growth, prevCount }
+  })
+
+  const growing = withGrowth
+    .filter(t => t.growth > 0 && t.prevCount > 0)
+    .sort((a, b) => b.growth - a.growth)
+    .slice(0, 5)
+
+  const declining = withGrowth
+    .filter(t => t.growth < 0)
+    .sort((a, b) => a.growth - b.growth)
+    .slice(0, 5)
+
+  return { growing, declining }
+})
+
+// Comparison: get agency growth (current vs previous period)
+export const getAgencyComparison = withResult(async (current: Interval, previous: Interval) => {
+  const [currentAgencies, previousAgencies] = await Promise.all([
+    getTopAgencies(current, 20),
+    getTopAgencies(previous, 20)
+  ])
+
+  if (currentAgencies.type !== 'ok' || previousAgencies.type !== 'ok') {
+    return { growing: [], declining: [] }
+  }
+
+  const prevMap = new Map(previousAgencies.data.map(a => [a.agency, a.count]))
+
+  const withGrowth = currentAgencies.data.map(curr => {
+    const prevCount = prevMap.get(curr.agency) ?? 0
+    const growth = prevCount > 0 ? ((curr.count - prevCount) / prevCount) * 100 : 100
+    return { ...curr, growth, prevCount }
+  })
+
+  const growing = withGrowth
+    .filter(a => a.growth > 0 && a.prevCount > 0)
+    .sort((a, b) => b.growth - a.growth)
+    .slice(0, 5)
+
+  const declining = withGrowth
+    .filter(a => a.growth < 0)
+    .sort((a, b) => a.growth - b.growth)
+    .slice(0, 5)
+
+  return { growing, declining }
+})

@@ -1,5 +1,5 @@
-import { addDays, startOfDay, subDays, subMonths, subYears } from 'date-fns'
-import { getKpis, getTopThemes, getTopAgencies, getTimelineDaily } from './actions'
+import { addDays, startOfDay, subDays, subMonths, subYears, differenceInDays } from 'date-fns'
+import { getKpis, getTopThemes, getTopAgencies, getTimelineDaily, getThemeComparison, getAgencyComparison } from './actions'
 import DashboardClient from '@/components/DashboardClient'
 import { DashboardFilters } from '@/components/DashboardFilters'
 import { Suspense } from 'react'
@@ -64,18 +64,31 @@ export default async function DashboardPage({
   const range = getDateRangeFromPreset(preset, searchParams.start, searchParams.end)
   const presetLabel = getPresetLabel(preset)
 
-  const [kpisR, themesR, agenciesR, timelineR] = await Promise.all([
+  // Calculate previous period for comparison
+  const periodDays = differenceInDays(range.end, range.start)
+  const previousRange = {
+    start: subDays(range.start, periodDays),
+    end: range.start
+  }
+
+  const [kpisR, themesR, agenciesR, timelineR, prevKpisR, themeCompR, agencyCompR] = await Promise.all([
     getKpis(range),
     getTopThemes(range, 8),
     getTopAgencies(range, 8),
-    getTimelineDaily(range)
+    getTimelineDaily(range),
+    getKpis(previousRange),
+    getThemeComparison(range, previousRange),
+    getAgencyComparison(range, previousRange)
   ])
 
   // Normaliza resultados (com fallback seguro)
   const kpis = kpisR.type === 'ok' ? kpisR.data : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
+  const prevKpis = prevKpisR.type === 'ok' ? prevKpisR.data : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
   const themes = themesR.type === 'ok' ? themesR.data : []
   const agencies = agenciesR.type === 'ok' ? agenciesR.data : []
   const timeline = timelineR.type === 'ok' ? timelineR.data : []
+  const themeComparison = themeCompR.type === 'ok' ? themeCompR.data : { growing: [], declining: [] }
+  const agencyComparison = agencyCompR.type === 'ok' ? agencyCompR.data : { growing: [], declining: [] }
 
   return (
     <section className="py-12">
@@ -106,9 +119,12 @@ export default async function DashboardPage({
           <div className="flex-1 min-w-0">
             <DashboardClient
               kpis={kpis}
+              prevKpis={prevKpis}
               themes={themes}
               agencies={agencies}
               timeline={timeline}
+              themeComparison={themeComparison}
+              agencyComparison={agencyComparison}
             />
           </div>
         </div>
