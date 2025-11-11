@@ -1,14 +1,68 @@
-import { addDays, startOfDay, subDays } from 'date-fns'
+import { addDays, startOfDay, subDays, subMonths, subYears } from 'date-fns'
 import { getKpis, getTopThemes, getTopAgencies, getTimelineDaily } from './actions'
 import DashboardClient from '@/components/DashboardClient'
-
+import { DashboardFilters } from '@/components/DashboardFilters'
+import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic' // sem cache agressivo para testes
 
-export default async function DashboardPage() {
+type DatePreset = 'week' | 'month' | 'semester' | 'year' | 'custom'
+
+function getDateRangeFromPreset(preset: DatePreset, customStart?: string, customEnd?: string) {
   const end = startOfDay(new Date())
-  const start = startOfDay(subDays(end, 29)) // 30 dias (inclui hoje)
-  const range = { start: start, end: addDays(end, 1) }
+  let start: Date
+
+  switch (preset) {
+    case 'week':
+      start = startOfDay(subDays(end, 6)) // 7 dias
+      break
+    case 'semester':
+      start = startOfDay(subMonths(end, 6)) // 6 meses
+      break
+    case 'year':
+      start = startOfDay(subYears(end, 1)) // 1 ano
+      break
+    case 'custom':
+      if (customStart && customEnd) {
+        start = startOfDay(new Date(customStart))
+        return { start, end: addDays(startOfDay(new Date(customEnd)), 1) }
+      }
+      // Fallback to month if custom dates are invalid
+      start = startOfDay(subDays(end, 29))
+      break
+    case 'month':
+    default:
+      start = startOfDay(subDays(end, 29)) // 30 dias (inclui hoje)
+      break
+  }
+
+  return { start, end: addDays(end, 1) }
+}
+
+function getPresetLabel(preset: DatePreset): string {
+  switch (preset) {
+    case 'week':
+      return 'últimos 7 dias'
+    case 'semester':
+      return 'últimos 6 meses'
+    case 'year':
+      return 'último ano'
+    case 'custom':
+      return 'período personalizado'
+    case 'month':
+    default:
+      return 'últimos 30 dias'
+  }
+}
+
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { preset?: string; start?: string; end?: string }
+}) {
+  const preset = (searchParams.preset as DatePreset) || 'month'
+  const range = getDateRangeFromPreset(preset, searchParams.start, searchParams.end)
+  const presetLabel = getPresetLabel(preset)
 
   const [kpisR, themesR, agenciesR, timelineR] = await Promise.all([
     getKpis(range),
@@ -37,16 +91,27 @@ export default async function DashboardPage() {
 
           {/* Subtítulo institucional */}
           <p className="mt-4 text-base text-primary/80">
-            Análise em tempo real da produção de notícias do Governo Federal (últimos 30 dias).
+            Análise em tempo real da produção de notícias do Governo Federal ({presetLabel}).
           </p>
         </div>
 
-        <DashboardClient
-          kpis={kpis}
-          themes={themes}
-          agencies={agencies}
-          timeline={timeline}
-        />
+        {/* Layout with sidebar */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters sidebar */}
+          <Suspense fallback={<div className="lg:w-80 flex-shrink-0" />}>
+            <DashboardFilters />
+          </Suspense>
+
+          {/* Main content */}
+          <div className="flex-1 min-w-0">
+            <DashboardClient
+              kpis={kpis}
+              themes={themes}
+              agencies={agencies}
+              timeline={timeline}
+            />
+          </div>
+        </div>
       </div>
     </section>
   )
