@@ -10,12 +10,14 @@ import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
 import { AgencyOption } from '@/lib/agencies-utils'
+import { ThemeOption } from '@/lib/themes-utils'
 
 type ArticlesPageClientProps = {
   agencies: AgencyOption[]
+  themes: ThemeOption[]
 }
 
-export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps) {
+export default function ArticlesPageClient({ agencies, themes }: ArticlesPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -36,12 +38,18 @@ export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps
     return agencias ? agencias.split(',') : []
   })
 
+  const [selectedThemes, setSelectedThemes] = useState<string[]>(() => {
+    const temas = searchParams.get('temas')
+    return temas ? temas.split(',') : []
+  })
+
   // Function to update URL params
   const updateUrlParams = useCallback(
     (updates: {
       dataInicio?: string | null
       dataFim?: string | null
       agencias?: string | null
+      temas?: string | null
     }) => {
       const params = new URLSearchParams(searchParams.toString())
 
@@ -91,14 +99,25 @@ export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps
     [updateUrlParams]
   )
 
+  const handleThemesChange = useCallback(
+    (themesList: string[]) => {
+      setSelectedThemes(themesList)
+      updateUrlParams({
+        temas: themesList.length > 0 ? themesList.join(',') : null,
+      })
+    },
+    [updateUrlParams]
+  )
+
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', startDate, endDate, selectedAgencies],
+    queryKey: ['articles', startDate, endDate, selectedAgencies, selectedThemes],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
       getArticles({
         page: pageParam ?? 1,
         startDate: startDate?.getTime(),
         endDate: endDate?.getTime(),
         agencies: selectedAgencies.length > 0 ? selectedAgencies : undefined,
+        themes: selectedThemes.length > 0 ? selectedThemes : undefined,
       }),
     getNextPageParam: (lastPage) => lastPage.page ?? undefined,
     initialPageParam: 1,
@@ -120,6 +139,14 @@ export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps
       return agency?.name || key
     },
     [agencies]
+  )
+
+  const getThemeName = useMemo(
+    () => (key: string) => {
+      const theme = themes.find((t) => t.key === key)
+      return theme?.name || key
+    },
+    [themes]
   )
 
   if (articlesQ.isError) {
@@ -155,13 +182,17 @@ export default function ArticlesPageClient({ agencies }: ArticlesPageClientProps
           {/* Left Sidebar - Filters */}
           <ArticleFilters
             agencies={agencies}
+            themes={themes}
             startDate={startDate}
             endDate={endDate}
             selectedAgencies={selectedAgencies}
+            selectedThemes={selectedThemes}
             onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange}
             onAgenciesChange={handleAgenciesChange}
+            onThemesChange={handleThemesChange}
             getAgencyName={getAgencyName}
+            getThemeName={getThemeName}
           />
 
           {/* Right Content - Results Grid */}
