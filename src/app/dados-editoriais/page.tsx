@@ -108,25 +108,26 @@ export default async function DashboardPage({
           </p>
         </div>
 
-        {/* Layout with sidebar */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters sidebar */}
-          <Suspense fallback={<div className="lg:w-80 flex-shrink-0" />}>
-            <DashboardFilters />
-          </Suspense>
-
-          {/* Main content */}
-          <div className="flex-1 min-w-0">
-            <DashboardClient
-              kpis={kpis}
-              prevKpis={prevKpis}
-              themes={themes}
-              agencies={agencies}
-              timeline={timeline}
-              themeComparison={themeComparison}
-              agencyComparison={agencyComparison}
-            />
+        {/* Filters row (below title/description) */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center">
+            <Suspense fallback={<div className="lg:w-80 flex-shrink-0" />}>
+              <DashboardFilters />
+            </Suspense>
           </div>
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1 min-w-0">
+          <DashboardClient
+            kpis={kpis}
+            prevKpis={prevKpis}
+            themes={themes}
+            agencies={agencies}
+            timeline={timeline}
+            themeComparison={themeComparison}
+            agencyComparison={agencyComparison}
+          />
         </div>
       </div>
     </section>

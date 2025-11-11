@@ -71,13 +71,13 @@ export function DashboardFilters() {
   }
 
   return (
-    <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8">
+    <aside className="w-full flex-shrink-0">
       <div className="sticky top-4">
-        <h3 className="text-lg font-semibold text-primary mb-6">Filtros</h3>
+        <h3 className="text-lg font-semibold text-primary mb-4">Filtros</h3>
 
-        <div className="space-y-6">
-          {/* Date Preset Dropdown */}
-          <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-end gap-4">
+          {/* Single dropdown for presets */}
+          <div className="flex flex-col gap-2 w-full lg:w-auto">
             <label className="text-sm font-semibold text-primary">Período</label>
             <select
               value={preset}
@@ -92,11 +92,11 @@ export function DashboardFilters() {
             </select>
           </div>
 
-          {/* Custom Date Inputs - shown only when custom is selected */}
+          {/* Render date pickers only when 'custom' is selected */}
           {preset === 'custom' && (
             <>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-primary">Início da publicação</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-primary">Início</label>
                 <div className="relative">
                   <Input
                     type="date"
@@ -113,8 +113,8 @@ export function DashboardFilters() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-primary">Fim da publicação</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-primary">Fim</label>
                 <div className="relative">
                   <Input
                     type="date"
