@@ -8,6 +8,7 @@ export type GetArticlesArgs = {
   page: number
   startDate?: number
   endDate?: number
+  themes?: string[]
 }
 
 export type GetArticlesResult = {
@@ -20,7 +21,7 @@ const PAGE_SIZE = 40
 export async function getArticles(
   args: GetArticlesArgs,
 ): Promise<GetArticlesResult> {
-  const { agency, page, startDate, endDate } = args
+  const { agency, page, startDate, endDate, themes } = args
 
   let filter_by: string[] = [
     `agency:=${agency}`
@@ -32,6 +33,10 @@ export async function getArticles(
 
   if (endDate) {
     filter_by.push(`published_at:<${Math.floor((endDate / 1000) + (60 * 60 * 3))}`)
+  }
+
+  if (themes && themes.length > 0) {
+    filter_by.push(`theme_1_level_1_label:[${themes.join(',')}]`)
   }
 
   // biome-ignore format: true

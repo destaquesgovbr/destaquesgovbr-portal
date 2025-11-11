@@ -9,6 +9,7 @@ export type QueryArticlesArgs = {
   startDate?: number
   endDate?: number
   agencies?: string[]
+  themes?: string[]
 }
 
 export type QueryArticlesResult = {
@@ -21,7 +22,7 @@ const PAGE_SIZE = 40
 export async function queryArticles(
   args: QueryArticlesArgs,
 ): Promise<QueryArticlesResult> {
-  const { page, query, startDate, endDate, agencies } = args
+  const { page, query, startDate, endDate, agencies, themes } = args
 
   let filter_by: string[] = []
 
@@ -35,6 +36,10 @@ export async function queryArticles(
 
   if (agencies && agencies.length > 0) {
     filter_by.push(`agency:[${agencies.join(',')}]`)
+  }
+
+  if (themes && themes.length > 0) {
+    filter_by.push(`theme_1_level_1_label:[${themes.join(',')}]`)
   }
 
   // biome-ignore format: true

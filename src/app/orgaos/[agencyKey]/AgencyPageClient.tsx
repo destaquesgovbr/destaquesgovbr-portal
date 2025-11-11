@@ -5,17 +5,19 @@ import { getArticles } from './actions'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useState, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
+import { ThemeOption } from '@/lib/themes-utils'
 
 type AgencyPageClientProps = {
   agencyKey: string
   agencyName: string
+  themes: ThemeOption[]
 }
 
-export default function AgencyPageClient({ agencyKey, agencyName }: AgencyPageClientProps) {
+export default function AgencyPageClient({ agencyKey, agencyName, themes }: AgencyPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -31,11 +33,17 @@ export default function AgencyPageClient({ agencyKey, agencyName }: AgencyPageCl
     return dataFim ? new Date(dataFim) : undefined
   })
 
+  const [selectedThemes, setSelectedThemes] = useState<string[]>(() => {
+    const temas = searchParams.get('temas')
+    return temas ? temas.split(',') : []
+  })
+
   // Function to update URL params
   const updateUrlParams = useCallback(
     (updates: {
       dataInicio?: string | null
       dataFim?: string | null
+      temas?: string | null
     }) => {
       const params = new URLSearchParams(searchParams.toString())
 
@@ -75,14 +83,25 @@ export default function AgencyPageClient({ agencyKey, agencyName }: AgencyPageCl
     [updateUrlParams]
   )
 
+  const handleThemesChange = useCallback(
+    (themesList: string[]) => {
+      setSelectedThemes(themesList)
+      updateUrlParams({
+        temas: themesList.length > 0 ? themesList.join(',') : null,
+      })
+    },
+    [updateUrlParams]
+  )
+
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', agencyKey, startDate, endDate],
+    queryKey: ['articles', agencyKey, startDate, endDate, selectedThemes],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
       getArticles({
         page: pageParam ?? 1,
         agency: agencyKey,
         startDate: startDate?.getTime(),
         endDate: endDate?.getTime(),
+        themes: selectedThemes.length > 0 ? selectedThemes : undefined,
       }),
     getNextPageParam: (lastPage) => lastPage.page ?? undefined,
     initialPageParam: 1,
@@ -97,6 +116,14 @@ export default function AgencyPageClient({ agencyKey, agencyName }: AgencyPageCl
   })
 
   const articles = articlesQ.data?.pages.flatMap((page) => page.articles) ?? []
+
+  const getThemeName = useMemo(
+    () => (key: string) => {
+      const theme = themes.find((t) => t.key === key)
+      return theme?.name || key
+    },
+    [themes]
+  )
 
   if (articlesQ.isError) {
     return (
@@ -130,10 +157,14 @@ export default function AgencyPageClient({ agencyKey, agencyName }: AgencyPageCl
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Sidebar - Filters */}
           <ArticleFilters
+            themes={themes}
             startDate={startDate}
             endDate={endDate}
+            selectedThemes={selectedThemes}
             onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange}
+            onThemesChange={handleThemesChange}
+            getThemeName={getThemeName}
             showAgencyFilter={false}
           />
 
