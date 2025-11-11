@@ -19,7 +19,6 @@ type ThemeMultiSelectProps = {
   themes: Theme[]
   selectedThemes: string[]
   onSelectedThemesChange: (themes: string[]) => void
-  showBadges?: boolean
   themeHierarchy?: ThemeNode[]
 }
 
@@ -135,7 +134,6 @@ export function ThemeMultiSelect({
   themes,
   selectedThemes,
   onSelectedThemesChange,
-  showBadges = true,
   themeHierarchy = [],
 }: ThemeMultiSelectProps) {
   const [isExpanded, setIsExpanded] = React.useState(false)
@@ -265,28 +263,6 @@ export function ThemeMultiSelect({
             </div>
           </div>
         </Portal>
-      )}
-
-      {showBadges && selectedThemes.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3">
-          {selectedThemes.map((key) => (
-            <span
-              key={key}
-              className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20 hover:bg-primary/15 transition-colors"
-              title={themes.find((t) => t.key === key)?.name || key}
-            >
-              <span className="max-w-[150px] truncate">{themes.find((t) => t.key === key)?.name || key}</span>
-              <button
-                type="button"
-                onClick={() => toggleTheme(key)}
-                className="text-primary/70 hover:text-primary hover:bg-primary/20 rounded-sm p-0.5 transition-colors"
-                aria-label={`Remover ${themes.find((t) => t.key === key)?.name || key}`}
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </span>
-          ))}
-        </div>
       )}
     </div>
   )

@@ -14,14 +14,12 @@ type AgencyMultiSelectProps = {
   agencies: Agency[]
   selectedAgencies: string[]
   onSelectedAgenciesChange: (agencies: string[]) => void
-  showBadges?: boolean
 }
 
 export function AgencyMultiSelect({
   agencies,
   selectedAgencies,
   onSelectedAgenciesChange,
-  showBadges = true,
 }: AgencyMultiSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [isExpanded, setIsExpanded] = React.useState(false)
@@ -277,28 +275,6 @@ export function AgencyMultiSelect({
             </div>
           </div>
         </Portal>
-      )}
-
-      {/* Selected badges */}
-      {showBadges && selectedAgencies.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3">
-          {selectedAgencies.map((key) => (
-            <span
-              key={key}
-              className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20 hover:bg-primary/15 transition-colors"
-            >
-              <span className="max-w-[150px] truncate">{getAgencyName(key)}</span>
-              <button
-                type="button"
-                onClick={() => toggleAgency(key)}
-                className="text-primary/70 hover:text-primary hover:bg-primary/20 rounded-sm p-0.5 transition-colors"
-                aria-label={`Remover ${getAgencyName(key)}`}
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </span>
-          ))}
-        </div>
       )}
     </div>
   )

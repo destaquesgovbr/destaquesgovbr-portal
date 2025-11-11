@@ -147,7 +147,6 @@ export function ArticleFilters({
                   agencies={agencies}
                   selectedAgencies={selectedAgencies}
                   onSelectedAgenciesChange={onAgenciesChange}
-                  showBadges={false}
                 />
               </div>
 
@@ -202,7 +201,6 @@ export function ArticleFilters({
                   themes={themes}
                   selectedThemes={selectedThemes}
                   onSelectedThemesChange={onThemesChange}
-                  showBadges={false}
                 />
               </div>
 
