@@ -9,6 +9,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
 import { ArticleFilters } from '@/components/ArticleFilters'
+import { AgencyOption } from '@/lib/agencies-utils'
 import { ThemeOption } from '@/lib/themes-utils'
 
 type AgencyPageClientProps = {
@@ -125,6 +126,14 @@ export default function AgencyPageClient({ agencyKey, agencyName, themes }: Agen
     [themes]
   )
 
+  const getThemeHierarchyPath = useMemo(
+    () => (key: string) => {
+      const theme = themes.find((t) => t.key === key)
+      return theme?.hierarchyPath || theme?.name || key
+    },
+    [themes]
+  )
+
   if (articlesQ.isError) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -165,6 +174,7 @@ export default function AgencyPageClient({ agencyKey, agencyName, themes }: Agen
             onEndDateChange={handleEndDateChange}
             onThemesChange={handleThemesChange}
             getThemeName={getThemeName}
+            getThemeHierarchyPath={getThemeHierarchyPath}
             showAgencyFilter={false}
           />
 

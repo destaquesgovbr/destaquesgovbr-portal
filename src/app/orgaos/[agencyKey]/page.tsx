@@ -1,5 +1,5 @@
 import { getAgenciesByName } from '@/lib/agencies-utils'
-import { getThemesList } from '@/lib/themes-utils'
+import { getThemesWithHierarchy } from '@/lib/themes-utils'
 import AgencyPageClient from './AgencyPageClient'
 import { notFound } from 'next/navigation'
 
@@ -12,7 +12,7 @@ type AgencyPageProps = {
 export default async function AgencyPage({ params }: AgencyPageProps) {
   const { agencyKey } = await params
   const agencies = await getAgenciesByName()
-  const themes = await getThemesList()
+  const themes = await getThemesWithHierarchy()
 
   const agency = agencies[agencyKey]
 

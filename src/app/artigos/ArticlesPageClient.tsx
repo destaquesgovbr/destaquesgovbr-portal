@@ -149,6 +149,14 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
     [themes]
   )
 
+  const getThemeHierarchyPath = useMemo(
+    () => (key: string) => {
+      const theme = themes.find((t) => t.key === key)
+      return theme?.hierarchyPath || theme?.name || key
+    },
+    [themes]
+  )
+
   if (articlesQ.isError) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -193,6 +201,7 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
             onThemesChange={handleThemesChange}
             getAgencyName={getAgencyName}
             getThemeName={getThemeName}
+            getThemeHierarchyPath={getThemeHierarchyPath}
           />
 
           {/* Right Content - Results Grid */}

@@ -39,7 +39,11 @@ export async function queryArticles(
   }
 
   if (themes && themes.length > 0) {
-    filter_by.push(`theme_1_level_1_label:[${themes.join(',')}]`)
+    // Filter by any theme level - level 1, 2, or 3
+    const themeFilters = themes.map(theme =>
+      `(theme_1_level_1_code:${theme} || theme_1_level_2_code:${theme} || theme_1_level_3_code:${theme})`
+    )
+    filter_by.push(`(${themeFilters.join(' || ')})`)
   }
 
   // biome-ignore format: true

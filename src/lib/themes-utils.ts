@@ -16,6 +16,7 @@ export type Theme = {
 export type ThemeOption = {
   key: string
   name: string
+  hierarchyPath?: string
 }
 
 /**
@@ -67,6 +68,52 @@ export async function getThemesList(): Promise<ThemeOption[]> {
 }
 
 /**
+ * Retorna todos os temas incluindo a hierarquia completa (flattened para exibição)
+ */
+export async function getThemesWithHierarchy(): Promise<ThemeOption[]> {
+  const themes = await getThemesByLabel()
+  const result: ThemeOption[] = []
+
+  function addThemeWithHierarchy(theme: Theme, level: number = 1, parentPath: string[] = []) {
+    // Criar prefixo de indentação baseado no nível (sem caracteres visuais)
+    const prefix = level === 1 ? '' : '  '.repeat(level - 1)
+    const currentPath = [...parentPath, theme.label]
+    const hierarchyPath = currentPath.join(' > ')
+
+    result.push({
+      key: theme.code,
+      name: `${prefix}${theme.label}`,
+      hierarchyPath,
+    })
+    if (theme.children) {
+      for (const child of theme.children) {
+        addThemeWithHierarchy(child, level + 1, currentPath)
+      }
+    }
+  }
+
+  for (const theme of themes) {
+    addThemeWithHierarchy(theme)
+  }
+
+  return result
+}
+
+/**
+ * Retorna a estrutura completa de temas com hierarquia para componentes avançados
+ */
+export async function getThemesHierarchy(): Promise<Theme[]> {
+  return getThemesByLabel()
+}
+
+/**
+ * Retorna apenas os temas de nível 1 (para uso em tree view ou acordeão)
+ */
+export async function getTopLevelThemes(): Promise<Theme[]> {
+  return getThemesByLabel()
+}
+
+/**
  * Retorna o nome de um tema a partir de sua label
  */
 export async function getThemeName(
@@ -77,4 +124,45 @@ export async function getThemeName(
   const allThemes = flattenThemes(themes)
   const theme = allThemes.find((t) => t.label === themeLabel)
   return theme?.label
+}
+
+/**
+ * Builds a hierarchy path for a theme (e.g., "Economia > Política > Fiscal")
+ * from the YAML hierarchy structure
+ */
+export async function getThemeHierarchyPath(themeCode: string): Promise<string> {
+  const themes = await getThemesByLabel()
+  const allThemes = flattenThemes(themes)
+  const theme = allThemes.find((t) => t.code === themeCode)
+
+  if (!theme) return themeCode
+
+  // Build path by finding parent items in the hierarchy
+  const path: string[] = [theme.label]
+  let currentTheme = theme
+
+  // Recursively find parents
+  function findParent(targetTheme: Theme, searchThemes: Theme[]): Theme | undefined {
+    for (const t of searchThemes) {
+      if (t.children) {
+        for (const child of t.children) {
+          if (child.code === targetTheme.code) {
+            return t
+          }
+          const grandParent = findParent(targetTheme, [child])
+          if (grandParent) return grandParent
+        }
+      }
+    }
+    return undefined
+  }
+
+  while (true) {
+    const parent = findParent(currentTheme, themes)
+    if (!parent) break
+    path.unshift(parent.label)
+    currentTheme = parent
+  }
+
+  return path.join(' > ')
 }

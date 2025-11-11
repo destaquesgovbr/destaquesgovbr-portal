@@ -48,6 +48,7 @@ type ArticleFiltersProps = {
   onThemesChange?: (themes: string[]) => void
   getAgencyName?: (key: string) => string
   getThemeName?: (key: string) => string
+  getThemeHierarchyPath?: (key: string) => string
   showAgencyFilter?: boolean
   showThemeFilter?: boolean
 }
@@ -65,6 +66,7 @@ export function ArticleFilters({
   onThemesChange,
   getAgencyName,
   getThemeName,
+  getThemeHierarchyPath,
   showAgencyFilter = true,
   showThemeFilter = true,
 }: ArticleFiltersProps) {
@@ -176,6 +178,7 @@ export function ArticleFilters({
                       <div
                         key={key}
                         className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group"
+                        title={getThemeHierarchyPath ? getThemeHierarchyPath(key) : getThemeName(key)}
                       >
                         <span className="truncate text-primary/90 flex-1 min-w-0">
                           {getThemeName(key)}
