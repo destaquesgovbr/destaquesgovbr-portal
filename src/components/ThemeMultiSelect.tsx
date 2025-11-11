@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { X, ChevronDown } from 'lucide-react'
+import { X, ChevronDown, Minus } from 'lucide-react'
 import { Portal } from '@/components/Portal'
 
 type Theme = {
@@ -23,6 +23,23 @@ type ThemeMultiSelectProps = {
   themeHierarchy?: ThemeNode[]
 }
 
+// Helper to check if a node has any direct child explicitly selected
+function hasAnyChildSelected(node: ThemeNode, selectedThemes: string[]): boolean {
+  if (!node.children || node.children.length === 0) return false
+  return node.children.some(child => selectedThemes.includes(child.code))
+}
+
+// Helper to check if some (but not all) direct children are selected
+function isIndeterminate(node: ThemeNode, selectedThemes: string[]): boolean {
+  if (!node.children || node.children.length === 0) return false
+
+  const selectedChildren = node.children.filter(child =>
+    selectedThemes.includes(child.code) || hasAnyChildSelected(child, selectedThemes)
+  )
+
+  return selectedChildren.length > 0 && selectedChildren.length < node.children.length
+}
+
 // Component for tree view items
 function ThemeTreeItem({
   node,
@@ -31,6 +48,7 @@ function ThemeTreeItem({
   onToggle,
   expandedNodes,
   onExpandToggle,
+  ancestorSelected = false,
 }: {
   node: ThemeNode
   level?: number
@@ -38,10 +56,14 @@ function ThemeTreeItem({
   onToggle: (code: string) => void
   expandedNodes: Set<string>
   onExpandToggle: (code: string) => void
+  ancestorSelected?: boolean
 }) {
   const hasChildren = node.children && node.children.length > 0
   const isExpanded = expandedNodes.has(node.code)
-  const isSelected = selectedThemes.includes(node.code)
+  const isDirectlySelected = selectedThemes.includes(node.code)
+  const isInherited = ancestorSelected && !isDirectlySelected
+  const showAsChecked = isDirectlySelected || ancestorSelected
+  const indeterminate = !isDirectlySelected && !ancestorSelected && isIndeterminate(node, selectedThemes)
 
   return (
     <div>
@@ -64,16 +86,25 @@ function ThemeTreeItem({
           <div className="w-4" />
         )}
 
-        <input
-          type="checkbox"
-          checked={isSelected}
-          onChange={() => onToggle(node.code)}
-          className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-        />
+        <div className="relative h-4 w-4 flex-shrink-0">
+          {indeterminate ? (
+            <div className="h-4 w-4 rounded bg-primary border border-primary flex items-center justify-center cursor-pointer" onClick={() => onToggle(node.code)}>
+              <Minus className="h-3 w-3 text-white" strokeWidth={3} />
+            </div>
+          ) : (
+            <input
+              type="checkbox"
+              checked={showAsChecked}
+              onChange={() => onToggle(node.code)}
+              className={`h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer ${isInherited ? 'opacity-60' : ''}`}
+              disabled={isInherited}
+            />
+          )}
+        </div>
 
         <label
-          className="flex-1 cursor-pointer text-sm font-medium"
-          onClick={() => onToggle(node.code)}
+          className={`flex-1 cursor-pointer text-sm font-medium ${isInherited ? 'text-muted-foreground' : ''}`}
+          onClick={() => !isInherited && onToggle(node.code)}
         >
           {node.label}
         </label>
@@ -90,6 +121,7 @@ function ThemeTreeItem({
               onToggle={onToggle}
               expandedNodes={expandedNodes}
               onExpandToggle={onExpandToggle}
+              ancestorSelected={isDirectlySelected || ancestorSelected}
             />
           ))}
         </div>
@@ -273,7 +305,7 @@ function buildHierarchyFromFlat(themes: Theme[]): ThemeNode[] {
     }
     map.set(theme.key, node)
 
-    const indentLevel = (theme.name.length - theme.name.trimLeft().length) / 2
+    const indentLevel = (theme.name.length - theme.name.trimStart().length) / 2
 
     if (indentLevel === 0) {
       roots.push(node)
@@ -282,7 +314,7 @@ function buildHierarchyFromFlat(themes: Theme[]): ThemeNode[] {
 
   let lastByLevel: Record<number, ThemeNode> = {}
   for (const theme of themes) {
-    const indentLevel = (theme.name.length - theme.name.trimLeft().length) / 2
+    const indentLevel = (theme.name.length - theme.name.trimStart().length) / 2
 
     if (indentLevel > 0) {
       const parentLevel = indentLevel - 1
