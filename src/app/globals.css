@@ -138,12 +138,18 @@
   width: 100%;
   height: 36px;
   background-color: #F7F3EB; /* cor central */
-  background-image:
-    url('/ribbon-tile.svg'),
-    url('/ribbon-tile.svg'); /* duas instâncias do mesmo SVG */
-  background-repeat: no-repeat, no-repeat;
-  background-size: auto 36px, auto 36px; /* mantém proporção original */
-  background-position: left center, right center; /* uma à esquerda, outra à direita */
+}
+
+/* Show SVGs only on medium screens and up */
+@media (min-width: 768px) {
+  .header-banner {
+    background-image:
+      url('/ribbon-tile.svg'),
+      url('/ribbon-tile.svg'); /* duas instâncias do mesmo SVG */
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto 36px, auto 36px; /* mantém proporção original */
+    background-position: left center, right center; /* uma à esquerda, outra à direita */
+  }
 }
 
 .transparency-banner-1 {
