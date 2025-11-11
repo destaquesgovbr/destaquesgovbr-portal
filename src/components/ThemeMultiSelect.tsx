@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { X, Maximize2, ChevronDown } from 'lucide-react'
+import { X, ChevronDown } from 'lucide-react'
 import { Portal } from '@/components/Portal'
 
 type Theme = {
@@ -105,19 +105,9 @@ export function ThemeMultiSelect({
   showBadges = true,
   themeHierarchy = [],
 }: ThemeMultiSelectProps) {
-  const [isOpen, setIsOpen] = React.useState(false)
   const [isExpanded, setIsExpanded] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [expandedNodes, setExpandedNodes] = React.useState<Set<string>>(new Set())
-  const dropdownRef = React.useRef<HTMLDivElement>(null)
-
-  const filteredThemes = React.useMemo(() => {
-    if (!searchTerm) return themes
-    const searchLower = searchTerm.toLowerCase()
-    return themes.filter((theme) =>
-      theme.name.toLowerCase().includes(searchLower)
-    )
-  }, [searchTerm, themes])
 
   const hierarchyNodes = React.useMemo(() => {
     return themeHierarchy && themeHierarchy.length > 0
@@ -149,61 +139,20 @@ export function ThemeMultiSelect({
   }, [])
 
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  React.useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        if (isExpanded) {
-          setIsExpanded(false)
-        } else if (isOpen) {
-          setIsOpen(false)
-        }
+      if (event.key === 'Escape' && isExpanded) {
+        setIsExpanded(false)
       }
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [isExpanded, isOpen])
-
-  const renderThemeList = () => (
-    <>
-      {filteredThemes.length === 0 ? (
-        <div className="text-sm text-muted-foreground py-4 text-center">
-          Nenhum tema encontrado
-        </div>
-      ) : (
-        filteredThemes.map((theme) => (
-          <label
-            key={theme.key}
-            className={`flex items-center cursor-pointer rounded-sm transition-colors group px-3 py-2 hover:bg-accent hover:text-accent-foreground`}
-          >
-            <input
-              type="checkbox"
-              checked={selectedThemes.includes(theme.key)}
-              onChange={() => toggleTheme(theme.key)}
-              className="mr-3 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-            />
-            <span className="truncate text-sm group-hover:font-medium transition-all">
-              {theme.name}
-            </span>
-          </label>
-        ))
-      )}
-    </>
-  )
+  }, [isExpanded])
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className="relative w-full">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsExpanded(true)}
         className="w-full h-10 px-3 py-2 border border-input rounded-md text-left text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
       >
         <span className={selectedThemes.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
@@ -212,35 +161,6 @@ export function ThemeMultiSelect({
             : `${selectedThemes.length} selecionado${selectedThemes.length > 1 ? 's' : ''}`}
         </span>
       </button>
-
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-[200] animate-in fade-in-0 zoom-in-95">
-          <div className="p-3 border-b border-border flex gap-2">
-            <input
-              type="text"
-              placeholder="Buscar temas..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-3 py-2 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-              autoFocus
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setIsExpanded(true)
-                setIsOpen(false)
-              }}
-              className="px-3 py-2 border border-input rounded-md hover:bg-gray-50 transition-colors"
-              title="Expandir visualização"
-            >
-              <Maximize2 className="h-4 w-4 text-muted-foreground" />
-            </button>
-          </div>
-          <div className="max-h-[300px] overflow-y-auto p-2">
-            {renderThemeList()}
-          </div>
-        </div>
-      )}
 
       {isExpanded && (
         <Portal>

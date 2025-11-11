@@ -6,6 +6,8 @@ import { AgencyMultiSelect } from '@/components/AgencyMultiSelect'
 import { ThemeMultiSelect } from '@/components/ThemeMultiSelect'
 import { AgencyOption } from '@/lib/agencies-utils'
 import { ThemeOption } from '@/lib/themes-utils'
+import { useState, useRef, useEffect } from 'react'
+import { Portal } from '@/components/Portal'
 
 type DateFilterProps = {
   label: string
@@ -32,6 +34,52 @@ function DateFilter({ label, value, onChange }: DateFilterProps) {
         )}
       </div>
     </div>
+  )
+}
+
+type TooltipProps = {
+  content: string
+  children: React.ReactNode
+}
+
+function Tooltip({ content, children }: TooltipProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
+  const triggerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isVisible && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setPosition({
+        top: rect.top + rect.height / 2,
+        left: rect.right + 8,
+      })
+    }
+  }, [isVisible])
+
+  return (
+    <>
+      <div
+        ref={triggerRef}
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        {children}
+      </div>
+      {isVisible && (
+        <Portal>
+          <div
+            className="fixed px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap z-[9999] pointer-events-none -translate-y-1/2"
+            style={{
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+            }}
+          >
+            {content}
+          </div>
+        </Portal>
+      )}
+    </>
   )
 }
 
@@ -175,23 +223,24 @@ export function ArticleFilters({
                   </div>
                   <div className="space-y-2 max-h-60 overflow-y-auto">
                     {selectedThemes.map((key) => (
-                      <div
+                      <Tooltip
                         key={key}
-                        className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group"
-                        title={getThemeHierarchyPath ? getThemeHierarchyPath(key) : getThemeName(key)}
+                        content={getThemeHierarchyPath ? getThemeHierarchyPath(key) : getThemeName(key)}
                       >
-                        <span className="truncate text-primary/90 flex-1 min-w-0">
-                          {getThemeName(key)}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => onThemesChange(selectedThemes.filter((k) => k !== key))}
-                          className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
-                          aria-label={`Remover ${getThemeName(key)}`}
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
+                        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group">
+                          <span className="truncate text-primary/90 flex-1 min-w-0">
+                            {getThemeName(key)}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => onThemesChange(selectedThemes.filter((k) => k !== key))}
+                            className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                            aria-label={`Remover ${getThemeName(key)}`}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </Tooltip>
                     ))}
                   </div>
                 </div>
