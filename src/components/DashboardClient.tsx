@@ -15,6 +15,56 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import KpiCard from './KpiCard'
 import { ChartTooltip } from './ChartTooltip'
 import { addDays } from 'date-fns'
+import { Info } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Portal } from './Portal'
+
+type InfoTooltipProps = {
+  content: string
+  children: React.ReactNode
+  side?: 'left' | 'right'
+}
+
+function InfoTooltip({ content, children, side = 'right' }: InfoTooltipProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
+  const triggerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isVisible && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setPosition({
+        top: rect.top + rect.height / 2,
+        left: side === 'right' ? rect.right + 8 : rect.left - 8,
+      })
+    }
+  }, [isVisible, side])
+
+  return (
+    <>
+      <div
+        ref={triggerRef}
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        {children}
+      </div>
+      {isVisible && (
+        <Portal>
+          <div
+            className={`fixed px-3 py-2 bg-gray-900 text-white text-xs rounded z-[9999] pointer-events-none -translate-y-1/2 max-w-xs whitespace-pre-line ${side === 'left' ? '-translate-x-full' : ''}`}
+            style={{
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+            }}
+          >
+            {content}
+          </div>
+        </Portal>
+      )}
+    </>
+  )
+}
 
 type DashboardClientProps = {
   kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
@@ -219,8 +269,16 @@ export default function DashboardClient(props: DashboardClientProps) {
                 alt="decorativo"
                 className="w-2 h-12 mr-2 mt-1"
               />
-              <div>
-                <h3 className="font-semibold text-lg">Consistência</h3>
+              <div className="flex-1">
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-semibold text-lg">Consistência</h3>
+                  <InfoTooltip content="Calculado através do desvio padrão vs média diária.
+Alta: <30%
+Moderada: 30-60%
+Baixa: ≥60%">
+                    <Info className="h-4 w-4 text-muted-foreground" />
+                  </InfoTooltip>
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Regularidade do ritmo de publicações.
                 </p>
@@ -249,8 +307,13 @@ export default function DashboardClient(props: DashboardClientProps) {
                 alt="decorativo"
                 className="w-2 h-12 mr-2 mt-1"
               />
-              <div>
-                <h3 className="font-semibold text-lg">Concentração temática</h3>
+              <div className="flex-1">
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-semibold text-lg">Concentração temática</h3>
+                  <InfoTooltip side="left" content={`Top 3 temas:\n${themes.slice(0, 3).map((t, i) => `${i + 1}. ${t.theme}`).join('\n')}`}>
+                    <Info className="h-4 w-4 text-muted-foreground" />
+                  </InfoTooltip>
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Distribuição da cobertura por temas.
                 </p>
