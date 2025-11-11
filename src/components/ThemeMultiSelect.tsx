@@ -297,11 +297,9 @@ function buildHierarchyFromFlat(themes: Theme[]): ThemeNode[] {
   const map = new Map<string, ThemeNode>()
 
   for (const theme of themes) {
-    // Only remove the tree characters (└), but keep the indentation spaces
-    const cleanName = theme.name.replace(/└/g, '').trim()
     const node: ThemeNode = {
       code: theme.key,
-      label: cleanName,
+      label: theme.name,
       children: [],
     }
     map.set(theme.key, node)
