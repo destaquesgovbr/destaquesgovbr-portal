@@ -227,8 +227,8 @@ export function ArticleFilters({
                         key={key}
                         content={getThemeHierarchyPath ? getThemeHierarchyPath(key) : getThemeName(key)}
                       >
-                        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group">
-                          <span className="truncate text-primary/90 flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group" title="">
+                          <span className="text-primary/90 flex-1 min-w-0 overflow-hidden line-clamp-1" style={{ textOverflow: 'clip' }} title="">
                             {getThemeName(key)}
                           </span>
                           <button
@@ -236,6 +236,7 @@ export function ArticleFilters({
                             onClick={() => onThemesChange(selectedThemes.filter((k) => k !== key))}
                             className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                             aria-label={`Remover ${getThemeName(key)}`}
+                            title=""
                           >
                             <X className="h-4 w-4" />
                           </button>
