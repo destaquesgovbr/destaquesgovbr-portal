@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import KpiCard from './KpiCard'
 import { ChartTooltip } from './ChartTooltip'
 import { addDays } from 'date-fns'
-import { Info } from 'lucide-react'
+import { Info, TrendingUp, TrendingDown } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { Portal } from './Portal'
 
@@ -353,7 +353,7 @@ Baixa: ≥60%">
               {themeComparison.growing.length > 0 && (
                 <div>
                   <h4 className="text-sm font-semibold text-green-600 mb-3 flex items-center gap-2">
-                    <span>📈</span> Em alta
+                    <TrendingUp className="h-4 w-4" /> Em alta
                   </h4>
                   <div className="space-y-2">
                     {themeComparison.growing.map((theme) => (
@@ -369,7 +369,7 @@ Baixa: ≥60%">
               {themeComparison.declining.length > 0 && (
                 <div>
                   <h4 className="text-sm font-semibold text-red-600 mb-3 flex items-center gap-2">
-                    <span>📉</span> Em baixa
+                    <TrendingDown className="h-4 w-4" /> Em baixa
                   </h4>
                   <div className="space-y-2">
                     {themeComparison.declining.map((theme) => (
@@ -407,7 +407,7 @@ Baixa: ≥60%">
               {agencyComparison.growing.length > 0 && (
                 <div>
                   <h4 className="text-sm font-semibold text-green-600 mb-3 flex items-center gap-2">
-                    <span>📈</span> Em alta
+                    <TrendingUp className="h-4 w-4" /> Em alta
                   </h4>
                   <div className="space-y-2">
                     {agencyComparison.growing.map((agency) => (
@@ -423,7 +423,7 @@ Baixa: ≥60%">
               {agencyComparison.declining.length > 0 && (
                 <div>
                   <h4 className="text-sm font-semibold text-red-600 mb-3 flex items-center gap-2">
-                    <span>📉</span> Em baixa
+                    <TrendingDown className="h-4 w-4" /> Em baixa
                   </h4>
                   <div className="space-y-2">
                     {agencyComparison.declining.map((agency) => (
