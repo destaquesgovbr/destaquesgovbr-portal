@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { X, ChevronDown, Minus } from 'lucide-react'
+import { X, ChevronDown } from 'lucide-react'
 import { Portal } from '@/components/Portal'
 
 type Theme = {
@@ -65,6 +65,14 @@ function ThemeTreeItem({
   const showAsChecked = isDirectlySelected || ancestorSelected
   const indeterminate = !isDirectlySelected && !ancestorSelected && isIndeterminate(node, selectedThemes)
 
+  const checkboxRef = React.useRef<HTMLInputElement>(null)
+
+  React.useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = indeterminate
+    }
+  }, [indeterminate])
+
   return (
     <div>
       <div
@@ -86,21 +94,14 @@ function ThemeTreeItem({
           <div className="w-4" />
         )}
 
-        <div className="relative h-4 w-4 flex-shrink-0">
-          {indeterminate ? (
-            <div className="h-4 w-4 rounded bg-primary border border-primary flex items-center justify-center cursor-pointer" onClick={() => onToggle(node.code)}>
-              <Minus className="h-3 w-3 text-white" strokeWidth={3} />
-            </div>
-          ) : (
-            <input
-              type="checkbox"
-              checked={showAsChecked}
-              onChange={() => onToggle(node.code)}
-              className={`h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer ${isInherited ? 'opacity-60' : ''}`}
-              disabled={isInherited}
-            />
-          )}
-        </div>
+        <input
+          ref={checkboxRef}
+          type="checkbox"
+          checked={showAsChecked}
+          onChange={() => onToggle(node.code)}
+          className={`h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer ${isInherited ? 'opacity-60' : ''}`}
+          disabled={isInherited}
+        />
 
         <label
           className={`flex-1 cursor-pointer text-sm font-medium ${isInherited ? 'text-muted-foreground' : ''}`}
