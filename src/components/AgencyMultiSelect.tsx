@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { X, Maximize2 } from 'lucide-react'
+import { Portal } from '@/components/Portal'
 
 type Agency = {
   key: string
@@ -219,14 +220,15 @@ export function AgencyMultiSelect({
 
       {/* Expanded Modal */}
       {isExpanded && (
-        <div
-          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4"
-          onClick={() => setIsExpanded(false)}
-        >
+        <Portal>
           <div
-            className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col animate-in zoom-in-95"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4 pointer-events-auto"
+            onClick={() => setIsExpanded(false)}
           >
+            <div
+              className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col animate-in zoom-in-95 relative z-[301]"
+              onClick={(e) => e.stopPropagation()}
+            >
             {/* Modal Header */}
             <div className="p-6 border-b border-border flex items-center justify-between">
               <h2 className="text-xl font-semibold text-primary">Selecionar Órgãos</h2>
@@ -272,8 +274,9 @@ export function AgencyMultiSelect({
                 Confirmar
               </button>
             </div>
+            </div>
           </div>
-        </div>
+        </Portal>
       )}
 
       {/* Selected badges */}
