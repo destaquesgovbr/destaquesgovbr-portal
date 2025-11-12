@@ -3,6 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
+import { unstable_cache } from 'next/cache'
 
 /**
  * Tipos base
@@ -21,24 +22,28 @@ export type AgencyOption = {
 }
 
 /**
- * Cache do arquivo YAML carregado.
+ * Função interna que carrega o YAML de agências.
  */
-let fullFile: { sources: Record<string, Agency> } | null = null
+async function loadAgenciesYaml(): Promise<Record<string, Agency>> {
+  const filePath = path.join(process.cwd(), 'src', 'lib', 'agencies.yaml')
+  const file = fs.readFileSync(filePath, 'utf8')
+  const fullFile = yaml.load(file) as { sources: Record<string, Agency> }
+  return fullFile.sources
+}
 
 /**
  * Lê e retorna todas as agências do YAML.
- * O resultado é cacheado em memória para evitar leituras repetidas.
+ * O resultado é cacheado usando Next.js cache para máxima performance.
+ * Revalida a cada 1 hora (ajuste conforme necessário).
  */
-export async function getAgenciesByName(): Promise<Record<string, Agency>> {
-  if (fullFile) return fullFile.sources
-
-  const filePath = path.join(process.cwd(), 'src', 'lib', 'agencies.yaml')
-  const file = fs.readFileSync(filePath, 'utf8')
-
-  fullFile = yaml.load(file) as { sources: Record<string, Agency> }
-
-  return fullFile.sources
-}
+export const getAgenciesByName = unstable_cache(
+  loadAgenciesYaml,
+  ['agencies-yaml'],
+  {
+    revalidate: 3600, // 1 hour - adjust based on how often external data changes
+    tags: ['agencies']
+  }
+)
 
 /**
  * Retorna um campo específico (por padrão o `name`) de uma agência.

@@ -3,6 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
+import { unstable_cache } from 'next/cache'
 
 /**
  * Tipos base
@@ -20,24 +21,28 @@ export type ThemeOption = {
 }
 
 /**
- * Cache do arquivo YAML carregado.
+ * Função interna que carrega o YAML de temas.
  */
-let fullFile: { themes: Theme[] } | null = null
+async function loadThemesYaml(): Promise<Theme[]> {
+  const filePath = path.join(process.cwd(), 'src', 'lib', 'themes.yaml')
+  const file = fs.readFileSync(filePath, 'utf8')
+  const fullFile = yaml.load(file) as { themes: Theme[] }
+  return fullFile.themes
+}
 
 /**
  * Lê e retorna todos os temas do YAML.
- * O resultado é cacheado em memória para evitar leituras repetidas.
+ * O resultado é cacheado usando Next.js cache para máxima performance.
+ * Revalida a cada 1 hora (ajuste conforme necessário).
  */
-export async function getThemesByLabel(): Promise<Theme[]> {
-  if (fullFile) return fullFile.themes
-
-  const filePath = path.join(process.cwd(), 'src', 'lib', 'themes.yaml')
-  const file = fs.readFileSync(filePath, 'utf8')
-
-  fullFile = yaml.load(file) as { themes: Theme[] }
-
-  return fullFile.themes
-}
+export const getThemesByLabel = unstable_cache(
+  loadThemesYaml,
+  ['themes-yaml'],
+  {
+    revalidate: 3600, // 1 hour - adjust based on how often external data changes
+    tags: ['themes']
+  }
+)
 
 /**
  * Retorna um array achatado de todos os temas (incluindo sub-temas)
