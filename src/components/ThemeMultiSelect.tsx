@@ -146,6 +146,49 @@ export function ThemeMultiSelect({
       : buildHierarchyFromFlat(themes)
   }, [themeHierarchy, themes])
 
+  // Filter nodes based on search term
+  const filteredNodes = React.useMemo(() => {
+    if (!searchTerm.trim()) {
+      return hierarchyNodes
+    }
+
+    const searchLower = searchTerm.toLowerCase()
+
+    // Helper function to check if a node or any of its children match
+    const nodeMatches = (node: ThemeNode): boolean => {
+      // Check if current node matches
+      if (node.label.toLowerCase().includes(searchLower)) {
+        return true
+      }
+      // Check if any children match
+      if (node.children) {
+        return node.children.some(child => nodeMatches(child))
+      }
+      return false
+    }
+
+    // Helper function to filter and clone nodes
+    const filterNode = (node: ThemeNode): ThemeNode | null => {
+      const currentMatches = node.label.toLowerCase().includes(searchLower)
+      const filteredChildren = node.children
+        ?.map(child => filterNode(child))
+        .filter((child): child is ThemeNode => child !== null) ?? []
+
+      // Include node if it matches or has matching children
+      if (currentMatches || filteredChildren.length > 0) {
+        return {
+          ...node,
+          children: filteredChildren,
+        }
+      }
+      return null
+    }
+
+    return hierarchyNodes
+      .map(node => filterNode(node))
+      .filter((node): node is ThemeNode => node !== null)
+  }, [hierarchyNodes, searchTerm])
+
   const toggleTheme = React.useCallback(
     (themeKey: string) => {
       onSelectedThemesChange(
@@ -227,13 +270,13 @@ export function ThemeMultiSelect({
               </div>
 
               <div className="flex-1 overflow-y-auto p-6">
-                {hierarchyNodes.length === 0 ? (
+                {filteredNodes.length === 0 ? (
                   <div className="text-sm text-muted-foreground py-4 text-center">
                     Nenhum tema encontrado
                   </div>
                 ) : (
                   <div className="space-y-1">
-                    {hierarchyNodes.map((node) => (
+                    {filteredNodes.map((node) => (
                       <ThemeTreeItem
                         key={node.code}
                         node={node}
