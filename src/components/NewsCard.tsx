@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 export interface NewsCardProps {
   title: string
   summary?: string
-  theme_1_level_1: string
+  theme: string
   internalUrl: string
   date?: number | null
   imageUrl?: string
@@ -18,14 +18,14 @@ export interface NewsCardProps {
 const NewsCard = ({
   title,
   summary,
-  theme_1_level_1,
+  theme,
   internalUrl,
   date,
   imageUrl,
   ref,
   isMain = false,
 }: NewsCardProps) => {
-  const hasTheme = Boolean(theme_1_level_1 && theme_1_level_1.trim() !== '')
+  const hasTheme = Boolean(theme && theme.trim() !== '')
 
   return (
     <Link href={internalUrl} className="h-full" ref={ref}>
@@ -53,7 +53,7 @@ const NewsCard = ({
               <div className="absolute top-3 left-3">
                 <Badge className="bg-white text-primary font-medium shadow-sm">
                   <Tag className="w-3 h-3 mr-1 text-primary/70" />
-                  {theme_1_level_1}
+                  {theme}
                 </Badge>
               </div>
             )}
@@ -66,7 +66,7 @@ const NewsCard = ({
           {!imageUrl && hasTheme && (
             <Badge className="mb-2 bg-white text-primary/90 font-medium">
               <Tag className="w-3 h-3 mr-1 text-primary/70" />
-              {theme_1_level_1}
+              {theme}
             </Badge>
           )}
 
