@@ -4,12 +4,18 @@ import { ArrowLeft, Calendar, ExternalLink, Share2, Tag, Check } from 'lucide-re
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { ArticleRow } from '@/lib/article-row'
 
 export default function ClientArticle({ article, baseUrl, pageUrl }: { article: ArticleRow; baseUrl: string; pageUrl: string }) {
   const [copied, setCopied] = useState(false)
+
+  // Check if the cover image appears in the article body
+  const isImageInBody = useMemo(() => {
+    if (!article.image || !article.content) return false
+    return article.content.includes(article.image)
+  }, [article.image, article.content])
 
   async function handleShare() {
     try {
@@ -104,8 +110,8 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
           </div>
         </header>
 
-        {/* Imagem de capa */}
-        {article.image && (
+        {/* Imagem de capa - only show if image is NOT repeated in body */}
+        {article.image && !isImageInBody && (
           <div className="mb-12">
             <img
               src={article.image}
@@ -118,24 +124,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
         )}
 
         {/* Corpo do artigo */}
-        <article
-          className="prose prose-lg mx-auto max-w-3xl text-primary/90 leading-relaxed"
-          style={
-            article.image
-              ? {
-                  ['--cover-image' as any]: `url(${article.image})`,
-                }
-              : undefined
-          }
-        >
-          <style>{`
-            .prose img[src="${article.image}"] {
-              opacity: 0.2;
-              filter: grayscale(1);
-              pointer-events: none;
-            }
-          `}</style>
-
+        <article className="prose prose-lg mx-auto max-w-3xl text-primary/90 leading-relaxed">
           <MarkdownRenderer content={article.content ?? ''}/>
         </article>
 
