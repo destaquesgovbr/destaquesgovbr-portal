@@ -169,7 +169,7 @@ export function AgencyMultiSelect({
   )
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className={`relative w-full ${isOpen ? 'z-[9999]' : ''}`} ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -185,7 +185,7 @@ export function AgencyMultiSelect({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-[200] animate-in fade-in-0 zoom-in-95">
+        <div className="absolute top-full left-0 mt-1 w-[320px] bg-white border border-border rounded-md shadow-lg z-50 animate-in fade-in-0 zoom-in-95">
           {/* Search and Expand Button */}
           <div className="p-3 border-b border-border flex gap-2">
             <input
