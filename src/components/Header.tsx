@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import SearchBar from './SearchBar'
 import Link from 'next/link'
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 
 const navLinks = [
   { href: '/temas/Meio%20Ambiente%20e%20Sustentabilidade', label: 'Meio ambiente' },
@@ -20,9 +20,36 @@ const navLinks = [
 const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsVisible(true)
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false)
+      }
+
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [lastScrollY])
 
   return (
-    <header className="border-b bg-card shadow-card">
+    <header
+      className={`
+        fixed top-0 left-0 right-0 z-[9999]
+        border-b bg-card shadow-card
+        transition-transform duration-300 ease-in-out
+        ${isVisible ? 'translate-y-0' : '-translate-y-full'}
+      `}
+    >
       {/* Top bar with government branding */}
       <div className="header-banner py-2">
         <div className="container mx-auto px-4">

@@ -33,9 +33,11 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <Suspense>
-            {children}
-          </Suspense>
+          <div className="pt-[140px] md:pt-[180px]">
+            <Suspense>
+              {children}
+            </Suspense>
+          </div>
           <Footer />
         </Providers>
       </body>
