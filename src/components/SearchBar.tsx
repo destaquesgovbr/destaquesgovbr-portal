@@ -2,6 +2,7 @@
 
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
@@ -15,18 +16,16 @@ const SearchBar = () => {
     setQuery(searchParams.get("q") || "")
   }, [searchParams])
 
-  useEffect(() => {
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault()
     if (!query.trim()) return
-    const handler = setTimeout(() => {
-      router.push(`/busca?q=${encodeURIComponent(query)}`)
-    }, 2000)
-    return () => clearTimeout(handler)
-  }, [query, router])
+    router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && query.trim()) {
       e.preventDefault()
-      router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
+      handleSubmit()
     }
   }
 
@@ -47,23 +46,28 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="relative w-full">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Buscar notícias..."
-        className={query ? 'pl-10 pr-10' : 'pl-10'}
-      />
-      {query && (
-        <X
-          onClick={handleClear}
-          className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 active:bg-gray-300 hover:cursor-pointer transition-colors touch-manipulation"
-          aria-label="Limpar busca"
+    <form onSubmit={handleSubmit} className="relative w-full flex gap-2">
+      <div className="relative flex-1">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Buscar notícias..."
+          className={query ? 'pl-10 pr-10' : 'pl-10'}
         />
-      )}
-    </div>
+        {query && (
+          <X
+            onClick={handleClear}
+            className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 active:bg-gray-300 hover:cursor-pointer transition-colors touch-manipulation"
+            aria-label="Limpar busca"
+          />
+        )}
+      </div>
+      <Button type="submit" size="icon" className="flex-shrink-0">
+        <Search className="h-4 w-4" />
+      </Button>
+    </form>
   )
 }
 
