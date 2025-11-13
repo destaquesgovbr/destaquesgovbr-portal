@@ -53,7 +53,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-background">
       {/* 1️⃣ HERO — destaque principal (1 grande + 2 sem imagem + 2 laterais) */}
-      <section className="py-12">
+      <section className="pt-0 md:pt-8 pb-12">
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Manchete principal */}
           <div className="md:col-span-2 grid grid-cols-1 gap-6">
