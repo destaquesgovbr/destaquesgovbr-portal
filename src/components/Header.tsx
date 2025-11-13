@@ -46,9 +46,14 @@ const Header = () => {
       className={`
         fixed top-0 left-0 right-0 z-[9999]
         border-b bg-card shadow-card
-        transition-transform duration-300 ease-in-out
+        transition-transform duration-500 ease-out
         ${isVisible ? 'translate-y-0' : '-translate-y-full'}
       `}
+      style={{
+        transitionTimingFunction: isVisible
+          ? 'cubic-bezier(0.34, 1.56, 2, 1)' // Ease out back - smooth entrance
+          : 'cubic-bezier(0.4, 0, 1, 1)' // Ease in - quick exit
+      }}
     >
       {/* Top bar with government branding */}
       <div className="header-banner py-2">
