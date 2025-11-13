@@ -131,10 +131,10 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
               font-size: 4em !important;
               line-height: 0.85 !important;
               font-weight: 700 !important;
-              color: #0D4C92 !important;
+              color: #0057A4 !important;
               margin-right: 0.1em !important;
               margin-top: 0.05em !important;
-              font-family: Georgia, serif !important;
+              font-family: inherit !important;
               padding-right: 0.05em !important;
             }
           `}</style>
