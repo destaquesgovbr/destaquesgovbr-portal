@@ -119,7 +119,7 @@ export function ArticleFilters({
   showThemeFilter = true,
 }: ArticleFiltersProps) {
   return (
-    <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8 relative z-[100]">
+    <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8 relative z-[98]">
       <div className="sticky top-[160px] md:top-[200px]">
         <h3 className="text-lg font-semibold text-primary mb-6">Filtros</h3>
 

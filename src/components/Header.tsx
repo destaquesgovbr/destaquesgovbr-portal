@@ -44,7 +44,7 @@ const Header = () => {
   return (
     <header
       className={`
-        fixed top-0 left-0 right-0 z-[9999]
+        fixed top-0 left-0 right-0 z-[99]
         border-b bg-card shadow-card
         transition-transform duration-500 ease-out
         ${isVisible ? 'translate-y-0' : '-translate-y-full'}
