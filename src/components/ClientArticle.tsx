@@ -124,7 +124,20 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
         )}
 
         {/* Corpo do artigo */}
-        <article className="prose prose-lg mx-auto max-w-3xl text-primary/90 leading-relaxed">
+        <article className="prose prose-lg mx-auto max-w-3xl text-primary/90 leading-relaxed article-content">
+          <style>{`
+            .article-content.prose p:first-of-type::first-letter {
+              float: left !important;
+              font-size: 4em !important;
+              line-height: 0.85 !important;
+              font-weight: 700 !important;
+              color: #0D4C92 !important;
+              margin-right: 0.1em !important;
+              margin-top: 0.05em !important;
+              font-family: Georgia, serif !important;
+              padding-right: 0.05em !important;
+            }
+          `}</style>
           <MarkdownRenderer content={article.content ?? ''}/>
         </article>
 
