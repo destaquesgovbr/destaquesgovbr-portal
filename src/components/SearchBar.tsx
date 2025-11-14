@@ -2,7 +2,6 @@
 
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
@@ -46,8 +45,8 @@ const SearchBar = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full flex gap-2">
-      <div className="relative flex-1">
+    <form onSubmit={handleSubmit} className="relative w-full">
+      <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={query}
@@ -64,9 +63,6 @@ const SearchBar = () => {
           />
         )}
       </div>
-      <Button type="submit" size="icon" className="flex-shrink-0">
-        <Search className="h-4 w-4" />
-      </Button>
     </form>
   )
 }
