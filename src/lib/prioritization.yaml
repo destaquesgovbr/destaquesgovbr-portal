@@ -1,0 +1,117 @@
+# Configuração de Priorização de Notícias
+# Este arquivo controla como as notícias são selecionadas e ordenadas na home page
+
+# ==============================================================================
+# PESOS POR ÓRGÃO
+# ==============================================================================
+# Valores > 1.0 aumentam a prioridade, valores < 1.0 diminuem
+# 1.0 = peso neutro (sem alteração na prioridade)
+
+agencyWeights:
+  # Órgãos prioritários
+  mgi: 1.5              # Ministério da Gestão e Inovação
+  secom: 1.5            # Secretaria de Comunicação Social
+  pr: 1.5               # Presidência da República
+  casacivil: 1.5        # Casa Civil
+
+  # Órgãos despriorizados (veículos de mídia)
+  tvbrasil: 0.3         # TV Brasil
+  agencia_brasil: 0.3   # Agência Brasil
+
+# ==============================================================================
+# PESOS POR TEMA
+# ==============================================================================
+# Suporta ponderação em 3 níveis de granularidade:
+# - Nível 1: Temas principais (códigos de 2 dígitos: "01", "02", etc.)
+# - Nível 2: Sub-temas (códigos com ponto: "01.01", "01.02", etc.)
+# - Nível 3: Tópicos específicos (códigos detalhados: "01.01.01", etc.)
+#
+# O sistema usa o peso do tema MAIS ESPECÍFICO encontrado no artigo
+
+themeWeights:
+  # Nível 1: Temas principais prioritários
+  "05": 1.5   # Meio Ambiente e Sustentabilidade
+  "04": 1.5   # Segurança Pública
+  "01": 1.5   # Economia e Finanças
+  "08": 1.5   # Cultura, Artes e Patrimônio
+
+  # Exemplo de peso em nível 2 (sub-tema):
+  # "05.01": 2.0   # Preservação Ambiental (dentro de Meio Ambiente)
+
+  # Exemplo de peso em nível 3 (tópico específico):
+  # "05.01.01": 2.5   # Áreas Protegidas e Conservação
+
+# ==============================================================================
+# CONFIGURAÇÃO DE RECÊNCIA
+# ==============================================================================
+# Controla quanto a "idade" da notícia afeta seu score
+
+# Período de decaimento: após quantas horas uma notícia começa a perder relevância
+recencyDecayHours: 72   # 3 dias
+
+# Peso da recência no cálculo final (0.0 a 1.0)
+# 0.0 = recência não importa (só pesos de órgão/tema)
+# 1.0 = recência tem peso máximo
+recencyWeight: 0.5
+
+# ==============================================================================
+# BOOSTS DE QUALIDADE DE CONTEÚDO
+# ==============================================================================
+# Multiplicadores aplicados a notícias que têm características de qualidade
+
+# Boost para notícias com imagem de capa (+10%)
+hasImageBoost: 1.1
+
+# Boost para notícias com resumo pré-gerado (+5%)
+hasSummaryBoost: 1.05
+
+# ==============================================================================
+# FILTROS ABSOLUTOS (opcional)
+# ==============================================================================
+# Critérios que excluem notícias completamente da seleção
+
+# Idade máxima das notícias (em dias)
+# null = sem limite de idade
+maxArticleAgeDays: null
+
+# Lista de órgãos a serem completamente excluídos da home
+excludedAgencies: []
+# Exemplo: excludedAgencies: ["orgao1", "orgao2"]
+
+# Lista de temas (qualquer nível) a serem excluídos da home
+excludedThemes: []
+# Exemplo: excludedThemes: ["22", "22.01"]  # Exclui "Eventos Oficiais"
+
+# ==============================================================================
+# CONFIGURAÇÃO DE "TEMAS EM FOCO"
+# ==============================================================================
+# Controla como os 3 temas principais da home são selecionados
+
+# Modo de seleção de temas:
+# - "volume": Temas com mais artigos publicados (últimos 7 dias)
+# - "weighted": Temas cujos artigos têm maior score médio
+# - "manual": Usar lista fixa de temas (ver manualThemes abaixo)
+themeFocusMode: "weighted"
+
+# Lista de temas fixos (usado apenas se themeFocusMode = "manual")
+# Deve conter exatamente 3 códigos de tema nível 1
+manualThemes: []
+# Exemplo: manualThemes: ["05", "04", "01"]  # Meio Ambiente, Segurança, Economia
+
+# ==============================================================================
+# FÓRMULA DE SCORING
+# ==============================================================================
+# Score final = (agencyWeight × bestThemeWeight × recencyFactor) + contentBoosts
+#
+# Onde:
+#   agencyWeight = peso do órgão (padrão 1.0 se não especificado)
+#   bestThemeWeight = maior peso encontrado entre os 3 níveis de tema
+#   recencyFactor = 1 / (1 + hoursOld / recencyDecayHours)
+#   contentBoosts = hasImageBoost × hasSummaryBoost
+#
+# Exemplo:
+#   Notícia do MGI (1.5) sobre Meio Ambiente (1.5), publicada há 24h, com imagem:
+#   score = (1.5 × 1.5 × 0.67) + 1.1 = ~2.6
+#
+#   Notícia da Agência Brasil (0.3) sobre tema neutro (1.0), há 2h, sem imagem:
+#   score = (0.3 × 1.0 × 0.97) + 1.0 = ~1.3
