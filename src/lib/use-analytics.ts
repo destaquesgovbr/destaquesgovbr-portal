@@ -54,7 +54,7 @@ async function trackEvent(event: {
  * Hook para tracking de impressões usando Intersection Observer
  */
 export function useImpressionTracking(
-  ref: React.RefObject<HTMLElement>,
+  ref: React.RefObject<HTMLElement | null>,
   article: {
     unique_id: string
     agency: string | null
