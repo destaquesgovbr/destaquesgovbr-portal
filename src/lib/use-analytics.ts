@@ -71,6 +71,7 @@ export function useImpressionTracking(
   useEffect(() => {
     if (!ref.current || tracked.current) return
 
+    const element = ref.current
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -98,12 +99,13 @@ export function useImpressionTracking(
       }
     )
 
-    observer.observe(ref.current)
+    observer.observe(element)
 
     return () => {
       observer.disconnect()
     }
-  }, [ref, article, position, positionIndex, score])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [article.unique_id])
 }
 
 /**

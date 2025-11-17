@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import NewsCard from '@/components/NewsCard'
+import TrackedNewsCard from '@/components/TrackedNewsCard'
 import { Button } from '@/components/ui/button'
 import {
   getLatestArticles,
@@ -57,8 +58,12 @@ export default async function Home() {
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Manchete principal */}
           <div className="md:col-span-2 grid grid-cols-1 gap-6">
-            <NewsCard
+            <TrackedNewsCard
               key={featuredMain.unique_id}
+              article={featuredMain}
+              position="hero"
+              positionIndex={0}
+              score={featuredMain.score || 0}
               theme={featuredMain.theme_1_level_3_label || ''}
               date={featuredMain.published_at}
               internalUrl={`/artigos/${featuredMain.unique_id}`}
@@ -69,9 +74,13 @@ export default async function Home() {
             />
             {/* Duas notícias secundárias sem imagem */}
             <div className="flex gap-6">
-              {featuredBottom.map(article =>
-                <NewsCard
+              {featuredBottom.map((article, idx) =>
+                <TrackedNewsCard
                   key={article.unique_id}
+                  article={article}
+                  position="featured-bottom"
+                  positionIndex={idx}
+                  score={article.score || 0}
                   theme={article.theme_1_level_3_label || ''}
                   date={article.published_at}
                   internalUrl={`/artigos/${article.unique_id}`}
@@ -86,10 +95,14 @@ export default async function Home() {
           {/* Duas notícias secundárias */}
           <aside className="grid grid-cols-1 gap-6">
             {featuredSide.map(
-              (article) =>
+              (article, idx) =>
                 article && (
-                  <NewsCard
+                  <TrackedNewsCard
                     key={article.unique_id}
+                    article={article}
+                    position="featured-side"
+                    positionIndex={idx}
+                    score={article.score || 0}
                     theme={article.theme_1_level_3_label || ''}
                     date={article.published_at}
                     internalUrl={`/artigos/${article.unique_id}`}
@@ -128,9 +141,13 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {latestPreview.map((article) => (
-              <NewsCard
+            {latestPreview.map((article, idx) => (
+              <TrackedNewsCard
                 key={article.unique_id}
+                article={article}
+                position="latest-grid"
+                positionIndex={idx}
+                score={article.score || 0}
                 internalUrl={`/artigos/${article.unique_id}`}
                 theme={article.theme_1_level_3_label || ''}
                 date={article.published_at}
