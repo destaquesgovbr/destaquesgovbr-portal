@@ -14,7 +14,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { previewPrioritization } from './actions'
+import { previewPrioritization, getThemeCodeToNameMap } from './actions'
 import type { ArticleRow } from '@/lib/article-row'
 import type { ScoredArticle } from '@/lib/prioritization'
 import type { PrioritizationConfig, ThemeFocusMode } from '@/lib/prioritization-config'
@@ -37,6 +37,9 @@ export default function PreviewPage() {
     '01': 1.5, // Economia
     '08': 1.5, // Cultura
   })
+
+  // Theme code to name mapping
+  const [themeCodeToName, setThemeCodeToName] = useState<Record<string, string>>({})
 
   const [recencyDecayHours, setRecencyDecayHours] = useState<number>(72)
   const [recencyWeight, setRecencyWeight] = useState<number>(0.5)
@@ -164,6 +167,17 @@ manualThemes: []
     URL.revokeObjectURL(url)
   }
 
+  // Load theme code to name mapping on mount
+  useEffect(() => {
+    const loadThemeMapping = async () => {
+      const result = await getThemeCodeToNameMap()
+      if (result.type === 'ok') {
+        setThemeCodeToName(result.data)
+      }
+    }
+    loadThemeMapping()
+  }, [])
+
   // Auto-run on mount
   useEffect(() => {
     runPreview()
@@ -255,11 +269,16 @@ manualThemes: []
                   <div className="space-y-2">
                     {Object.entries(themeWeights).map(([theme, weight]) => (
                       <div key={theme} className="flex items-center gap-2">
-                        <Input
-                          value={theme}
-                          disabled
-                          className="flex-1 text-sm font-mono"
-                        />
+                        <div className="flex-1 flex flex-col gap-1">
+                          <Input
+                            value={themeCodeToName[theme] || theme}
+                            disabled
+                            className="text-sm"
+                          />
+                          <span className="text-xs text-muted-foreground font-mono pl-3">
+                            {theme}
+                          </span>
+                        </div>
                         <Input
                           type="number"
                           step="0.1"
