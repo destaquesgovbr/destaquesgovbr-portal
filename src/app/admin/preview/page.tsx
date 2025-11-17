@@ -269,16 +269,11 @@ manualThemes: []
                   <div className="space-y-2">
                     {Object.entries(themeWeights).map(([theme, weight]) => (
                       <div key={theme} className="flex items-center gap-2">
-                        <div className="flex-1 flex flex-col gap-1">
-                          <Input
-                            value={themeCodeToName[theme] || theme}
-                            disabled
-                            className="text-sm"
-                          />
-                          <span className="text-xs text-muted-foreground font-mono pl-3">
-                            {theme}
-                          </span>
-                        </div>
+                        <Input
+                          value={`${theme} - ${themeCodeToName[theme] || theme}`}
+                          disabled
+                          className="flex-1 text-sm"
+                        />
                         <Input
                           type="number"
                           step="0.1"
@@ -289,12 +284,13 @@ manualThemes: []
                               [theme]: parseFloat(e.target.value),
                             })
                           }
-                          className="w-20"
+                          className="w-16"
                         />
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => removeThemeWeight(theme)}
+                          className="shrink-0"
                         >
                           ×
                         </Button>
