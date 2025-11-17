@@ -132,6 +132,19 @@ export async function getThemeName(
 }
 
 /**
+ * Retorna o nome de um tema a partir do código
+ */
+export async function getThemeNameByCode(
+  themeCode: string | null | undefined
+): Promise<string | undefined> {
+  if (!themeCode) return undefined
+  const themes = await getThemesByLabel()
+  const allThemes = flattenThemes(themes)
+  const theme = allThemes.find((t) => t.code === themeCode)
+  return theme?.label
+}
+
+/**
  * Builds a hierarchy path for a theme (e.g., "Economia > Política > Fiscal")
  * from the YAML hierarchy structure
  */

@@ -7,6 +7,8 @@ import type { PrioritizationConfig } from '@/lib/prioritization-config'
 import { DEFAULT_CONFIG } from '@/lib/prioritization-config'
 import { getPrioritizedArticles, calculateArticleScore } from '@/lib/prioritization'
 import type { ScoredArticle } from '@/lib/prioritization'
+import { getThemesByLabel } from '@/lib/themes-utils'
+import type { Theme } from '@/lib/themes-utils'
 
 /**
  * Busca artigos e aplica preview de priorização com config customizada
@@ -96,5 +98,35 @@ export const calculateSingleScore = withResult(
       score,
       breakdown: (scoredArticle as any)._scoreBreakdown,
     }
+  }
+)
+
+/**
+ * Retorna um mapa de código de tema -> nome do tema
+ */
+export const getThemeCodeToNameMap = withResult(
+  async (): Promise<Record<string, string>> => {
+    const themes = await getThemesByLabel()
+
+    // Função para achatar a hierarquia de temas
+    function flattenThemes(themes: Theme[]): Theme[] {
+      const result: Theme[] = []
+      for (const theme of themes) {
+        result.push(theme)
+        if (theme.children) {
+          result.push(...flattenThemes(theme.children))
+        }
+      }
+      return result
+    }
+
+    const allThemes = flattenThemes(themes)
+    const map: Record<string, string> = {}
+
+    for (const theme of allThemes) {
+      map[theme.code] = theme.label
+    }
+
+    return map
   }
 )
