@@ -2,7 +2,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, run the typesense locally:
+In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and load the news dataset taken from Huggingface: https://github.com/destaquesgovbr/destaquesgovbr-typesense
+
+
+Then, run the development server:
 
 ```bash
 npm run dev
