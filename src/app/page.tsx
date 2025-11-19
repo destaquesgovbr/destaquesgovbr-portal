@@ -10,7 +10,7 @@ import {
 } from './actions'
 import { ArrowRight } from 'lucide-react'
 import THEME_ICONS from '@/lib/themes'
-import { getExcerpt } from '@/lib/utils'
+import { getExcerpt, formatDateTime } from '@/lib/utils'
 
 // Revalidate every 10 minutes (600 seconds)
 export const revalidate = 600
@@ -210,7 +210,7 @@ export default async function Home() {
                         </Link>
                         {a.published_at && (
                           <span className="ml-2 text-muted-foreground">
-                            · {new Date(a.published_at * 1000).toLocaleDateString('pt-BR')}
+                            · {formatDateTime(a.published_at)}
                           </span>
                         )}
                       </li>

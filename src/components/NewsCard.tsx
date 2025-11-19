@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Ref } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { formatDateTime } from '@/lib/utils'
 
 export interface NewsCardProps {
   title: string
@@ -94,13 +95,7 @@ const NewsCard = ({
           {date && (
             <div className="flex items-center text-xs text-primary/70">
               <Calendar className="w-3 h-3 mr-1 text-primary/60" />
-              <span>
-                {new Date(date * 1000).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </span>
+              <span>{formatDateTime(date)}</span>
             </div>
           )}
         </CardContent>

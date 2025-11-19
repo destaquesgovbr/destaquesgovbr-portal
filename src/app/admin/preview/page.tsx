@@ -19,6 +19,7 @@ import type { ArticleRow } from '@/lib/article-row'
 import type { ScoredArticle } from '@/lib/prioritization'
 import type { PrioritizationConfig, ThemeFocusMode } from '@/lib/prioritization-config'
 import { PlayIcon, DownloadIcon, RefreshCwIcon } from 'lucide-react'
+import { formatDateTime } from '@/lib/utils'
 
 export default function PreviewPage() {
   // Config state
@@ -509,7 +510,7 @@ function ArticleList({
                   <>
                     <span>•</span>
                     <span>
-                      {new Date(article.published_at * 1000).toLocaleDateString('pt-BR')}
+                      {formatDateTime(article.published_at)}
                     </span>
                   </>
                 )}
@@ -559,7 +560,7 @@ function ScoredArticleList({
                   <>
                     <span>•</span>
                     <span>
-                      {new Date(article.published_at * 1000).toLocaleDateString('pt-BR')}
+                      {formatDateTime(article.published_at)}
                     </span>
                   </>
                 )}
