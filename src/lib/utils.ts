@@ -60,3 +60,40 @@ export function getExcerpt(content: string, maxLength: number = 200): string {
 
   return excerpt + '...'
 }
+
+/**
+ * Format Unix timestamp to display date and time (if not midnight)
+ * @param timestamp - Unix timestamp in seconds
+ * @returns Formatted date string, with time if not 00:00
+ *
+ * Examples:
+ * - 2024-01-15 00:00:00 → "15 de jan de 2024"
+ * - 2024-01-15 19:24:43 → "15 de jan de 2024 às 19h24"
+ */
+export function formatDateTime(timestamp: number | null): string {
+  if (!timestamp) return ''
+
+  const date = new Date(timestamp * 1000)
+
+  // Check if time is midnight (00:00)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const isMidnight = hours === 0 && minutes === 0
+
+  // Format date
+  const dateStr = date.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+
+  // If midnight, return only date
+  if (isMidnight) {
+    return dateStr
+  }
+
+  // Format time (HH:MM in Brazilian format)
+  const timeStr = `${hours.toString().padStart(2, '0')}h${minutes.toString().padStart(2, '0')}`
+
+  return `${dateStr} às ${timeStr}`
+}

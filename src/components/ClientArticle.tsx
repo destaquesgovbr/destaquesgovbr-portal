@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useState, useMemo } from 'react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { ArticleRow } from '@/lib/article-row'
+import { formatDateTime } from '@/lib/utils'
 
 export default function ClientArticle({ article, baseUrl, pageUrl }: { article: ArticleRow; baseUrl: string; pageUrl: string }) {
   const [copied, setCopied] = useState(false)
@@ -64,11 +65,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
             {article.published_at && (
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-1 text-primary/60" />
-                {new Date(article.published_at * 1000).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                })}
+                {formatDateTime(article.published_at)}
               </div>
             )}
 
