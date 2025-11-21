@@ -135,32 +135,34 @@ const Header = () => {
           </nav>
 
           {/* Mobile nav - horizontal scrolling badges */}
-          <nav className="flex md:hidden items-center gap-2 py-2 overflow-x-auto scrollbar-hide -mx-4 px-4">
-            {/* Routes */}
-            {routeLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap shrink-0"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="md:hidden -mx-4 px-4 overflow-x-auto scrollbar-hide">
+            <nav className="flex items-center gap-2 py-2 w-max">
+              {/* Routes */}
+              {routeLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-            {/* Vertical divider */}
-            <div className="h-4 w-px bg-border shrink-0" />
+              {/* Vertical divider */}
+              <div className="h-4 w-px bg-border" />
 
-            {/* Themes */}
-            {themeLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap shrink-0"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+              {/* Themes */}
+              {themeLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
 
