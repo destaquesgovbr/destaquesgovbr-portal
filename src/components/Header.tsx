@@ -1,60 +1,52 @@
 'use client'
 
-import { Menu, Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import SearchBar from './SearchBar'
 import Link from 'next/link'
-import { Suspense, useState, useEffect } from 'react'
+import { Suspense, useState, useEffect, useRef } from 'react'
 
-const navLinks = [
-  { href: '/temas/Meio%20Ambiente%20e%20Sustentabilidade', label: 'Meio ambiente' },
-  { href: '/temas/Economia%20e%20Finanças', label: 'Economia' },
-  { href: '/temas/Segurança%20Pública', label: 'Segurança pública' },
-  { href: '/temas', label: 'Todos os temas' },
+const routeLinks = [
+  { href: '/artigos', label: 'Notícias' },
+  { href: '/temas', label: 'Temas' },
   { href: '/orgaos', label: 'Órgãos' },
-  { href: '/dados-editoriais', label: 'Dados e análises' },
+  { href: '/dados-editoriais', label: 'Dados' },
+]
+
+const themeLinks = [
+  { href: '/temas/Meio%20Ambiente%20e%20Sustentabilidade', label: 'Meio ambiente' },
+  { href: '/temas/Economia%20e%20Finan%C3%A7as', label: 'Economia' },
+  { href: '/temas/Seguran%C3%A7a%20P%C3%BAblica', label: 'Segurança' },
 ]
 
 const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
+  // Focus search input when overlay opens
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-
-      // Show header when scrolling up, hide when scrolling down
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        setIsVisible(true)
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false)
-      }
-
-      setLastScrollY(currentScrollY)
+    if (searchOpen && searchInputRef.current) {
+      // Small delay to ensure the overlay is rendered
+      setTimeout(() => {
+        searchInputRef.current?.querySelector('input')?.focus()
+      }, 100)
     }
+  }, [searchOpen])
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+  // Close search on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && searchOpen) {
+        setSearchOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [searchOpen])
 
   return (
-    <header
-      className={`
-        fixed top-0 left-0 right-0 z-[99]
-        border-b bg-card shadow-card
-        transition-transform duration-500 ease-out
-        ${isVisible ? 'translate-y-0' : '-translate-y-full'}
-      `}
-      style={{
-        transitionTimingFunction: isVisible
-          ? 'cubic-bezier(0.34, 1.56, 2, 1)' // Ease out back - smooth entrance
-          : 'cubic-bezier(0.4, 0, 1, 1)' // Ease in - quick exit
-      }}
-    >
+    <header className="fixed top-0 left-0 right-0 z-[99] border-b bg-card shadow-card">
       {/* Top bar with government branding */}
       <div className="header-banner py-2">
         <div className="container mx-auto px-4">
@@ -66,101 +58,104 @@ const Header = () => {
 
       {/* Main header */}
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between p-2">
-          {/* Logo and title */}
+        <div className="flex items-center h-16 md:h-20">
+          {/* Logo - far left */}
           <Link
             href="/"
-            className="flex items-center space-x-2 md:space-x-4 hover:bg-gray-200 rounded-2xl hover:cursor-pointer pr-2 md:pr-4"
+            className="flex items-center space-x-2 md:space-x-3 hover:bg-gray-200 rounded-2xl hover:cursor-pointer pr-2 md:pr-3 shrink-0"
           >
             <Image
               src="/logo.png"
               alt="Selo do Governo Federal"
               width={100}
               height={100}
-              className="h-14 w-14 md:h-20 md:w-20"
+              className="h-10 w-10 md:h-14 md:w-14"
             />
             <div>
-              <h1 className="text-base md:text-xl font-bold">DestaquesGovBr</h1>
-              <p className="text-xs md:text-sm text-muted-foreground">Governo Federal</p>
+              <h1 className="text-sm md:text-lg font-bold leading-tight">DestaquesGovBr</h1>
+              <p className="text-xs text-muted-foreground">Governo Federal</p>
             </div>
           </Link>
 
-          {/* Desktop search bar */}
-          <Suspense>
-            <div className="hidden md:flex flex-1 max-w-md mx-8">
-              <SearchBar />
-            </div>
-          </Suspense>
-
-          {/* Mobile actions */}
-          <div className="flex items-center gap-2 md:hidden">
-            {/* Mobile search icon */}
-            <Sheet open={searchOpen} onOpenChange={setSearchOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Search className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="top" className="w-full">
-                <SheetHeader>
-                  <SheetTitle>Buscar notícias</SheetTitle>
-                </SheetHeader>
-                <div className="mt-4">
-                  <Suspense>
-                    <SearchBar />
-                  </Suspense>
-                </div>
-              </SheetContent>
-            </Sheet>
-
-            {/* Mobile menu */}
-            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle>Menu</SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col gap-4 mt-6">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="text-base font-medium px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                  <div className="border-t pt-4 mt-2">
-                    <Link
-                      href="/artigos"
-                      onClick={() => setMenuOpen(false)}
-                      className="text-base font-medium px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors block"
-                    >
-                      Todas as notícias
-                    </Link>
-                  </div>
-                </nav>
-              </SheetContent>
-            </Sheet>
+          {/* Desktop search bar - centered, 60% width */}
+          <div className="hidden md:flex flex-1 justify-center px-4">
+            <Suspense>
+              <div className="w-[60%] max-w-2xl">
+                <SearchBar />
+              </div>
+            </Suspense>
           </div>
+
+          {/* Mobile search icon - right side */}
+          <div className="flex md:hidden ml-auto">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSearchOpen(true)}
+              className="h-10 w-10"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Spacer to balance layout on desktop */}
+          <div className="hidden md:block w-[120px] shrink-0" />
         </div>
       </div>
 
-      {/* Navigation menu - Desktop only */}
+      {/* Navigation tabs */}
       <div className="border-t bg-background">
         <div className="container mx-auto px-4">
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center space-x-4 py-1.5">
-            {navLinks.map((link) => (
+          {/* Desktop nav - centered */}
+          <nav className="hidden md:flex items-center justify-center py-2">
+            {/* Routes */}
+            {routeLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium rounded-md px-2 py-1 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+                className="text-sm font-medium rounded-md px-3 py-1.5 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Vertical divider */}
+            <div className="h-4 w-px bg-border mx-3" />
+
+            {/* Themes */}
+            {themeLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium rounded-md px-3 py-1.5 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile nav - horizontal scrolling badges */}
+          <nav className="flex md:hidden items-center gap-2 py-2 overflow-x-auto scrollbar-hide -mx-4 px-4">
+            {/* Routes */}
+            {routeLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap shrink-0"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Vertical divider */}
+            <div className="h-4 w-px bg-border shrink-0" />
+
+            {/* Themes */}
+            {themeLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs font-medium rounded-full px-3 py-1.5 bg-muted hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap shrink-0"
               >
                 {link.label}
               </Link>
@@ -168,6 +163,27 @@ const Header = () => {
           </nav>
         </div>
       </div>
+
+      {/* Mobile search overlay */}
+      {searchOpen && (
+        <div className="absolute inset-0 bg-card z-50 md:hidden">
+          <div className="flex items-center h-full px-4 gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSearchOpen(false)}
+              className="shrink-0"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+            <div className="flex-1" ref={searchInputRef}>
+              <Suspense>
+                <SearchBar />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
