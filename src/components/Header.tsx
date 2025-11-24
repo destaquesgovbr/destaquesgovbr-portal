@@ -47,15 +47,6 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[99] border-b bg-card shadow-card">
-      {/* Top bar with government branding */}
-      <div className="header-banner py-2">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-primary font-semibold">
-            Todas as notícias do Governo Federal em um só lugar
-          </p>
-        </div>
-      </div>
-
       {/* Main header */}
       <div className="container mx-auto px-4">
         <div className="flex items-center h-16 md:h-20">
@@ -97,9 +88,6 @@ const Header = () => {
               <Search className="h-5 w-5" />
             </Button>
           </div>
-
-          {/* Spacer to balance layout on desktop */}
-          <div className="hidden md:block w-[120px] shrink-0" />
         </div>
       </div>
 
@@ -107,27 +95,27 @@ const Header = () => {
       <div className="border-t bg-background">
         <div className="container mx-auto px-4">
           {/* Desktop nav - centered */}
-          <nav className="hidden md:flex items-center justify-center py-2">
+          <nav className="hidden md:flex items-center justify-center py-1.5">
             {/* Routes */}
             {routeLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium rounded-md px-3 py-1.5 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+                className="text-sm font-medium rounded-md px-2 py-1 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
               >
                 {link.label}
               </Link>
             ))}
 
             {/* Vertical divider */}
-            <div className="h-4 w-px bg-border mx-3" />
+            <div className="h-4 w-px bg-border mx-2" />
 
             {/* Themes */}
             {themeLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium rounded-md px-3 py-1.5 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
+                className="text-sm font-medium rounded-md px-2 py-1 hover:bg-accent hover:text-accent-foreground transition-colors whitespace-nowrap"
               >
                 {link.label}
               </Link>
