@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <div className="pt-[140px] md:pt-[180px]">
+          <div className="pt-[110px] md:pt-[130px]">
             <Suspense>
               {children}
             </Suspense>
