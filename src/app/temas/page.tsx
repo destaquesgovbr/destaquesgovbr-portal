@@ -1,12 +1,15 @@
-'use client'
+import { getThemesHierarchy } from '@/lib/themes-utils'
+import { getThemeArticleCounts } from './actions'
+import ThemesPageClient from './ThemesPageClient'
+import { ThemeTreeDisplay } from '@/components/ThemeTreeDisplay'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import THEME_ICONS from '@/lib/themes'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer'
+export default async function ThemesPage() {
+  // Fetch theme hierarchy and article counts
+  const [themeHierarchy, articleCountsMap] = await Promise.all([
+    getThemesHierarchy(),
+    getThemeArticleCounts(),
+  ])
 
-export default function ThemesPage() {
   return (
     <section className="py-16 overflow-hidden">
       <div className="container mx-auto px-4 text-center mb-12">
@@ -20,36 +23,28 @@ export default function ThemesPage() {
       </div>
 
       <div className="container mx-auto px-4">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          {Object.keys(THEME_ICONS).map(theme => (
-            <Link key={theme} href={`/temas/${theme}`}>
-              <Card className="group h-full transition-all duration-300 hover:scale-[1.01] shadow-sm hover:shadow-xl hover:shadow-[#0D4C92]/20">
-                <div className="h-[60%] overflow-hidden flex items-center justify-center">
-                  <img
-                    src={THEME_ICONS[theme].image}
-                    alt={theme}
-                    className="object-contain h-full transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <CardHeader className="pt-4 px-5">
-                  <h3 className="font-semibold leading-tight text-lg">
-                    {theme}
-                  </h3>
-                </CardHeader>
-                <CardContent className="px-5 pb-5">
-                  <div className="text-sm line-clamp-3">
-                    <MarkdownRenderer content={THEME_ICONS[theme].description} />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </motion.div>
+        <ThemesPageClient />
+      </div>
+
+      {/* Theme Tree Section */}
+      <div className="container mx-auto px-4 mt-16">
+        <div className="border-t border-gray-200 pt-12">
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-primary mb-2">
+              Distribuição de Notícias por Tema
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Quantidade de artigos publicados nos últimos 30 dias por tema
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <ThemeTreeDisplay
+              themeHierarchy={themeHierarchy}
+              articleCounts={articleCountsMap}
+            />
+          </div>
+        </div>
       </div>
     </section>
   )
