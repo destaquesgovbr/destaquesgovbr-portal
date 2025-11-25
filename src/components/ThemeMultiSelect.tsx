@@ -106,7 +106,7 @@ function ThemeTreeItem({
           className={`flex-1 cursor-pointer text-sm font-medium ${isInherited ? 'text-muted-foreground' : ''}`}
           onClick={() => !isInherited && onToggle(node.code)}
         >
-          {node.label}
+          {node.code} - {node.label}
         </label>
       </div>
 
@@ -156,8 +156,8 @@ export function ThemeMultiSelect({
 
     // Helper function to check if a node or any of its children match
     const nodeMatches = (node: ThemeNode): boolean => {
-      // Check if current node matches
-      if (node.label.toLowerCase().includes(searchLower)) {
+      // Check if current node matches (label or code)
+      if (node.label.toLowerCase().includes(searchLower) || node.code.toLowerCase().includes(searchLower)) {
         return true
       }
       // Check if any children match
@@ -169,7 +169,7 @@ export function ThemeMultiSelect({
 
     // Helper function to filter and clone nodes
     const filterNode = (node: ThemeNode): ThemeNode | null => {
-      const currentMatches = node.label.toLowerCase().includes(searchLower)
+      const currentMatches = node.label.toLowerCase().includes(searchLower) || node.code.toLowerCase().includes(searchLower)
       const filteredChildren = node.children
         ?.map(child => filterNode(child))
         .filter((child): child is ThemeNode => child !== null) ?? []
