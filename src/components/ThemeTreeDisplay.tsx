@@ -58,7 +58,7 @@ function ThemeTreeItem({
           href={`/artigos?temas=${node.code}`}
           className="flex-1 flex items-center justify-between text-sm font-medium hover:text-primary transition-colors group-hover:underline"
         >
-          <span>{node.label}</span>
+          <span>{node.code} - {node.label}</span>
           <span className="text-muted-foreground text-xs ml-2 flex-shrink-0">
             ({count})
           </span>
