@@ -89,10 +89,24 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
             </Button>
           </div>
 
+          {/* Editorial Lead - aparece como tag acima do título */}
+          {article.editorial_lead && (
+            <p className="text-sm font-semibold text-primary/70 uppercase tracking-wide mb-2">
+              {article.editorial_lead}
+            </p>
+          )}
+
           {/* Título */}
           <h1 className="text-3xl md:text-4xl font-bold text-primary leading-tight mb-4">
             {article.title}
           </h1>
+
+          {/* Subtítulo */}
+          {article.subtitle && (
+            <p className="text-base md:text-lg text-primary/70 mb-6 max-w-3xl mx-auto leading-relaxed">
+              {article.subtitle}
+            </p>
+          )}
 
           {/* Linha divisória SVG */}
           <div className="mx-auto mt-3 w-40">
