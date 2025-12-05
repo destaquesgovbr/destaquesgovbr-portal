@@ -137,7 +137,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
         {/* Corpo do artigo */}
         <article className="prose prose-lg mx-auto max-w-3xl text-primary/90 leading-relaxed article-content">
           <style>{`
-            .article-content.prose p:first-of-type::first-letter {
+            .article-content > .prose > p:first-of-type::first-letter {
               float: left !important;
               font-size: 4em !important;
               line-height: 0.85 !important;
