@@ -8,6 +8,8 @@ export type ArticleRow = {
   category: string | null
   content: string | null
   summary: string | null
+  subtitle: string | null
+  editorial_lead: string | null
   extracted_at: number | null
   theme_1_level_1_code: string | null
   theme_1_level_1_label: string | null
