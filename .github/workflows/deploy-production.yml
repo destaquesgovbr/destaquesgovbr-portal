@@ -32,6 +32,15 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Fetch Typesense API Key from Secret Manager
+        id: secrets
+        run: |
+          TYPESENSE_KEY=$(gcloud secrets versions access latest \
+            --secret=typesense-search-only-api-key \
+            --project=${{ env.PROJECT_ID }})
+          echo "::add-mask::$TYPESENSE_KEY"
+          echo "typesense_api_key=$TYPESENSE_KEY" >> $GITHUB_OUTPUT
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -43,7 +52,7 @@ jobs:
           docker buildx build \
             --platform linux/amd64 \
             --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
-            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ secrets.NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ steps.secrets.outputs.typesense_api_key }}" \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:latest \
             --load \
