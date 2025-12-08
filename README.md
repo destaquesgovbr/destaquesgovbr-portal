@@ -38,3 +38,65 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Production Deployment
+
+This project is deployed to Google Cloud Run using GitHub Actions.
+
+### Deployment Architecture
+
+```
+┌─────────────────────┐
+│  GCP Secret Manager │
+│  typesense-search-  │
+│    only-api-key     │
+└──────────┬──────────┘
+           │
+    ┌──────┴───────┐
+    ▼              ▼
+┌─────────┐   ┌─────────┐
+│ GitHub  │   │Typesense│
+│ Actions │   │   VM    │
+│Workflow │   │         │
+└────┬────┘   └─────────┘
+     │
+     ▼
+┌──────────────┐
+│  Cloud Run   │
+│    Portal    │
+└──────────────┘
+```
+
+### Secrets Management
+
+The production deployment fetches the Typesense API key **directly from GCP Secret Manager** during the Docker build process.
+
+**GitHub Secrets Required:**
+- `GCP_WORKLOAD_IDENTITY_PROVIDER` - Workload Identity Federation provider
+- `GCP_SERVICE_ACCOUNT` - GitHub Actions service account email
+- `NEXT_PUBLIC_TYPESENSE_HOST` - Typesense server IP address
+
+**GCP Secret Manager:**
+- `typesense-search-only-api-key` - Search API key (read-only)
+
+**Why this architecture?**
+- **Single source of truth**: API key is only maintained in GCP Secret Manager
+- **Automatic sync**: Portal always uses the same key as the Typesense VM
+- **Easy rotation**: Update key in GCP → rebuild portal → done
+- **Audit trail**: All secret access is logged in GCP
+
+### Deployment Workflow
+
+When code is pushed to `main`:
+
+1. GitHub Actions authenticates to GCP via Workload Identity Federation
+2. Fetches `typesense-search-only-api-key` from Secret Manager
+3. Builds Docker image with API key as build argument
+4. Pushes image to Artifact Registry
+5. Deploys to Cloud Run
+
+See [.github/workflows/deploy-production.yml](.github/workflows/deploy-production.yml) for details.
+
+### Infrastructure
+
+The infrastructure (Typesense VM, secrets, IAM bindings) is managed via Terraform in the [destaquesgovbr-infra](https://github.com/destaquesgovbr/destaquesgovbr-infra) repository.
