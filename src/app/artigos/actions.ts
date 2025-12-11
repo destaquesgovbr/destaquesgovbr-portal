@@ -9,6 +9,7 @@ export type GetArticlesArgs = {
   endDate?: number
   agencies?: string[]
   themes?: string[]
+  tags?: string[]
 }
 
 export type GetArticlesResult = {
@@ -21,7 +22,7 @@ const PAGE_SIZE = 40
 export async function getArticles(
   args: GetArticlesArgs,
 ): Promise<GetArticlesResult> {
-  const { page, startDate, endDate, agencies, themes } = args
+  const { page, startDate, endDate, agencies, themes, tags } = args
 
   let filter_by: string[] = []
 
@@ -45,6 +46,10 @@ export async function getArticles(
     filter_by.push(`(${themeFilters.join(' || ')})`)
   }
 
+  if (tags && tags.length > 0) {
+    filter_by.push(`tags:[${tags.join(',')}]`)
+  }
+
   // biome-ignore format: true
   const result = await typesense
     .collections<ArticleRow>('news')
@@ -61,4 +66,28 @@ export async function getArticles(
     articles: result.hits?.map(hit => hit.document) ?? [],
     page: page + 1
   }
+}
+
+export type TagFacet = {
+  value: string
+  count: number
+}
+
+export async function getPopularTags(limit: number = 50): Promise<TagFacet[]> {
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: '*',
+      query_by: 'title',
+      facet_by: 'tags',
+      max_facet_values: limit,
+      limit: 0,
+    })
+
+  const facetCounts = result.facet_counts?.[0]?.counts ?? []
+  return facetCounts.map((f) => ({
+    value: f.value,
+    count: f.count,
+  }))
 }

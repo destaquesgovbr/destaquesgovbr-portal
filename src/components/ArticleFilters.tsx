@@ -4,8 +4,10 @@ import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { AgencyMultiSelect } from '@/components/AgencyMultiSelect'
 import { ThemeMultiSelect } from '@/components/ThemeMultiSelect'
+import { TagFilter } from '@/components/TagFilter'
 import { AgencyOption } from '@/lib/agencies-utils'
 import { ThemeOption } from '@/lib/themes-utils'
+import type { TagFacet } from '@/app/artigos/actions'
 import { useState, useRef, useEffect } from 'react'
 import { Portal } from '@/components/Portal'
 
@@ -86,41 +88,49 @@ function Tooltip({ content, children }: TooltipProps) {
 type ArticleFiltersProps = {
   agencies?: AgencyOption[]
   themes?: ThemeOption[]
+  popularTags?: TagFacet[]
   startDate: Date | undefined
   endDate: Date | undefined
   selectedAgencies?: string[]
   selectedThemes?: string[]
+  selectedTags?: string[]
   onStartDateChange: (date: Date | undefined) => void
   onEndDateChange: (date: Date | undefined) => void
   onAgenciesChange?: (agencies: string[]) => void
   onThemesChange?: (themes: string[]) => void
+  onTagsChange?: (tags: string[]) => void
   getAgencyName?: (key: string) => string
   getThemeName?: (key: string) => string
   getThemeHierarchyPath?: (key: string) => string
   showAgencyFilter?: boolean
   showThemeFilter?: boolean
+  showTagFilter?: boolean
 }
 
 export function ArticleFilters({
   agencies = [],
   themes = [],
+  popularTags = [],
   startDate,
   endDate,
   selectedAgencies = [],
   selectedThemes = [],
+  selectedTags = [],
   onStartDateChange,
   onEndDateChange,
   onAgenciesChange,
   onThemesChange,
+  onTagsChange,
   getAgencyName,
   getThemeName,
   getThemeHierarchyPath,
   showAgencyFilter = true,
   showThemeFilter = true,
+  showTagFilter = true,
 }: ArticleFiltersProps) {
   return (
     <aside className="lg:w-80 flex-shrink-0 lg:border-r lg:border-border lg:pr-8 relative z-[98]">
-      <div className="sticky top-[160px] md:top-[200px]">
+      <div>
         <h3 className="text-lg font-semibold text-primary mb-6">Filtros</h3>
 
         <div className="space-y-6">
@@ -245,6 +255,20 @@ export function ArticleFilters({
                 </div>
               )}
             </>
+          )}
+
+          {/* Tag Filter */}
+          {showTagFilter && onTagsChange && popularTags.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-primary">
+                Tags
+              </label>
+              <TagFilter
+                popularTags={popularTags}
+                selectedTags={selectedTags}
+                onSelectedTagsChange={onTagsChange}
+              />
+            </div>
           )}
         </div>
       </div>
