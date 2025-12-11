@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import NewsCard from '@/components/NewsCard'
-import { getArticles } from './actions'
+import { getArticles, type TagFacet } from './actions'
 import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { getExcerpt } from '@/lib/utils'
@@ -15,9 +15,10 @@ import { ThemeOption } from '@/lib/themes-utils'
 type ArticlesPageClientProps = {
   agencies: AgencyOption[]
   themes: ThemeOption[]
+  popularTags: TagFacet[]
 }
 
-export default function ArticlesPageClient({ agencies, themes }: ArticlesPageClientProps) {
+export default function ArticlesPageClient({ agencies, themes, popularTags }: ArticlesPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -43,6 +44,11 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
     return temas ? temas.split(',') : []
   })
 
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
+    const tags = searchParams.get('tags')
+    return tags ? tags.split(',') : []
+  })
+
   // Function to update URL params
   const updateUrlParams = useCallback(
     (updates: {
@@ -50,6 +56,7 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
       dataFim?: string | null
       agencias?: string | null
       temas?: string | null
+      tags?: string | null
     }) => {
       const params = new URLSearchParams(searchParams.toString())
 
@@ -109,8 +116,18 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
     [updateUrlParams]
   )
 
+  const handleTagsChange = useCallback(
+    (tagsList: string[]) => {
+      setSelectedTags(tagsList)
+      updateUrlParams({
+        tags: tagsList.length > 0 ? tagsList.join(',') : null,
+      })
+    },
+    [updateUrlParams]
+  )
+
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', startDate, endDate, selectedAgencies, selectedThemes],
+    queryKey: ['articles', startDate, endDate, selectedAgencies, selectedThemes, selectedTags],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
       getArticles({
         page: pageParam ?? 1,
@@ -118,6 +135,7 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
         endDate: endDate?.getTime(),
         agencies: selectedAgencies.length > 0 ? selectedAgencies : undefined,
         themes: selectedThemes.length > 0 ? selectedThemes : undefined,
+        tags: selectedTags.length > 0 ? selectedTags : undefined,
       }),
     getNextPageParam: (lastPage) => lastPage.page ?? undefined,
     initialPageParam: 1,
@@ -191,14 +209,17 @@ export default function ArticlesPageClient({ agencies, themes }: ArticlesPageCli
           <ArticleFilters
             agencies={agencies}
             themes={themes}
+            popularTags={popularTags}
             startDate={startDate}
             endDate={endDate}
             selectedAgencies={selectedAgencies}
             selectedThemes={selectedThemes}
+            selectedTags={selectedTags}
             onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange}
             onAgenciesChange={handleAgenciesChange}
             onThemesChange={handleThemesChange}
+            onTagsChange={handleTagsChange}
             getAgencyName={getAgencyName}
             getThemeName={getThemeName}
             getThemeHierarchyPath={getThemeHierarchyPath}

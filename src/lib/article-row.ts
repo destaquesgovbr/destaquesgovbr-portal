@@ -22,6 +22,7 @@ export type ArticleRow = {
   published_year: number | null
   published_month: number | null
   published_week: number | null
+  tags: string[] | null
   // Manter theme_1_level_1 como alias para compatibilidade
   theme_1_level_1?: string | null
 }

@@ -152,6 +152,25 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
           <MarkdownRenderer content={article.content ?? ''}/>
         </article>
 
+        {/* Tags */}
+        {article.tags && article.tags.length > 0 && (
+          <section className="mt-12 mb-8 max-w-3xl mx-auto">
+            <h2 className="text-sm font-semibold text-primary/70 uppercase tracking-wide mb-3">
+              Tags
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {article.tags.map((tag) => (
+                <Link key={tag} href={`/artigos?tags=${encodeURIComponent(tag)}`}>
+                  <Badge className="bg-white text-primary font-medium hover:bg-primary/5 transition-colors cursor-pointer">
+                    <Tag className="w-3 h-3 mr-1 text-primary/70" />
+                    {tag}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Rodapé */}
         <footer className="mt-16 border-t pt-8 text-primary/70 text-sm space-y-4">
           <div>
