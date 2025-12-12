@@ -505,7 +505,7 @@ manualThemes: []
                   <CardDescription>Baseline (sem priorização)</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ArticleList articles={chronological} detailed />
+                  <ArticleList articles={chronological} />
                 </CardContent>
               </Card>
             </TabsContent>
