@@ -1,7 +1,7 @@
 'use client'
 
 import { DownloadIcon, PlayIcon, RefreshCwIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -73,7 +73,7 @@ export default function PreviewPage() {
   const [newThemeWeight, setNewThemeWeight] = useState('1.0')
 
   // Run preview
-  const runPreview = async () => {
+  const runPreview = useCallback(async () => {
     setLoading(true)
     setError(null)
 
@@ -105,7 +105,15 @@ export default function PreviewPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [
+    agencyWeights,
+    themeWeights,
+    recencyDecayHours,
+    recencyWeight,
+    hasImageBoost,
+    hasSummaryBoost,
+    themeFocusMode,
+  ])
 
   // Add agency weight
   const addAgencyWeight = () => {
@@ -509,13 +517,7 @@ manualThemes: []
 }
 
 // Component for basic article list
-function ArticleList({
-  articles,
-  detailed,
-}: {
-  articles: ArticleRow[]
-  detailed?: boolean
-}) {
+function ArticleList({ articles }: { articles: ArticleRow[] }) {
   if (articles.length === 0) {
     return <div className="text-sm text-muted-foreground">Nenhum artigo</div>
   }

@@ -194,7 +194,7 @@ export default function ThemePageClient({
             >
               {articles.map((article, index) => (
                 <NewsCard
-                  key={index}
+                  key={article.unique_id}
                   internalUrl={`/artigos/${article.unique_id}`}
                   theme={article.theme_1_level_3_label || ''}
                   date={article.published_at}

@@ -204,7 +204,7 @@ export default async function Home() {
 
                 <ul className="relative space-y-2.5">
                   {articles.length > 0 ? (
-                    articles.map((a: any) => (
+                    articles.map((a: ArticleRow) => (
                       <li key={a.unique_id} className="text-sm leading-snug">
                         <Link
                           href={`/artigos/${a.unique_id}`}

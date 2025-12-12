@@ -1,9 +1,9 @@
 type ChartTooltipProps = {
-  active?: any
-  payload?: any
+  active?: boolean
+  payload?: Array<{ payload: Record<string, unknown> }>
   dataKey: string
   itemName?: string | null
-  formatLabel?: (label: string) => any
+  formatLabel?: (label: string) => string
 }
 
 export const ChartTooltip = ({

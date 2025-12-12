@@ -130,6 +130,7 @@ export default function ClientArticle({
               width="180"
               height="6"
               viewBox="0 0 180 6"
+              aria-hidden="true"
             >
               <rect x="0" y="0" width="22" height="6" fill="#0D4C92" />
               <path d="M22 0 L38 6 L54 0 Z" fill="#2D9B78" />
