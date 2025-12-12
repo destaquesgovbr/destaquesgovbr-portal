@@ -1,15 +1,15 @@
 'use client'
 
-import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
-import { AgencyMultiSelect } from '@/components/AgencyMultiSelect'
-import { ThemeMultiSelect } from '@/components/ThemeMultiSelect'
-import { TagFilter } from '@/components/TagFilter'
-import { AgencyOption } from '@/lib/agencies-utils'
-import { ThemeOption } from '@/lib/themes-utils'
+import { useEffect, useRef, useState } from 'react'
 import type { TagFacet } from '@/app/artigos/actions'
-import { useState, useRef, useEffect } from 'react'
+import { AgencyMultiSelect } from '@/components/AgencyMultiSelect'
 import { Portal } from '@/components/Portal'
+import { TagFilter } from '@/components/TagFilter'
+import { ThemeMultiSelect } from '@/components/ThemeMultiSelect'
+import { Input } from '@/components/ui/input'
+import type { AgencyOption } from '@/lib/agencies-utils'
+import type { ThemeOption } from '@/lib/themes-utils'
 
 type DateFilterProps = {
   label: string
@@ -186,7 +186,11 @@ export function ArticleFilters({
                         </span>
                         <button
                           type="button"
-                          onClick={() => onAgenciesChange(selectedAgencies.filter((k) => k !== key))}
+                          onClick={() =>
+                            onAgenciesChange(
+                              selectedAgencies.filter((k) => k !== key),
+                            )
+                          }
                           className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                           aria-label={`Remover ${getAgencyName(key)}`}
                         >
@@ -233,15 +237,30 @@ export function ArticleFilters({
                     {selectedThemes.map((key) => (
                       <Tooltip
                         key={key}
-                        content={getThemeHierarchyPath ? getThemeHierarchyPath(key) : getThemeName(key)}
+                        content={
+                          getThemeHierarchyPath
+                            ? getThemeHierarchyPath(key)
+                            : getThemeName(key)
+                        }
                       >
-                        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group" title="">
-                          <span className="text-primary/90 flex-1 min-w-0 overflow-hidden line-clamp-1" style={{ textOverflow: 'clip' }} title="">
+                        <div
+                          className="flex items-center justify-between gap-2 px-3 py-2 bg-primary/5 border border-primary/10 rounded-md text-sm hover:bg-primary/10 transition-colors group"
+                          title=""
+                        >
+                          <span
+                            className="text-primary/90 flex-1 min-w-0 overflow-hidden line-clamp-1"
+                            style={{ textOverflow: 'clip' }}
+                            title=""
+                          >
                             {getThemeName(key)}
                           </span>
                           <button
                             type="button"
-                            onClick={() => onThemesChange(selectedThemes.filter((k) => k !== key))}
+                            onClick={() =>
+                              onThemesChange(
+                                selectedThemes.filter((k) => k !== key),
+                              )
+                            }
                             className="text-primary/50 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                             aria-label={`Remover ${getThemeName(key)}`}
                             title=""
@@ -260,9 +279,7 @@ export function ArticleFilters({
           {/* Tag Filter */}
           {showTagFilter && onTagsChange && popularTags.length > 0 && (
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-primary">
-                Tags
-              </label>
+              <label className="text-sm font-semibold text-primary">Tags</label>
               <TagFilter
                 popularTags={popularTags}
                 selectedTags={selectedTags}

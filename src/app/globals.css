@@ -137,43 +137,46 @@
 .header-banner {
   width: 100%;
   height: 36px;
-  background-color: #F7F3EB; /* cor central */
+  background-color: #f7f3eb; /* cor central */
 }
 
 /* Show SVGs only on medium screens and up */
 @media (min-width: 768px) {
   .header-banner {
     background-image:
-      url('/ribbon-tile.svg'),
-      url('/ribbon-tile.svg'); /* duas instâncias do mesmo SVG */
+      url("/ribbon-tile.svg"), url("/ribbon-tile.svg"); /* duas instâncias do mesmo SVG */
     background-repeat: no-repeat, no-repeat;
-    background-size: auto 36px, auto 36px; /* mantém proporção original */
-    background-position: left center, right center; /* uma à esquerda, outra à direita */
+    background-size:
+      auto 36px,
+      auto 36px; /* mantém proporção original */
+    background-position:
+      left center,
+      right center; /* uma à esquerda, outra à direita */
   }
 }
 
 .transparency-banner-1 {
-  background: url('/transparency-tile-1.svg') no-repeat center/cover;
+  background: url("/transparency-tile-1.svg") no-repeat center / cover;
 }
 
 .transparency-banner-2 {
-  background: url('/transparency-tile-2.svg') no-repeat center/cover;
+  background: url("/transparency-tile-2.svg") no-repeat center / cover;
 }
 
 .transparency-banner-3 {
-  background: url('/transparency-tile-3.svg') no-repeat center/cover;
+  background: url("/transparency-tile-3.svg") no-repeat center / cover;
 }
 
 .theme-banner-1 {
-  background: url('/theme-tile-1.svg') no-repeat center/cover;
+  background: url("/theme-tile-1.svg") no-repeat center / cover;
 }
 
 .theme-banner-2 {
-  background: url('/theme-tile-2.svg') no-repeat center/cover;
+  background: url("/theme-tile-2.svg") no-repeat center / cover;
 }
 
 .theme-banner-3 {
-  background: url('/theme-tile-3.svg') no-repeat center/cover;
+  background: url("/theme-tile-3.svg") no-repeat center / cover;
 }
 
 @layer base {

@@ -48,15 +48,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="mt-8 md:mt-0">
-            <h4 className="font-semibold mb-4 text-primary">
-              Acesso Rápido
-            </h4>
+            <h4 className="font-semibold mb-4 text-primary">Acesso Rápido</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="https://www.gov.br/"
                   target="_blank"
                   className="hover:text-government-blue hover:underline transition-colors flex items-center"
+                  rel="noopener"
                 >
                   GOV.BR
                   <ExternalLink className="w-3 h-3 ml-1" />
@@ -67,6 +66,7 @@ const Footer = () => {
                   href="https://portaldatransparencia.gov.br/"
                   target="_blank"
                   className="hover:text-government-green hover:underline transition-colors flex items-center"
+                  rel="noopener"
                 >
                   Transparência
                   <ExternalLink className="w-3 h-3 ml-1" />
@@ -77,6 +77,7 @@ const Footer = () => {
                   href="https://www.gov.br/ouvidorias"
                   target="_blank"
                   className="hover:text-government-red hover:underline transition-colors flex items-center"
+                  rel="noopener"
                 >
                   Ouvidoria
                   <ExternalLink className="w-3 h-3 ml-1" />
@@ -89,7 +90,8 @@ const Footer = () => {
         {/* Divider and copyright */}
         <div className="border-t mt-12 pt-6 text-center text-sm text-muted-foreground">
           <p>
-            © {currentYear} Governo Federal do Brasil. Todos os direitos reservados.
+            © {currentYear} Governo Federal do Brasil. Todos os direitos
+            reservados.
           </p>
         </div>
       </div>

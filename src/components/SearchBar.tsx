@@ -1,18 +1,18 @@
 'use client'
 
 import { Search, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { Input } from '@/components/ui/input'
 
 const SearchBar = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const [query, setQuery] = useState(searchParams.get("q") || "")
+  const [query, setQuery] = useState(searchParams.get('q') || '')
 
   useEffect(() => {
-    setQuery(searchParams.get("q") || "")
+    setQuery(searchParams.get('q') || '')
   }, [searchParams])
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -22,7 +22,7 @@ const SearchBar = () => {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && query.trim()) {
+    if (e.key === 'Enter' && query.trim()) {
       e.preventDefault()
       handleSubmit()
     }

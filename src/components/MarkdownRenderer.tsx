@@ -1,7 +1,6 @@
-import React from 'react'
-import ReactMarkdown, { Components } from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactMarkdown, { type Components } from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
 import { cn } from '@/lib/utils'
 
 interface MarkdownRendererProps {
@@ -14,7 +13,10 @@ interface MarkdownRendererProps {
  * Componente centralizado para renderizar markdown com estilos Tailwind consistentes.
  * Usa ReactMarkdown + remark-gfm + rehype-raw.
  */
-export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
+export function MarkdownRenderer({
+  content,
+  className,
+}: MarkdownRendererProps) {
   const components: Components = {
     // Parágrafos
     p: ({ node, children, ...props }) => (
@@ -33,13 +35,19 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-xl font-semibold text-primary mt-5 mb-2">{children}</h3>
+      <h3 className="text-xl font-semibold text-primary mt-5 mb-2">
+        {children}
+      </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-lg font-semibold text-primary mt-4 mb-2">{children}</h4>
+      <h4 className="text-lg font-semibold text-primary mt-4 mb-2">
+        {children}
+      </h4>
     ),
     h5: ({ children }) => (
-      <h5 className="text-base font-semibold text-primary mt-4 mb-2">{children}</h5>
+      <h5 className="text-base font-semibold text-primary mt-4 mb-2">
+        {children}
+      </h5>
     ),
     h6: ({ children }) => (
       <h6 className="text-sm font-semibold text-primary mt-3 mb-2 uppercase tracking-wide">
@@ -61,12 +69,16 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 
     // Listas não ordenadas
     ul: ({ children }) => (
-      <ul className="list-disc ml-6 my-4 space-y-1 text-primary/90 text-left">{children}</ul>
+      <ul className="list-disc ml-6 my-4 space-y-1 text-primary/90 text-left">
+        {children}
+      </ul>
     ),
 
     // Listas ordenadas
     ol: ({ children }) => (
-      <ol className="list-decimal ml-6 my-4 space-y-1 text-primary/90">{children}</ol>
+      <ol className="list-decimal ml-6 my-4 space-y-1 text-primary/90">
+        {children}
+      </ol>
     ),
 
     // Itens de lista

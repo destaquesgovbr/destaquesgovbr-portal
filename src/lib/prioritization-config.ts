@@ -5,8 +5,8 @@
  * e fornece funções para carregar e validar a configuração.
  */
 
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import yaml from 'js-yaml'
 import { unstable_cache } from 'next/cache'
 
@@ -31,21 +31,21 @@ export type PrioritizationConfig = {
   themeWeights: Record<string, number>
 
   // Configuração de recência
-  recencyDecayHours: number  // Período de decaimento
-  recencyWeight: number      // Peso da recência (0.0 a 1.0)
+  recencyDecayHours: number // Período de decaimento
+  recencyWeight: number // Peso da recência (0.0 a 1.0)
 
   // Boosts de qualidade
-  hasImageBoost: number      // Multiplicador para artigos com imagem
-  hasSummaryBoost: number    // Multiplicador para artigos com resumo
+  hasImageBoost: number // Multiplicador para artigos com imagem
+  hasSummaryBoost: number // Multiplicador para artigos com resumo
 
   // Filtros absolutos (opcionais)
-  maxArticleAgeDays: number | null        // Idade máxima em dias (null = sem limite)
-  excludedAgencies: string[]              // Órgãos excluídos completamente
-  excludedThemes: string[]                // Temas excluídos completamente
+  maxArticleAgeDays: number | null // Idade máxima em dias (null = sem limite)
+  excludedAgencies: string[] // Órgãos excluídos completamente
+  excludedThemes: string[] // Temas excluídos completamente
 
   // Configuração de "Temas em Foco"
   themeFocusMode: ThemeFocusMode
-  manualThemes: string[]                  // Usado se mode = "manual"
+  manualThemes: string[] // Usado se mode = "manual"
 }
 
 /**
@@ -80,7 +80,12 @@ function isValidPositiveNumber(value: unknown): value is number {
  * Valida se um valor é um número entre 0 e 1
  */
 function isValidRatio(value: unknown): value is number {
-  return typeof value === 'number' && !Number.isNaN(value) && value >= 0 && value <= 1
+  return (
+    typeof value === 'number' &&
+    !Number.isNaN(value) &&
+    value >= 0 &&
+    value <= 1
+  )
 }
 
 /**
@@ -93,7 +98,10 @@ function isValidWeight(value: unknown): value is number {
 /**
  * Valida um objeto de pesos (agency ou theme)
  */
-function validateWeights(weights: unknown, name: string): Record<string, number> {
+function validateWeights(
+  weights: unknown,
+  name: string,
+): Record<string, number> {
   if (!weights || typeof weights !== 'object') {
     console.warn(`[Prioritization] Invalid ${name}, using empty weights`)
     return {}
@@ -104,7 +112,9 @@ function validateWeights(weights: unknown, name: string): Record<string, number>
     if (isValidWeight(value)) {
       validated[key] = value
     } else {
-      console.warn(`[Prioritization] Invalid weight for ${name}.${key}: ${value}, skipping`)
+      console.warn(
+        `[Prioritization] Invalid weight for ${name}.${key}: ${value}, skipping`,
+      )
     }
   }
 
@@ -116,7 +126,9 @@ function validateWeights(weights: unknown, name: string): Record<string, number>
  */
 function validateStringArray(value: unknown, name: string): string[] {
   if (!Array.isArray(value)) {
-    console.warn(`[Prioritization] Invalid ${name}, expected array, got ${typeof value}`)
+    console.warn(
+      `[Prioritization] Invalid ${name}, expected array, got ${typeof value}`,
+    )
     return []
   }
 
@@ -168,23 +180,36 @@ function validateConfig(raw: unknown): PrioritizationConfig {
 
   // Validar maxArticleAgeDays
   let maxArticleAgeDays: number | null = null
-  if (config.maxArticleAgeDays !== null && config.maxArticleAgeDays !== undefined) {
+  if (
+    config.maxArticleAgeDays !== null &&
+    config.maxArticleAgeDays !== undefined
+  ) {
     if (isValidPositiveNumber(config.maxArticleAgeDays)) {
       maxArticleAgeDays = config.maxArticleAgeDays
     } else {
-      console.warn(`[Prioritization] Invalid maxArticleAgeDays: ${config.maxArticleAgeDays}, using null`)
+      console.warn(
+        `[Prioritization] Invalid maxArticleAgeDays: ${config.maxArticleAgeDays}, using null`,
+      )
     }
   }
 
   // Validar excludedAgencies
-  const excludedAgencies = validateStringArray(config.excludedAgencies, 'excludedAgencies')
+  const excludedAgencies = validateStringArray(
+    config.excludedAgencies,
+    'excludedAgencies',
+  )
 
   // Validar excludedThemes
-  const excludedThemes = validateStringArray(config.excludedThemes, 'excludedThemes')
+  const excludedThemes = validateStringArray(
+    config.excludedThemes,
+    'excludedThemes',
+  )
 
   // Validar themeFocusMode
   const validModes: ThemeFocusMode[] = ['volume', 'weighted', 'manual']
-  const themeFocusMode = validModes.includes(config.themeFocusMode as ThemeFocusMode)
+  const themeFocusMode = validModes.includes(
+    config.themeFocusMode as ThemeFocusMode,
+  )
     ? (config.themeFocusMode as ThemeFocusMode)
     : DEFAULT_CONFIG.themeFocusMode
 
@@ -194,7 +219,7 @@ function validateConfig(raw: unknown): PrioritizationConfig {
   // Validar que manualThemes tem exatamente 3 temas se mode = "manual"
   if (themeFocusMode === 'manual' && manualThemes.length !== 3) {
     console.warn(
-      `[Prioritization] themeFocusMode is "manual" but manualThemes has ${manualThemes.length} items (expected 3), falling back to "volume"`
+      `[Prioritization] themeFocusMode is "manual" but manualThemes has ${manualThemes.length} items (expected 3), falling back to "volume"`,
     )
     return {
       ...DEFAULT_CONFIG,
@@ -236,10 +261,17 @@ function validateConfig(raw: unknown): PrioritizationConfig {
  */
 async function loadConfigUncached(): Promise<PrioritizationConfig> {
   try {
-    const configPath = path.join(process.cwd(), 'src', 'lib', 'prioritization.yaml')
+    const configPath = path.join(
+      process.cwd(),
+      'src',
+      'lib',
+      'prioritization.yaml',
+    )
 
     if (!fs.existsSync(configPath)) {
-      console.warn(`[Prioritization] Config file not found at ${configPath}, using defaults`)
+      console.warn(
+        `[Prioritization] Config file not found at ${configPath}, using defaults`,
+      )
       return DEFAULT_CONFIG
     }
 
@@ -272,7 +304,7 @@ export const loadConfig = unstable_cache(
   {
     revalidate: 300, // 5 minutos
     tags: ['prioritization-config'],
-  }
+  },
 )
 
 // ==============================================================================
@@ -282,7 +314,10 @@ export const loadConfig = unstable_cache(
 /**
  * Retorna o peso do órgão (1.0 se não especificado)
  */
-export function getAgencyWeight(config: PrioritizationConfig, agency: string | null): number {
+export function getAgencyWeight(
+  config: PrioritizationConfig,
+  agency: string | null,
+): number {
   if (!agency) return 1.0
   return config.agencyWeights[agency] ?? 1.0
 }
@@ -294,7 +329,7 @@ export function getBestThemeWeight(
   config: PrioritizationConfig,
   level1: string | null,
   level2: string | null,
-  level3: string | null
+  level3: string | null,
 ): number {
   const weights: number[] = [1.0] // Default weight
 
@@ -322,7 +357,7 @@ export function shouldExcludeArticle(
     theme_1_level_2_code: string | null
     theme_1_level_3_code: string | null
     published_at: number | null
-  }
+  },
 ): boolean {
   // Verificar exclusão por órgão
   if (article.agency && config.excludedAgencies.includes(article.agency)) {

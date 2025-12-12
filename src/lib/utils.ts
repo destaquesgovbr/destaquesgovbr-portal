@@ -12,30 +12,32 @@ export function cn(...inputs: ClassValue[]) {
 export function stripMarkdown(markdown: string): string {
   if (!markdown) return ''
 
-  return markdown
-    // Remove images: ![alt](url)
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    // Remove links but keep text: [text](url) -> text
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
-    // Remove headers: ## Header -> Header
-    .replace(/^#{1,6}\s+/gm, '')
-    // Remove bold/italic: **text** or *text* -> text
-    .replace(/\*\*([^\*]+)\*\*/g, '$1')
-    .replace(/\*([^\*]+)\*/g, '$1')
-    // Remove blockquotes: > text
-    .replace(/^>\s+/gm, '')
-    // Remove horizontal rules: --- or ***
-    .replace(/^[-*_]{3,}$/gm, '')
-    // Remove code blocks: ```code```
-    .replace(/```[\s\S]*?```/g, '')
-    // Remove inline code: `code`
-    .replace(/`([^`]+)`/g, '$1')
-    // Remove HTML tags
-    .replace(/<[^>]+>/g, '')
-    // Clean up multiple newlines
-    .replace(/\n{3,}/g, '\n\n')
-    // Trim whitespace
-    .trim()
+  return (
+    markdown
+      // Remove images: ![alt](url)
+      .replace(/!\[.*?\]\(.*?\)/g, '')
+      // Remove links but keep text: [text](url) -> text
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Remove headers: ## Header -> Header
+      .replace(/^#{1,6}\s+/gm, '')
+      // Remove bold/italic: **text** or *text* -> text
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      // Remove blockquotes: > text
+      .replace(/^>\s+/gm, '')
+      // Remove horizontal rules: --- or ***
+      .replace(/^[-*_]{3,}$/gm, '')
+      // Remove code blocks: ```code```
+      .replace(/```[\s\S]*?```/g, '')
+      // Remove inline code: `code`
+      .replace(/`([^`]+)`/g, '$1')
+      // Remove HTML tags
+      .replace(/<[^>]+>/g, '')
+      // Clean up multiple newlines
+      .replace(/\n{3,}/g, '\n\n')
+      // Trim whitespace
+      .trim()
+  )
 }
 
 /**
@@ -55,10 +57,10 @@ export function getExcerpt(content: string, maxLength: number = 200): string {
   const lastSpace = excerpt.lastIndexOf(' ')
 
   if (lastSpace > 0) {
-    return excerpt.substring(0, lastSpace) + '...'
+    return `${excerpt.substring(0, lastSpace)}...`
   }
 
-  return excerpt + '...'
+  return `${excerpt}...`
 }
 
 /**

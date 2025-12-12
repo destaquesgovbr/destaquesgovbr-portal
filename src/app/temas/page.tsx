@@ -1,7 +1,7 @@
+import { ThemeTreeDisplay } from '@/components/ThemeTreeDisplay'
 import { getThemesHierarchy } from '@/lib/themes-utils'
 import { getThemeArticleCounts } from './actions'
 import ThemesPageClient from './ThemesPageClient'
-import { ThemeTreeDisplay } from '@/components/ThemeTreeDisplay'
 
 export default async function ThemesPage() {
   // Fetch theme hierarchy and article counts
@@ -18,7 +18,8 @@ export default async function ThemesPage() {
           <img src="/underscore.svg" alt="" />
         </div>
         <p className="mt-4 text-base text-primary/80">
-          Conheça os temas que estruturam as políticas e ações do Estado brasileiro.
+          Conheça os temas que estruturam as políticas e ações do Estado
+          brasileiro.
         </p>
       </div>
 

@@ -1,9 +1,9 @@
 'use client'
 
-import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Input } from '@/components/ui/input'
 
 type DatePreset = 'week' | 'month' | 'semester' | 'year' | 'custom'
 
@@ -21,7 +21,10 @@ export function DashboardFilters() {
     const startParam = searchParams.get('start')
     const endParam = searchParams.get('end')
 
-    if (presetParam && ['week', 'month', 'semester', 'year', 'custom'].includes(presetParam)) {
+    if (
+      presetParam &&
+      ['week', 'month', 'semester', 'year', 'custom'].includes(presetParam)
+    ) {
       setPreset(presetParam)
     }
 
@@ -78,7 +81,9 @@ export function DashboardFilters() {
         <div className="flex flex-wrap items-end gap-4">
           {/* Single dropdown for presets */}
           <div className="flex flex-col gap-2 w-full lg:w-auto">
-            <label className="text-sm font-semibold text-primary">Período</label>
+            <label className="text-sm font-semibold text-primary">
+              Período
+            </label>
             <select
               value={preset}
               onChange={(e) => handlePresetChange(e.target.value as DatePreset)}
@@ -96,13 +101,22 @@ export function DashboardFilters() {
           {preset === 'custom' && (
             <>
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-semibold text-primary">Início</label>
+                <label className="text-sm font-semibold text-primary">
+                  Início
+                </label>
                 <div className="relative">
                   <Input
                     type="date"
-                    onChange={(e) => handleDateChange('start', e.target.value ? new Date(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      handleDateChange(
+                        'start',
+                        e.target.value ? new Date(e.target.value) : undefined,
+                      )
+                    }
                     className={startDate ? 'pr-9' : undefined}
-                    value={startDate ? startDate.toISOString().split('T')[0] : ''}
+                    value={
+                      startDate ? startDate.toISOString().split('T')[0] : ''
+                    }
                   />
                   {startDate && (
                     <X
@@ -114,11 +128,18 @@ export function DashboardFilters() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-semibold text-primary">Fim</label>
+                <label className="text-sm font-semibold text-primary">
+                  Fim
+                </label>
                 <div className="relative">
                   <Input
                     type="date"
-                    onChange={(e) => handleDateChange('end', e.target.value ? new Date(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      handleDateChange(
+                        'end',
+                        e.target.value ? new Date(e.target.value) : undefined,
+                      )
+                    }
                     className={endDate ? 'pr-9' : undefined}
                     value={endDate ? endDate.toISOString().split('T')[0] : ''}
                   />

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
-import { getArticleById } from './actions'
 import ClientArticle from '@/components/ClientArticle'
+import { getArticleById } from './actions'
 
 interface Props {
   params: Promise<{ articleId: string }>
@@ -21,13 +21,10 @@ export async function generateMetadata({ params }: Props) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!
   const pageUrl = `${siteUrl}/artigos/${article.unique_id}`
 
-  const title =
-    article.title ||
-    'Notícia — DestaquesGovBr'
-  const description = 'Acompanhe as ações, programas e políticas públicas do Governo Federal do Brasil.'
-  const image = article.image
-    ? article.image
-    : `${siteUrl}/fallback.png`
+  const title = article.title || 'Notícia — DestaquesGovBr'
+  const description =
+    'Acompanhe as ações, programas e políticas públicas do Governo Federal do Brasil.'
+  const image = article.image ? article.image : `${siteUrl}/fallback.png`
 
   return {
     title: `${title} — DestaquesGovBr`,

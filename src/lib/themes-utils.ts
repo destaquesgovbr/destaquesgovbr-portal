@@ -1,7 +1,7 @@
 'use server'
 
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import yaml from 'js-yaml'
 import { unstable_cache } from 'next/cache'
 
@@ -40,8 +40,8 @@ export const getThemesByLabel = unstable_cache(
   ['themes-yaml'],
   {
     revalidate: 3600, // 1 hour - adjust based on how often external data changes
-    tags: ['themes']
-  }
+    tags: ['themes'],
+  },
 )
 
 /**
@@ -79,7 +79,11 @@ export async function getThemesWithHierarchy(): Promise<ThemeOption[]> {
   const themes = await getThemesByLabel()
   const result: ThemeOption[] = []
 
-  function addThemeWithHierarchy(theme: Theme, level: number = 1, parentPath: string[] = []) {
+  function addThemeWithHierarchy(
+    theme: Theme,
+    level: number = 1,
+    parentPath: string[] = [],
+  ) {
     // Criar prefixo de indentação baseado no nível (sem caracteres visuais)
     const prefix = level === 1 ? '' : '  '.repeat(level - 1)
     const currentPath = [...parentPath, theme.label]
@@ -122,7 +126,7 @@ export async function getTopLevelThemes(): Promise<Theme[]> {
  * Retorna o nome de um tema a partir de sua label
  */
 export async function getThemeName(
-  themeLabel: string | null | undefined
+  themeLabel: string | null | undefined,
 ): Promise<string | undefined> {
   if (!themeLabel) return undefined
   const themes = await getThemesByLabel()
@@ -135,7 +139,7 @@ export async function getThemeName(
  * Retorna o nome de um tema a partir do código
  */
 export async function getThemeNameByCode(
-  themeCode: string | null | undefined
+  themeCode: string | null | undefined,
 ): Promise<string | undefined> {
   if (!themeCode) return undefined
   const themes = await getThemesByLabel()
@@ -148,7 +152,9 @@ export async function getThemeNameByCode(
  * Builds a hierarchy path for a theme (e.g., "Economia > Política > Fiscal")
  * from the YAML hierarchy structure
  */
-export async function getThemeHierarchyPath(themeCode: string): Promise<string> {
+export async function getThemeHierarchyPath(
+  themeCode: string,
+): Promise<string> {
   const themes = await getThemesByLabel()
   const allThemes = flattenThemes(themes)
   const theme = allThemes.find((t) => t.code === themeCode)
@@ -160,7 +166,10 @@ export async function getThemeHierarchyPath(themeCode: string): Promise<string> 
   let currentTheme = theme
 
   // Recursively find parents
-  function findParent(targetTheme: Theme, searchThemes: Theme[]): Theme | undefined {
+  function findParent(
+    targetTheme: Theme,
+    searchThemes: Theme[],
+  ): Theme | undefined {
     for (const t of searchThemes) {
       if (t.children) {
         for (const child of t.children) {

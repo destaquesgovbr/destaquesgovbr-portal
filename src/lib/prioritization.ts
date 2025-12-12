@@ -60,7 +60,7 @@ export type ScoredTheme = {
  */
 function calculateRecencyFactor(
   publishedAt: number | null,
-  decayHours: number
+  decayHours: number,
 ): number {
   if (!publishedAt) return 0.5 // Default médio para artigos sem data
 
@@ -84,7 +84,7 @@ function calculateRecencyFactor(
  */
 function calculateContentBoosts(
   article: ArticleRow,
-  config: PrioritizationConfig
+  config: PrioritizationConfig,
 ): number {
   let boosts = 1.0
 
@@ -115,7 +115,7 @@ function calculateContentBoosts(
 export function calculateArticleScore(
   article: ArticleRow,
   config: PrioritizationConfig,
-  includeBreakdown = false
+  includeBreakdown = false,
 ): number {
   // Pesos de órgão e tema
   const agencyWeight = getAgencyWeight(config, article.agency)
@@ -123,13 +123,13 @@ export function calculateArticleScore(
     config,
     article.theme_1_level_1_code,
     article.theme_1_level_2_code,
-    article.theme_1_level_3_code
+    article.theme_1_level_3_code,
   )
 
   // Fator de recência
   const recencyFactor = calculateRecencyFactor(
     article.published_at,
-    config.recencyDecayHours
+    config.recencyDecayHours,
   )
 
   // Boosts de qualidade
@@ -169,10 +169,12 @@ export function getPrioritizedArticles(
   articles: ArticleRow[],
   config: PrioritizationConfig,
   limit?: number,
-  includeBreakdown = false
+  includeBreakdown = false,
 ): ScoredArticle[] {
   // Filtrar artigos excluídos
-  const filtered = articles.filter((article) => !shouldExcludeArticle(config, article))
+  const filtered = articles.filter(
+    (article) => !shouldExcludeArticle(config, article),
+  )
 
   // Calcular scores
   const scored: ScoredArticle[] = filtered.map((article) => {
@@ -209,7 +211,7 @@ export function getPrioritizedArticles(
  */
 export function calculateThemeScores(
   articles: ArticleRow[],
-  config: PrioritizationConfig
+  config: PrioritizationConfig,
 ): ScoredTheme[] {
   const themeMap = new Map<string, { count: number; totalScore: number }>()
 
@@ -251,7 +253,7 @@ export function calculateThemeScores(
 export function getPrioritizedThemes(
   articles: ArticleRow[],
   config: PrioritizationConfig,
-  limit = 3
+  limit = 3,
 ): string[] {
   // Modo manual: retorna temas pré-definidos
   if (config.themeFocusMode === 'manual') {
@@ -315,10 +317,10 @@ export function formatScoreBreakdown(article: ScoredArticle): string {
 export function generatePrioritizationReport(
   articles: ArticleRow[],
   config: PrioritizationConfig,
-  topN = 10
+  topN = 10,
 ): string {
   const chronological = [...articles].sort(
-    (a, b) => (b.published_at ?? 0) - (a.published_at ?? 0)
+    (a, b) => (b.published_at ?? 0) - (a.published_at ?? 0),
   )
 
   const prioritized = getPrioritizedArticles(articles, config, topN, true)
@@ -338,7 +340,7 @@ export function generatePrioritizationReport(
   chronological.slice(0, topN).forEach((article, i) => {
     lines.push(
       `${i + 1}. ${article.title?.slice(0, 60) ?? 'Sem título'}`,
-      `   ${article.agency ?? 'N/A'} | ${article.theme_1_level_1_label ?? 'N/A'}`
+      `   ${article.agency ?? 'N/A'} | ${article.theme_1_level_1_label ?? 'N/A'}`,
     )
   })
 
@@ -348,7 +350,7 @@ export function generatePrioritizationReport(
     lines.push(
       `${i + 1}. ${article.title?.slice(0, 60) ?? 'Sem título'}`,
       `   ${article.agency ?? 'N/A'} | ${article.theme_1_level_1_label ?? 'N/A'}`,
-      `   Score: ${article._score.toFixed(3)}`
+      `   Score: ${article._score.toFixed(3)}`,
     )
   })
 

@@ -1,14 +1,32 @@
-import { addDays, startOfDay, subDays, subMonths, subYears, differenceInDays } from 'date-fns'
-import { getKpis, getTopThemes, getTopAgencies, getTimelineDaily, getThemeComparison, getAgencyComparison } from './actions'
+import {
+  addDays,
+  differenceInDays,
+  startOfDay,
+  subDays,
+  subMonths,
+  subYears,
+} from 'date-fns'
+import { Suspense } from 'react'
 import DashboardClient from '@/components/DashboardClient'
 import { DashboardFilters } from '@/components/DashboardFilters'
-import { Suspense } from 'react'
+import {
+  getAgencyComparison,
+  getKpis,
+  getThemeComparison,
+  getTimelineDaily,
+  getTopAgencies,
+  getTopThemes,
+} from './actions'
 
 export const dynamic = 'force-dynamic' // sem cache agressivo para testes
 
 type DatePreset = 'week' | 'month' | 'semester' | 'year' | 'custom'
 
-function getDateRangeFromPreset(preset: DatePreset, customStart?: string, customEnd?: string) {
+function getDateRangeFromPreset(
+  preset: DatePreset,
+  customStart?: string,
+  customEnd?: string,
+) {
   const end = startOfDay(new Date())
   let start: Date
 
@@ -30,7 +48,6 @@ function getDateRangeFromPreset(preset: DatePreset, customStart?: string, custom
       // Fallback to month if custom dates are invalid
       start = startOfDay(subDays(end, 29))
       break
-    case 'month':
     default:
       start = startOfDay(subDays(end, 29)) // 30 dias (inclui hoje)
       break
@@ -49,7 +66,6 @@ function getPresetLabel(preset: DatePreset): string {
       return 'último ano'
     case 'custom':
       return 'período personalizado'
-    case 'month':
     default:
       return 'últimos 30 dias'
   }
@@ -61,41 +77,65 @@ export default async function DashboardPage({
   searchParams: { preset?: string; start?: string; end?: string }
 }) {
   const preset = (searchParams.preset as DatePreset) || 'month'
-  const range = getDateRangeFromPreset(preset, searchParams.start, searchParams.end)
+  const range = getDateRangeFromPreset(
+    preset,
+    searchParams.start,
+    searchParams.end,
+  )
   const presetLabel = getPresetLabel(preset)
 
   // Calculate previous period for comparison
   const periodDays = differenceInDays(range.end, range.start)
   const previousRange = {
     start: subDays(range.start, periodDays),
-    end: range.start
+    end: range.start,
   }
 
-  const [kpisR, themesR, agenciesR, timelineR, prevKpisR, themeCompR, agencyCompR] = await Promise.all([
+  const [
+    kpisR,
+    themesR,
+    agenciesR,
+    timelineR,
+    prevKpisR,
+    themeCompR,
+    agencyCompR,
+  ] = await Promise.all([
     getKpis(range),
     getTopThemes(range, 8),
     getTopAgencies(range, 8),
     getTimelineDaily(range),
     getKpis(previousRange),
     getThemeComparison(range, previousRange),
-    getAgencyComparison(range, previousRange)
+    getAgencyComparison(range, previousRange),
   ])
 
   // Normaliza resultados (com fallback seguro)
-  const kpis = kpisR.type === 'ok' ? kpisR.data : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
-  const prevKpis = prevKpisR.type === 'ok' ? prevKpisR.data : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
+  const kpis =
+    kpisR.type === 'ok'
+      ? kpisR.data
+      : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
+  const prevKpis =
+    prevKpisR.type === 'ok'
+      ? prevKpisR.data
+      : { total: 0, temasAtivos: 0, orgaosAtivos: 0, mediaDiaria: 0 }
   const themes = themesR.type === 'ok' ? themesR.data : []
   const agencies = agenciesR.type === 'ok' ? agenciesR.data : []
   const timeline = timelineR.type === 'ok' ? timelineR.data : []
-  const themeComparison = themeCompR.type === 'ok' ? themeCompR.data : { growing: [], declining: [] }
-  const agencyComparison = agencyCompR.type === 'ok' ? agencyCompR.data : { growing: [], declining: [] }
+  const themeComparison =
+    themeCompR.type === 'ok' ? themeCompR.data : { growing: [], declining: [] }
+  const agencyComparison =
+    agencyCompR.type === 'ok'
+      ? agencyCompR.data
+      : { growing: [], declining: [] }
 
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
         {/* Cabeçalho institucional */}
         <div className="container mx-auto px-4 text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary">Dashboard editorial</h2>
+          <h2 className="text-3xl font-bold text-primary">
+            Dashboard editorial
+          </h2>
 
           {/* Linha divisória SVG */}
           <div className="mx-auto mt-3 w-40">
@@ -104,7 +144,8 @@ export default async function DashboardPage({
 
           {/* Subtítulo institucional */}
           <p className="mt-4 text-base text-primary/80">
-            Análise em tempo real da produção de notícias do Governo Federal ({presetLabel}).
+            Análise em tempo real da produção de notícias do Governo Federal (
+            {presetLabel}).
           </p>
         </div>
 

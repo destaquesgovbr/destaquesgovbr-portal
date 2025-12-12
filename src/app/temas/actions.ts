@@ -1,8 +1,8 @@
 'use server'
 
-import { typesense } from '@/lib/typesense-client'
-import { ArticleRow } from '@/lib/article-row'
 import { subDays } from 'date-fns'
+import type { ArticleRow } from '@/lib/article-row'
+import { typesense } from '@/lib/typesense-client'
 
 /**
  * Get article counts by theme code for the last 30 days
@@ -29,7 +29,7 @@ export async function getThemeArticleCounts(): Promise<Map<string, number>> {
         q: '*',
         filter_by: filter,
         group_by: 'theme_1_level_1_code',
-        per_page: 250
+        per_page: 250,
       })
 
     // Query for level 2 themes
@@ -40,7 +40,7 @@ export async function getThemeArticleCounts(): Promise<Map<string, number>> {
         q: '*',
         filter_by: filter,
         group_by: 'theme_1_level_2_code',
-        per_page: 250
+        per_page: 250,
       })
 
     // Query for level 3 themes
@@ -51,7 +51,7 @@ export async function getThemeArticleCounts(): Promise<Map<string, number>> {
         q: '*',
         filter_by: filter,
         group_by: 'theme_1_level_3_code',
-        per_page: 250
+        per_page: 250,
       })
 
     // Process level 1 results

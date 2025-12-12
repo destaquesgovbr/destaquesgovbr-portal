@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { Suspense } from 'react'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import { Providers } from '@/components/Providers'
-import { Suspense } from 'react'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,7 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Destaques GOV',
-  description: 'Portal de centralização das notícias oficiais do Governo Brasileiro',
+  description:
+    'Portal de centralização das notícias oficiais do Governo Brasileiro',
 }
 
 export default function RootLayout({
@@ -34,9 +35,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <div className="pt-[110px] md:pt-[130px]">
-            <Suspense>
-              {children}
-            </Suspense>
+            <Suspense>{children}</Suspense>
           </div>
           <Footer />
         </Providers>

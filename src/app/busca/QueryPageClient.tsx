@@ -1,23 +1,26 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useInView } from 'react-intersection-observer'
-import NewsCard from '@/components/NewsCard'
-import { queryArticles } from './actions'
-import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { getExcerpt } from '@/lib/utils'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useMemo, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { ArticleFilters } from '@/components/ArticleFilters'
-import { AgencyOption } from '@/lib/agencies-utils'
-import { ThemeOption } from '@/lib/themes-utils'
+import NewsCard from '@/components/NewsCard'
+import type { AgencyOption } from '@/lib/agencies-utils'
+import type { ThemeOption } from '@/lib/themes-utils'
+import { getExcerpt } from '@/lib/utils'
+import { queryArticles } from './actions'
 
 type QueryPageClientProps = {
   agencies: AgencyOption[]
   themes: ThemeOption[]
 }
 
-export default function QueryPageClient({ agencies, themes }: QueryPageClientProps) {
+export default function QueryPageClient({
+  agencies,
+  themes,
+}: QueryPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -70,7 +73,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     },
-    [searchParams, query, pathname, router]
+    [searchParams, query, pathname, router],
   )
 
   // Wrapped setters that update URL
@@ -81,7 +84,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
         dataInicio: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleEndDateChange = useCallback(
@@ -91,7 +94,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
         dataFim: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleAgenciesChange = useCallback(
@@ -101,7 +104,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
         agencias: agenciesList.length > 0 ? agenciesList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleThemesChange = useCallback(
@@ -111,11 +114,18 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
         temas: themesList.length > 0 ? themesList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', query, startDate, endDate, selectedAgencies, selectedThemes],
+    queryKey: [
+      'articles',
+      query,
+      startDate,
+      endDate,
+      selectedAgencies,
+      selectedThemes,
+    ],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
       queryArticles({
         query,
@@ -144,7 +154,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
       const agency = agencies.find((a) => a.key === key)
       return agency?.name || key
     },
-    [agencies]
+    [agencies],
   )
 
   const getThemeName = useMemo(
@@ -152,7 +162,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
       const theme = themes.find((t) => t.key === key)
       return theme?.name || key
     },
-    [themes]
+    [themes],
   )
 
   const getThemeHierarchyPath = useMemo(
@@ -160,7 +170,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
       const theme = themes.find((t) => t.key === key)
       return theme?.hierarchyPath || theme?.name || key
     },
-    [themes]
+    [themes],
   )
 
   if (articlesQ.isError) {
@@ -222,7 +232,7 @@ export default function QueryPageClient({ agencies, themes }: QueryPageClientPro
             >
               {articles.map((article, index) => (
                 <NewsCard
-                  key={index}
+                  key={article.unique_id}
                   internalUrl={`/artigos/${article.unique_id}`}
                   theme={article.theme_1_level_3_label || ''}
                   date={article.published_at}

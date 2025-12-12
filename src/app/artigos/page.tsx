@@ -1,7 +1,7 @@
 import { getAgenciesList } from '@/lib/agencies-utils'
 import { getThemesWithHierarchy } from '@/lib/themes-utils'
-import { getPopularTags } from './actions'
 import ArticlesPageClient from './ArticlesPageClient'
+import { getPopularTags } from './actions'
 
 export default async function ArticlesPage() {
   const [agencies, themes, popularTags] = await Promise.all([
@@ -10,5 +10,11 @@ export default async function ArticlesPage() {
     getPopularTags(),
   ])
 
-  return <ArticlesPageClient agencies={agencies} themes={themes} popularTags={popularTags} />
+  return (
+    <ArticlesPageClient
+      agencies={agencies}
+      themes={themes}
+      popularTags={popularTags}
+    />
+  )
 }

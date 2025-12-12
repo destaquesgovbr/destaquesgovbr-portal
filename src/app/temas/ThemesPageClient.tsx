@@ -1,10 +1,10 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import THEME_ICONS from '@/lib/themes'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 
 export default function ThemesPageClient() {
   return (
@@ -14,7 +14,7 @@ export default function ThemesPageClient() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      {Object.keys(THEME_ICONS).map(theme => (
+      {Object.keys(THEME_ICONS).map((theme) => (
         <Link key={theme} href={`/temas/${theme}`}>
           <Card className="group h-full transition-all duration-300 hover:scale-[1.01] shadow-sm hover:shadow-xl hover:shadow-[#0D4C92]/20">
             <div className="h-[60%] overflow-hidden flex items-center justify-center">
@@ -25,9 +25,7 @@ export default function ThemesPageClient() {
               />
             </div>
             <CardHeader className="pt-4 px-5">
-              <h3 className="font-semibold leading-tight text-lg">
-                {theme}
-              </h3>
+              <h3 className="font-semibold leading-tight text-lg">{theme}</h3>
             </CardHeader>
             <CardContent className="px-5 pb-5">
               <div className="text-sm line-clamp-3">

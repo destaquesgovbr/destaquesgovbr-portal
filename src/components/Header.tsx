@@ -2,10 +2,10 @@
 
 import { Search, X } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import SearchBar from './SearchBar'
-import Link from 'next/link'
-import { Suspense, useState, useEffect, useRef } from 'react'
 
 const routeLinks = [
   { href: '/artigos', label: 'Notícias' },
@@ -15,7 +15,10 @@ const routeLinks = [
 ]
 
 const themeLinks = [
-  { href: '/temas/Meio%20Ambiente%20e%20Sustentabilidade', label: 'Meio ambiente' },
+  {
+    href: '/temas/Meio%20Ambiente%20e%20Sustentabilidade',
+    label: 'Meio ambiente',
+  },
   { href: '/temas/Economia%20e%20Finan%C3%A7as', label: 'Economia' },
   { href: '/temas/Seguran%C3%A7a%20P%C3%BAblica', label: 'Segurança' },
 ]
@@ -63,7 +66,9 @@ const Header = () => {
               className="h-10 w-10 md:h-14 md:w-14"
             />
             <div>
-              <h1 className="text-sm md:text-lg font-bold leading-tight">DestaquesGovBr</h1>
+              <h1 className="text-sm md:text-lg font-bold leading-tight">
+                DestaquesGovBr
+              </h1>
               <p className="text-xs text-muted-foreground">Governo Federal</p>
             </div>
           </Link>

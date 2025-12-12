@@ -1,22 +1,22 @@
 'use client'
 
+import { addDays } from 'date-fns'
+import { Info, TrendingDown, TrendingUp } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import {
-  LineChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  BarChart,
-  Bar
 } from 'recharts'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import KpiCard from './KpiCard'
 import { ChartTooltip } from './ChartTooltip'
-import { addDays } from 'date-fns'
-import { Info, TrendingUp, TrendingDown } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
+import KpiCard from './KpiCard'
 import { Portal } from './Portal'
 
 type InfoTooltipProps = {
@@ -67,8 +67,18 @@ function InfoTooltip({ content, children, side = 'right' }: InfoTooltipProps) {
 }
 
 type DashboardClientProps = {
-  kpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
-  prevKpis: { total: number; temasAtivos: number; orgaosAtivos: number; mediaDiaria: number }
+  kpis: {
+    total: number
+    temasAtivos: number
+    orgaosAtivos: number
+    mediaDiaria: number
+  }
+  prevKpis: {
+    total: number
+    temasAtivos: number
+    orgaosAtivos: number
+    mediaDiaria: number
+  }
   themes: { theme: string; count: number }[]
   agencies: { agency: string; count: number }[]
   timeline: { date: string; count: number }[]
@@ -77,13 +87,31 @@ type DashboardClientProps = {
     declining: { theme: string; count: number; growth: number }[]
   }
   agencyComparison: {
-    growing: { agency: string; agencyName: string; count: number; growth: number }[]
-    declining: { agency: string; agencyName: string; count: number; growth: number }[]
+    growing: {
+      agency: string
+      agencyName: string
+      count: number
+      growth: number
+    }[]
+    declining: {
+      agency: string
+      agencyName: string
+      count: number
+      growth: number
+    }[]
   }
 }
 
 export default function DashboardClient(props: DashboardClientProps) {
-  const { kpis, prevKpis, themes, agencies, timeline, themeComparison, agencyComparison } = props
+  const {
+    kpis,
+    prevKpis,
+    themes,
+    agencies,
+    timeline,
+    themeComparison,
+    agencyComparison,
+  } = props
 
   // Calculate trends
   const calculateTrend = (current: number, previous: number) => {
@@ -92,7 +120,7 @@ export default function DashboardClient(props: DashboardClientProps) {
     const sign = change > 0 ? '+' : ''
     return {
       value: change,
-      percentage: `${sign}${change.toFixed(1)}%`
+      percentage: `${sign}${change.toFixed(1)}%`,
     }
   }
 
@@ -100,27 +128,60 @@ export default function DashboardClient(props: DashboardClientProps) {
     total: calculateTrend(kpis.total, prevKpis.total),
     temasAtivos: calculateTrend(kpis.temasAtivos, prevKpis.temasAtivos),
     orgaosAtivos: calculateTrend(kpis.orgaosAtivos, prevKpis.orgaosAtivos),
-    mediaDiaria: calculateTrend(kpis.mediaDiaria, prevKpis.mediaDiaria)
+    mediaDiaria: calculateTrend(kpis.mediaDiaria, prevKpis.mediaDiaria),
   }
 
   // Temporal patterns
-  const peakDay = timeline.reduce((max, day) => day.count > max.count ? day : max, timeline[0] || { date: '', count: 0 })
-  const avgDaily = timeline.length > 0 ? timeline.reduce((sum, day) => sum + day.count, 0) / timeline.length : 0
-  const stdDev = Math.sqrt(timeline.reduce((sum, day) => sum + Math.pow(day.count - avgDaily, 2), 0) / timeline.length)
-  const consistency = stdDev < avgDaily * 0.3 ? 'Alta' : stdDev < avgDaily * 0.6 ? 'Moderada' : 'Baixa'
+  const peakDay = timeline.reduce(
+    (max, day) => (day.count > max.count ? day : max),
+    timeline[0] || { date: '', count: 0 },
+  )
+  const avgDaily =
+    timeline.length > 0
+      ? timeline.reduce((sum, day) => sum + day.count, 0) / timeline.length
+      : 0
+  const stdDev = Math.sqrt(
+    timeline.reduce((sum, day) => sum + (day.count - avgDaily) ** 2, 0) /
+      timeline.length,
+  )
+  const consistency =
+    stdDev < avgDaily * 0.3
+      ? 'Alta'
+      : stdDev < avgDaily * 0.6
+        ? 'Moderada'
+        : 'Baixa'
 
   // Distribution analysis
   const totalThemeCount = themes.reduce((sum, t) => sum + t.count, 0)
-  const top3ThemesPercent = themes.slice(0, 3).reduce((sum, t) => sum + t.count, 0) / totalThemeCount * 100
+  const top3ThemesPercent =
+    (themes.slice(0, 3).reduce((sum, t) => sum + t.count, 0) /
+      totalThemeCount) *
+    100
 
   return (
     <div className="space-y-10">
       {/* KPIs with trends */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <KpiCard title="Total de notícias" value={kpis.total.toLocaleString('pt-BR')} trend={trends.total} />
-        <KpiCard title="Temas ativos" value={kpis.temasAtivos.toString()} trend={trends.temasAtivos} />
-        <KpiCard title="Órgãos emissores" value={kpis.orgaosAtivos.toString()} trend={trends.orgaosAtivos} />
-        <KpiCard title="Média diária" value={kpis.mediaDiaria.toString()} trend={trends.mediaDiaria} />
+        <KpiCard
+          title="Total de notícias"
+          value={kpis.total.toLocaleString('pt-BR')}
+          trend={trends.total}
+        />
+        <KpiCard
+          title="Temas ativos"
+          value={kpis.temasAtivos.toString()}
+          trend={trends.temasAtivos}
+        />
+        <KpiCard
+          title="Órgãos emissores"
+          value={kpis.orgaosAtivos.toString()}
+          trend={trends.orgaosAtivos}
+        />
+        <KpiCard
+          title="Média diária"
+          value={kpis.mediaDiaria.toString()}
+          trend={trends.mediaDiaria}
+        />
       </div>
 
       {/* Timeline */}
@@ -135,7 +196,8 @@ export default function DashboardClient(props: DashboardClientProps) {
             <div>
               <h3 className="font-semibold text-lg">Ritmo de publicações</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Conheça a cadência diária das notícias divulgadas pelo Governo Federal.
+                Conheça a cadência diária das notícias divulgadas pelo Governo
+                Federal.
               </p>
             </div>
           </div>
@@ -148,15 +210,26 @@ export default function DashboardClient(props: DashboardClientProps) {
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                 <Tooltip
-                    content={
-                      <ChartTooltip
-                        dataKey="date"
-                        itemName="publicações"
-                        formatLabel={(label) => addDays(new Date(label), 1).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
-                      />
+                  content={
+                    <ChartTooltip
+                      dataKey="date"
+                      itemName="publicações"
+                      formatLabel={(label) =>
+                        addDays(new Date(label), 1).toLocaleDateString(
+                          'pt-BR',
+                          { day: '2-digit', month: 'short', year: 'numeric' },
+                        )
+                      }
+                    />
                   }
-                  />
-                <Line type="monotone" dataKey="count" stroke="#0D4C92" strokeWidth={2} dot={false} />
+                />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="#0D4C92"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -176,7 +249,8 @@ export default function DashboardClient(props: DashboardClientProps) {
               <div>
                 <h3 className="font-semibold text-lg">Temas identificados</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Veja quais áreas concentram mais publicações no período analisado.
+                  Veja quais áreas concentram mais publicações no período
+                  analisado.
                 </p>
               </div>
             </div>
@@ -189,7 +263,9 @@ export default function DashboardClient(props: DashboardClientProps) {
                   <XAxis dataKey="theme" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                   <Tooltip
-                    content={<ChartTooltip dataKey="theme" itemName="publicações"/>}
+                    content={
+                      <ChartTooltip dataKey="theme" itemName="publicações" />
+                    }
                   />
                   <Bar dataKey="count" fill="#2D9B78" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -209,7 +285,8 @@ export default function DashboardClient(props: DashboardClientProps) {
               <div>
                 <h3 className="font-semibold text-lg">Órgãos mais ativos</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Identifique quais instituições tiveram maior presença nas publicações recentes.
+                  Identifique quais instituições tiveram maior presença nas
+                  publicações recentes.
                 </p>
               </div>
             </div>
@@ -222,7 +299,12 @@ export default function DashboardClient(props: DashboardClientProps) {
                   <XAxis dataKey="agency" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                   <Tooltip
-                    content={<ChartTooltip dataKey="agencyName" itemName="publicações"/>}
+                    content={
+                      <ChartTooltip
+                        dataKey="agencyName"
+                        itemName="publicações"
+                      />
+                    }
                   />
                   <Bar dataKey="count" fill="#F9C80E" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -253,7 +335,12 @@ export default function DashboardClient(props: DashboardClientProps) {
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-2xl font-bold text-primary">{new Date(peakDay.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</p>
+              <p className="text-2xl font-bold text-primary">
+                {new Date(peakDay.date).toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: 'short',
+                })}
+              </p>
               <p className="text-4xl font-semibold mt-2">{peakDay.count}</p>
               <p className="text-sm text-muted-foreground mt-1">publicações</p>
             </div>
@@ -272,10 +359,12 @@ export default function DashboardClient(props: DashboardClientProps) {
               <div className="flex-1">
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-semibold text-lg">Consistência</h3>
-                  <InfoTooltip content="Calculado através do desvio padrão vs média diária.
+                  <InfoTooltip
+                    content="Calculado através do desvio padrão vs média diária.
 Alta: <30%
 Moderada: 30-60%
-Baixa: ≥60%">
+Baixa: ≥60%"
+                  >
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </InfoTooltip>
                 </div>
@@ -287,12 +376,18 @@ Baixa: ≥60%">
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className={`text-4xl font-bold ${consistency === 'Alta' ? 'text-green-600' : consistency === 'Moderada' ? 'text-yellow-600' : 'text-red-600'}`}>
+              <p
+                className={`text-4xl font-bold ${consistency === 'Alta' ? 'text-green-600' : consistency === 'Moderada' ? 'text-yellow-600' : 'text-red-600'}`}
+              >
                 {consistency}
               </p>
               <div className="mt-2 space-y-1">
-                <p className="text-sm text-muted-foreground">Média: {avgDaily.toFixed(1)} publicações/dia</p>
-                <p className="text-sm text-muted-foreground">Desvio padrão: {stdDev.toFixed(1)}</p>
+                <p className="text-sm text-muted-foreground">
+                  Média: {avgDaily.toFixed(1)} publicações/dia
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Desvio padrão: {stdDev.toFixed(1)}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -309,8 +404,16 @@ Baixa: ≥60%">
               />
               <div className="flex-1">
                 <div className="flex items-center gap-1.5">
-                  <h3 className="font-semibold text-lg">Concentração temática</h3>
-                  <InfoTooltip side="left" content={`Top 3 temas:\n${themes.slice(0, 3).map((t, i) => `${i + 1}. ${t.theme}`).join('\n')}`}>
+                  <h3 className="font-semibold text-lg">
+                    Concentração temática
+                  </h3>
+                  <InfoTooltip
+                    side="left"
+                    content={`Top 3 temas:\n${themes
+                      .slice(0, 3)
+                      .map((t, i) => `${i + 1}. ${t.theme}`)
+                      .join('\n')}`}
+                  >
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </InfoTooltip>
                 </div>
@@ -322,8 +425,12 @@ Baixa: ≥60%">
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-4xl font-semibold">{top3ThemesPercent.toFixed(1)}%</p>
-              <p className="text-sm text-muted-foreground mt-2">dos artigos nos top 3 temas</p>
+              <p className="text-4xl font-semibold">
+                {top3ThemesPercent.toFixed(1)}%
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                dos artigos nos top 3 temas
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -357,9 +464,16 @@ Baixa: ≥60%">
                   </h4>
                   <div className="space-y-2">
                     {themeComparison.growing.map((theme) => (
-                      <div key={theme.theme} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-sm font-medium text-foreground truncate flex-1">{theme.theme}</span>
-                        <span className="text-sm font-semibold text-green-600 ml-2">+{theme.growth.toFixed(1)}%</span>
+                      <div
+                        key={theme.theme}
+                        className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                      >
+                        <span className="text-sm font-medium text-foreground truncate flex-1">
+                          {theme.theme}
+                        </span>
+                        <span className="text-sm font-semibold text-green-600 ml-2">
+                          +{theme.growth.toFixed(1)}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -373,9 +487,16 @@ Baixa: ≥60%">
                   </h4>
                   <div className="space-y-2">
                     {themeComparison.declining.map((theme) => (
-                      <div key={theme.theme} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-sm font-medium text-foreground truncate flex-1">{theme.theme}</span>
-                        <span className="text-sm font-semibold text-red-600 ml-2">{theme.growth.toFixed(1)}%</span>
+                      <div
+                        key={theme.theme}
+                        className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                      >
+                        <span className="text-sm font-medium text-foreground truncate flex-1">
+                          {theme.theme}
+                        </span>
+                        <span className="text-sm font-semibold text-red-600 ml-2">
+                          {theme.growth.toFixed(1)}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -411,9 +532,16 @@ Baixa: ≥60%">
                   </h4>
                   <div className="space-y-2">
                     {agencyComparison.growing.map((agency) => (
-                      <div key={agency.agency} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-sm font-medium text-foreground truncate flex-1">{agency.agencyName}</span>
-                        <span className="text-sm font-semibold text-green-600 ml-2">+{agency.growth.toFixed(1)}%</span>
+                      <div
+                        key={agency.agency}
+                        className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                      >
+                        <span className="text-sm font-medium text-foreground truncate flex-1">
+                          {agency.agencyName}
+                        </span>
+                        <span className="text-sm font-semibold text-green-600 ml-2">
+                          +{agency.growth.toFixed(1)}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -427,9 +555,16 @@ Baixa: ≥60%">
                   </h4>
                   <div className="space-y-2">
                     {agencyComparison.declining.map((agency) => (
-                      <div key={agency.agency} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-sm font-medium text-foreground truncate flex-1">{agency.agencyName}</span>
-                        <span className="text-sm font-semibold text-red-600 ml-2">{agency.growth.toFixed(1)}%</span>
+                      <div
+                        key={agency.agency}
+                        className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                      >
+                        <span className="text-sm font-medium text-foreground truncate flex-1">
+                          {agency.agencyName}
+                        </span>
+                        <span className="text-sm font-semibold text-red-600 ml-2">
+                          {agency.growth.toFixed(1)}%
+                        </span>
                       </div>
                     ))}
                   </div>

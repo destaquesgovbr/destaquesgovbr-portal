@@ -1,15 +1,30 @@
 'use client'
 
-import { ArrowLeft, Calendar, ExternalLink, Share2, Tag, Check } from 'lucide-react'
+import {
+  ArrowLeft,
+  Calendar,
+  Check,
+  ExternalLink,
+  Share2,
+  Tag,
+} from 'lucide-react'
 import Link from 'next/link'
+import { useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useState, useMemo } from 'react'
-import { MarkdownRenderer } from './MarkdownRenderer'
-import { ArticleRow } from '@/lib/article-row'
+import type { ArticleRow } from '@/lib/article-row'
 import { formatDateTime } from '@/lib/utils'
+import { MarkdownRenderer } from './MarkdownRenderer'
 
-export default function ClientArticle({ article, baseUrl, pageUrl }: { article: ArticleRow; baseUrl: string; pageUrl: string }) {
+export default function ClientArticle({
+  article,
+  baseUrl,
+  pageUrl,
+}: {
+  article: ArticleRow
+  baseUrl: string
+  pageUrl: string
+}) {
   const [copied, setCopied] = useState(false)
 
   // Check if the cover image appears in the article body
@@ -110,7 +125,13 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
 
           {/* Linha divisória SVG */}
           <div className="mx-auto mt-3 w-40">
-            <svg xmlns="http://www.w3.org/2000/svg" width="180" height="6" viewBox="0 0 180 6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="180"
+              height="6"
+              viewBox="0 0 180 6"
+              aria-hidden="true"
+            >
               <rect x="0" y="0" width="22" height="6" fill="#0D4C92" />
               <path d="M22 0 L38 6 L54 0 Z" fill="#2D9B78" />
               <rect x="54" y="0" width="28" height="6" fill="#F9C80E" />
@@ -149,7 +170,7 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
               padding-right: 0.05em !important;
             }
           `}</style>
-          <MarkdownRenderer content={article.content ?? ''}/>
+          <MarkdownRenderer content={article.content ?? ''} />
         </article>
 
         {/* Tags */}
@@ -160,7 +181,10 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
             </h2>
             <div className="flex flex-wrap gap-2">
               {article.tags.map((tag) => (
-                <Link key={tag} href={`/artigos?tags=${encodeURIComponent(tag)}`}>
+                <Link
+                  key={tag}
+                  href={`/artigos?tags=${encodeURIComponent(tag)}`}
+                >
                   <Badge className="bg-white text-primary font-medium hover:bg-primary/5 transition-colors cursor-pointer">
                     <Tag className="w-3 h-3 mr-1 text-primary/70" />
                     {tag}
@@ -193,8 +217,9 @@ export default function ClientArticle({ article, baseUrl, pageUrl }: { article: 
           )}
 
           <p className="text-xs text-primary/60 pt-4">
-            Esta notícia foi publicada no portal oficial do Governo Federal do Brasil.
-            Todas as informações são de responsabilidade do órgão emissor.
+            Esta notícia foi publicada no portal oficial do Governo Federal do
+            Brasil. Todas as informações são de responsabilidade do órgão
+            emissor.
           </p>
         </footer>
       </div>
