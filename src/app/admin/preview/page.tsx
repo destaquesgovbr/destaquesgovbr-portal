@@ -1,7 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { DownloadIcon, PlayIcon, RefreshCwIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -11,15 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { previewPrioritization, getThemeCodeToNameMap } from './actions'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { ArticleRow } from '@/lib/article-row'
 import type { ScoredArticle } from '@/lib/prioritization'
-import type { PrioritizationConfig, ThemeFocusMode } from '@/lib/prioritization-config'
-import { PlayIcon, DownloadIcon, RefreshCwIcon } from 'lucide-react'
+import type {
+  PrioritizationConfig,
+  ThemeFocusMode,
+} from '@/lib/prioritization-config'
 import { formatDateTime } from '@/lib/utils'
+import { getThemeCodeToNameMap, previewPrioritization } from './actions'
 
 export default function PreviewPage() {
   // Config state
@@ -40,13 +49,16 @@ export default function PreviewPage() {
   })
 
   // Theme code to name mapping
-  const [themeCodeToName, setThemeCodeToName] = useState<Record<string, string>>({})
+  const [themeCodeToName, setThemeCodeToName] = useState<
+    Record<string, string>
+  >({})
 
   const [recencyDecayHours, setRecencyDecayHours] = useState<number>(72)
   const [recencyWeight, setRecencyWeight] = useState<number>(0.5)
   const [hasImageBoost, setHasImageBoost] = useState<number>(1.1)
   const [hasSummaryBoost, setHasSummaryBoost] = useState<number>(1.05)
-  const [themeFocusMode, setThemeFocusMode] = useState<ThemeFocusMode>('weighted')
+  const [themeFocusMode, setThemeFocusMode] =
+    useState<ThemeFocusMode>('weighted')
 
   // Results state
   const [chronological, setChronological] = useState<ArticleRow[]>([])
@@ -182,14 +194,15 @@ manualThemes: []
   // Auto-run on mount
   useEffect(() => {
     runPreview()
-  }, [])
+  }, [runPreview])
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Preview de Priorização</h1>
         <p className="text-muted-foreground">
-          Configure pesos e visualize como as notícias serão ordenadas na home page.
+          Configure pesos e visualize como as notícias serão ordenadas na home
+          page.
         </p>
       </div>
 
@@ -334,7 +347,9 @@ manualThemes: []
                   <Input
                     type="number"
                     value={recencyDecayHours}
-                    onChange={(e) => setRecencyDecayHours(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setRecencyDecayHours(parseFloat(e.target.value))
+                    }
                   />
                 </div>
 
@@ -346,7 +361,9 @@ manualThemes: []
                     min="0"
                     max="1"
                     value={recencyWeight}
-                    onChange={(e) => setRecencyWeight(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setRecencyWeight(parseFloat(e.target.value))
+                    }
                   />
                 </div>
 
@@ -356,7 +373,9 @@ manualThemes: []
                     type="number"
                     step="0.1"
                     value={hasImageBoost}
-                    onChange={(e) => setHasImageBoost(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setHasImageBoost(parseFloat(e.target.value))
+                    }
                   />
                 </div>
 
@@ -366,7 +385,9 @@ manualThemes: []
                     type="number"
                     step="0.1"
                     value={hasSummaryBoost}
-                    onChange={(e) => setHasSummaryBoost(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setHasSummaryBoost(parseFloat(e.target.value))
+                    }
                   />
                 </div>
 
@@ -374,7 +395,9 @@ manualThemes: []
                   <Label>Theme Focus Mode</Label>
                   <Select
                     value={themeFocusMode}
-                    onValueChange={(value) => setThemeFocusMode(value as ThemeFocusMode)}
+                    onValueChange={(value) =>
+                      setThemeFocusMode(value as ThemeFocusMode)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -391,7 +414,11 @@ manualThemes: []
               <Separator />
 
               <div className="flex gap-2">
-                <Button onClick={runPreview} disabled={loading} className="flex-1">
+                <Button
+                  onClick={runPreview}
+                  disabled={loading}
+                  className="flex-1"
+                >
                   {loading ? (
                     <RefreshCwIcon className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
@@ -428,7 +455,9 @@ manualThemes: []
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Cronológico</CardTitle>
-                    <CardDescription>Ordenação atual (sem priorização)</CardDescription>
+                    <CardDescription>
+                      Ordenação atual (sem priorização)
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ArticleList articles={chronological} />
@@ -509,9 +538,7 @@ function ArticleList({
                 {article.published_at && (
                   <>
                     <span>•</span>
-                    <span>
-                      {formatDateTime(article.published_at)}
-                    </span>
+                    <span>{formatDateTime(article.published_at)}</span>
                   </>
                 )}
               </div>
@@ -546,7 +573,9 @@ function ScoredArticleList({
             <div className="font-bold text-muted-foreground">{i + 1}.</div>
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-1">
-                <div className="font-medium line-clamp-2 flex-1">{article.title}</div>
+                <div className="font-medium line-clamp-2 flex-1">
+                  {article.title}
+                </div>
                 <div className="font-mono font-bold text-primary shrink-0">
                   {article._score.toFixed(2)}
                 </div>
@@ -559,19 +588,25 @@ function ScoredArticleList({
                 {article.published_at && (
                   <>
                     <span>•</span>
-                    <span>
-                      {formatDateTime(article.published_at)}
-                    </span>
+                    <span>{formatDateTime(article.published_at)}</span>
                   </>
                 )}
               </div>
 
               {detailed && article._scoreBreakdown && (
                 <div className="mt-2 text-xs font-mono bg-muted/50 p-2 rounded space-y-0.5">
-                  <div>Agency: {article._scoreBreakdown.agencyWeight.toFixed(2)}</div>
-                  <div>Theme: {article._scoreBreakdown.themeWeight.toFixed(2)}</div>
-                  <div>Recency: {article._scoreBreakdown.recencyFactor.toFixed(3)}</div>
-                  <div>Content: {article._scoreBreakdown.contentBoosts.toFixed(2)}</div>
+                  <div>
+                    Agency: {article._scoreBreakdown.agencyWeight.toFixed(2)}
+                  </div>
+                  <div>
+                    Theme: {article._scoreBreakdown.themeWeight.toFixed(2)}
+                  </div>
+                  <div>
+                    Recency: {article._scoreBreakdown.recencyFactor.toFixed(3)}
+                  </div>
+                  <div>
+                    Content: {article._scoreBreakdown.contentBoosts.toFixed(2)}
+                  </div>
                   <div className="font-bold text-primary mt-1">
                     Score: {article._scoreBreakdown.finalScore.toFixed(3)}
                   </div>

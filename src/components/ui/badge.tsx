@@ -8,7 +8,7 @@ export function Badge({ className, ...props }: BadgeProps) {
     <div
       className={cn(
         'inline-flex items-center rounded-full border border-border bg-secondary text-foreground text-xs font-medium px-2.5 py-0.5',
-        className
+        className,
       )}
       {...props}
     />

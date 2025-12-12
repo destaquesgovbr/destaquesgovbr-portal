@@ -1,24 +1,27 @@
 'use client'
 
-import NewsCard from '@/components/NewsCard'
-import { getArticles } from './actions'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useInView } from 'react-intersection-observer'
-import THEME_ICONS from '@/lib/themes'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer'
-import { getExcerpt } from '@/lib/utils'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useMemo, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { ArticleFilters } from '@/components/ArticleFilters'
-import { AgencyOption } from '@/lib/agencies-utils'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
+import NewsCard from '@/components/NewsCard'
+import type { AgencyOption } from '@/lib/agencies-utils'
+import THEME_ICONS from '@/lib/themes'
+import { getExcerpt } from '@/lib/utils'
+import { getArticles } from './actions'
 
 type ThemePageClientProps = {
   themeLabel: string
   agencies: AgencyOption[]
 }
 
-export default function ThemePageClient({ themeLabel, agencies }: ThemePageClientProps) {
+export default function ThemePageClient({
+  themeLabel,
+  agencies,
+}: ThemePageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -57,10 +60,12 @@ export default function ThemePageClient({ themeLabel, agencies }: ThemePageClien
         }
       })
 
-      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+      const newUrl = params.toString()
+        ? `${pathname}?${params.toString()}`
+        : pathname
       router.replace(newUrl, { scroll: false })
     },
-    [searchParams, pathname, router]
+    [searchParams, pathname, router],
   )
 
   // Wrapped setters that update URL
@@ -71,7 +76,7 @@ export default function ThemePageClient({ themeLabel, agencies }: ThemePageClien
         dataInicio: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleEndDateChange = useCallback(
@@ -81,7 +86,7 @@ export default function ThemePageClient({ themeLabel, agencies }: ThemePageClien
         dataFim: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleAgenciesChange = useCallback(
@@ -91,7 +96,7 @@ export default function ThemePageClient({ themeLabel, agencies }: ThemePageClien
         agencias: agenciesList.length > 0 ? agenciesList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const articlesQ = useInfiniteQuery({
@@ -123,7 +128,7 @@ export default function ThemePageClient({ themeLabel, agencies }: ThemePageClien
       const agency = agencies.find((a) => a.key === key)
       return agency?.name || key
     },
-    [agencies]
+    [agencies],
   )
 
   if (articlesQ.isError) {

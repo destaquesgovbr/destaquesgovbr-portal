@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Minus, TrendingDown, TrendingUp } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
 
 type KpiCardProps = {
   title: string
@@ -31,11 +31,15 @@ export default function KpiCard({ title, value, trend }: KpiCardProps) {
 
         {/* Trend indicator */}
         {trend && (
-          <div className={`flex items-center justify-center gap-1 mt-2 text-xs font-medium ${
-            trend.value > 0 ? 'text-green-600' :
-            trend.value < 0 ? 'text-red-600' :
-            'text-muted-foreground'
-          }`}>
+          <div
+            className={`flex items-center justify-center gap-1 mt-2 text-xs font-medium ${
+              trend.value > 0
+                ? 'text-green-600'
+                : trend.value < 0
+                  ? 'text-red-600'
+                  : 'text-muted-foreground'
+            }`}
+          >
             {trend.value > 0 && <TrendingUp className="h-3 w-3" />}
             {trend.value < 0 && <TrendingDown className="h-3 w-3" />}
             {trend.value === 0 && <Minus className="h-3 w-3" />}

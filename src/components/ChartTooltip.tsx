@@ -6,9 +6,15 @@ type ChartTooltipProps = {
   formatLabel?: (label: string) => any
 }
 
-export const ChartTooltip = ({ active, payload, dataKey, itemName, formatLabel }: ChartTooltipProps) => {
+export const ChartTooltip = ({
+  active,
+  payload,
+  dataKey,
+  itemName,
+  formatLabel,
+}: ChartTooltipProps) => {
   if (active && payload && payload.length) {
-    const data = payload[0].payload;
+    const data = payload[0].payload
 
     return (
       <div className="bg-white border border-gray-200 rounded-md shadow-sm px-3 py-2 text-sm">
@@ -17,7 +23,7 @@ export const ChartTooltip = ({ active, payload, dataKey, itemName, formatLabel }
         </p>
         <p className="text-gray-600">{`${data.count} ${itemName}`}</p>
       </div>
-    );
+    )
   }
-  return null;
-};
+  return null
+}

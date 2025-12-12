@@ -1,16 +1,16 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useInView } from 'react-intersection-observer'
-import NewsCard from '@/components/NewsCard'
-import { getArticles, type TagFacet } from './actions'
-import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { getExcerpt } from '@/lib/utils'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useMemo, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { ArticleFilters } from '@/components/ArticleFilters'
-import { AgencyOption } from '@/lib/agencies-utils'
-import { ThemeOption } from '@/lib/themes-utils'
+import NewsCard from '@/components/NewsCard'
+import type { AgencyOption } from '@/lib/agencies-utils'
+import type { ThemeOption } from '@/lib/themes-utils'
+import { getExcerpt } from '@/lib/utils'
+import { getArticles, type TagFacet } from './actions'
 
 type ArticlesPageClientProps = {
   agencies: AgencyOption[]
@@ -18,7 +18,11 @@ type ArticlesPageClientProps = {
   popularTags: TagFacet[]
 }
 
-export default function ArticlesPageClient({ agencies, themes, popularTags }: ArticlesPageClientProps) {
+export default function ArticlesPageClient({
+  agencies,
+  themes,
+  popularTags,
+}: ArticlesPageClientProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -69,10 +73,12 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         }
       })
 
-      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+      const newUrl = params.toString()
+        ? `${pathname}?${params.toString()}`
+        : pathname
       router.replace(newUrl, { scroll: false })
     },
-    [searchParams, pathname, router]
+    [searchParams, pathname, router],
   )
 
   // Wrapped setters that update URL
@@ -83,7 +89,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         dataInicio: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleEndDateChange = useCallback(
@@ -93,7 +99,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         dataFim: date ? date.toISOString().split('T')[0] : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleAgenciesChange = useCallback(
@@ -103,7 +109,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         agencias: agenciesList.length > 0 ? agenciesList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleThemesChange = useCallback(
@@ -113,7 +119,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         temas: themesList.length > 0 ? themesList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const handleTagsChange = useCallback(
@@ -123,11 +129,18 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
         tags: tagsList.length > 0 ? tagsList.join(',') : null,
       })
     },
-    [updateUrlParams]
+    [updateUrlParams],
   )
 
   const articlesQ = useInfiniteQuery({
-    queryKey: ['articles', startDate, endDate, selectedAgencies, selectedThemes, selectedTags],
+    queryKey: [
+      'articles',
+      startDate,
+      endDate,
+      selectedAgencies,
+      selectedThemes,
+      selectedTags,
+    ],
     queryFn: ({ pageParam }: { pageParam: number | null }) =>
       getArticles({
         page: pageParam ?? 1,
@@ -156,7 +169,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
       const agency = agencies.find((a) => a.key === key)
       return agency?.name || key
     },
-    [agencies]
+    [agencies],
   )
 
   const getThemeName = useMemo(
@@ -164,7 +177,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
       const theme = themes.find((t) => t.key === key)
       return theme?.name || key
     },
-    [themes]
+    [themes],
   )
 
   const getThemeHierarchyPath = useMemo(
@@ -172,7 +185,7 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
       const theme = themes.find((t) => t.key === key)
       return theme?.hierarchyPath || theme?.name || key
     },
-    [themes]
+    [themes],
   )
 
   if (articlesQ.isError) {
@@ -198,7 +211,8 @@ export default function ArticlesPageClient({ agencies, themes, popularTags }: Ar
 
         {/* Subtítulo institucional */}
         <p className="mt-4 text-base text-primary/80">
-          Acompanhe as últimas notícias, atualizações e comunicados oficiais do portal.
+          Acompanhe as últimas notícias, atualizações e comunicados oficiais do
+          portal.
         </p>
       </div>
 

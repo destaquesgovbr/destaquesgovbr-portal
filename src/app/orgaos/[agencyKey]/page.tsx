@@ -1,7 +1,7 @@
+import { notFound } from 'next/navigation'
 import { getAgenciesByName } from '@/lib/agencies-utils'
 import { getThemesWithHierarchy } from '@/lib/themes-utils'
 import AgencyPageClient from './AgencyPageClient'
-import { notFound } from 'next/navigation'
 
 type AgencyPageProps = {
   params: Promise<{
@@ -20,5 +20,11 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
     notFound()
   }
 
-  return <AgencyPageClient agencyKey={agencyKey} agencyName={agency.name} themes={themes} />
+  return (
+    <AgencyPageClient
+      agencyKey={agencyKey}
+      agencyName={agency.name}
+      themes={themes}
+    />
+  )
 }

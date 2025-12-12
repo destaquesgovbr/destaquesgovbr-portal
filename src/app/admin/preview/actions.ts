@@ -1,20 +1,25 @@
 'use server'
 
 import type { ArticleRow } from '@/lib/article-row'
-import { withResult } from '@/lib/result'
-import { typesense } from '@/lib/typesense-client'
+import type { ScoredArticle } from '@/lib/prioritization'
+import {
+  calculateArticleScore,
+  getPrioritizedArticles,
+} from '@/lib/prioritization'
 import type { PrioritizationConfig } from '@/lib/prioritization-config'
 import { DEFAULT_CONFIG } from '@/lib/prioritization-config'
-import { getPrioritizedArticles, calculateArticleScore } from '@/lib/prioritization'
-import type { ScoredArticle } from '@/lib/prioritization'
-import { getThemesByLabel } from '@/lib/themes-utils'
+import { withResult } from '@/lib/result'
 import type { Theme } from '@/lib/themes-utils'
+import { getThemesByLabel } from '@/lib/themes-utils'
+import { typesense } from '@/lib/typesense-client'
 
 /**
  * Busca artigos e aplica preview de priorização com config customizada
  */
 export const previewPrioritization = withResult(
-  async (customConfig?: Partial<PrioritizationConfig>): Promise<{
+  async (
+    customConfig?: Partial<PrioritizationConfig>,
+  ): Promise<{
     chronological: ArticleRow[]
     prioritized: ScoredArticle[]
   }> => {
@@ -28,7 +33,8 @@ export const previewPrioritization = withResult(
         sort_by: 'published_at:desc',
       })
 
-    const articles = (result.hits?.map((hit) => hit.document) as ArticleRow[]) ?? []
+    const articles =
+      (result.hits?.map((hit) => hit.document) as ArticleRow[]) ?? []
 
     // Ordenação cronológica (baseline)
     const chronological = [...articles]
@@ -48,7 +54,7 @@ export const previewPrioritization = withResult(
       chronological,
       prioritized,
     }
-  }
+  },
 )
 
 /**
@@ -57,11 +63,11 @@ export const previewPrioritization = withResult(
 export const calculateSingleScore = withResult(
   async (
     articleId: string,
-    customConfig?: Partial<PrioritizationConfig>
+    customConfig?: Partial<PrioritizationConfig>,
   ): Promise<{
     article: ArticleRow
     score: number
-    breakdown: any
+    breakdown: Record<string, number> | undefined
   }> => {
     // Buscar artigo específico
     const result = await typesense
@@ -96,9 +102,13 @@ export const calculateSingleScore = withResult(
     return {
       article,
       score,
-      breakdown: (scoredArticle as any)._scoreBreakdown,
+      breakdown: (
+        scoredArticle as ScoredArticle & {
+          _scoreBreakdown?: Record<string, number>
+        }
+      )._scoreBreakdown,
     }
-  }
+  },
 )
 
 /**
@@ -128,5 +138,5 @@ export const getThemeCodeToNameMap = withResult(
     }
 
     return map
-  }
+  },
 )

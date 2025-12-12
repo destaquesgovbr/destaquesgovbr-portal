@@ -1,31 +1,33 @@
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import NewsCard from '@/components/NewsCard'
 import { Button } from '@/components/ui/button'
+import THEME_ICONS from '@/lib/themes'
+import { formatDateTime, getExcerpt } from '@/lib/utils'
 import {
-  getLatestArticles,
-  getThemes,
   countMonthlyNews,
   countTotalNews,
+  getLatestArticles,
   getLatestByTheme,
+  getThemes,
 } from './actions'
-import { ArrowRight } from 'lucide-react'
-import THEME_ICONS from '@/lib/themes'
-import { getExcerpt, formatDateTime } from '@/lib/utils'
 
 // Revalidate every 10 minutes (600 seconds)
 export const revalidate = 600
 
 export default async function Home() {
   // ===== Fetch principal =====
-  const [latestNewsResult, themesResult, newsThisMonth, totalNews] = await Promise.all([
-    getLatestArticles(),
-    getThemes(),
-    countMonthlyNews(),
-    countTotalNews(),
-  ])
+  const [latestNewsResult, themesResult, newsThisMonth, totalNews] =
+    await Promise.all([
+      getLatestArticles(),
+      getThemes(),
+      countMonthlyNews(),
+      countTotalNews(),
+    ])
 
   if (themesResult.type !== 'ok') return <div>Erro ao carregar os temas.</div>
-  if (latestNewsResult.type !== 'ok') return <div>Erro ao carregar as notícias.</div>
+  if (latestNewsResult.type !== 'ok')
+    return <div>Erro ao carregar as notícias.</div>
 
   const themes = themesResult.data
   const latestNews = latestNewsResult.data
@@ -45,9 +47,9 @@ export default async function Home() {
       const r = await getLatestByTheme(t.name, 2)
       return {
         theme: t.name,
-        articles: r.type === 'ok' ? r.data ?? [] : [],
+        articles: r.type === 'ok' ? (r.data ?? []) : [],
       }
-    })
+    }),
   )
 
   return (
@@ -69,17 +71,17 @@ export default async function Home() {
             />
             {/* Duas notícias secundárias sem imagem */}
             <div className="flex gap-6">
-              {featuredBottom.map(article =>
+              {featuredBottom.map((article) => (
                 <NewsCard
                   key={article.unique_id}
                   theme={article.theme_1_level_3_label || ''}
                   date={article.published_at}
                   internalUrl={`/artigos/${article.unique_id}`}
-                  imageUrl=''
+                  imageUrl=""
                   summary={getExcerpt(article.content || '', 150)}
                   title={article.title || ''}
                 />
-              )}
+              ))}
             </div>
           </div>
 
@@ -97,7 +99,7 @@ export default async function Home() {
                     summary={getExcerpt(article.content || '', 150)}
                     title={article.title || ''}
                   />
-                )
+                ),
             )}
           </aside>
         </div>
@@ -116,7 +118,8 @@ export default async function Home() {
               <div>
                 <h2 className="text-2xl font-bold">Últimas notícias</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Acompanhe as informações mais recentes sobre as ações e políticas do Governo Federal.
+                  Acompanhe as informações mais recentes sobre as ações e
+                  políticas do Governo Federal.
                 </p>
               </div>
             </div>
@@ -156,7 +159,8 @@ export default async function Home() {
               <div>
                 <h2 className="text-2xl font-bold">Temas em foco</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Os principais eixos de atuação e debate público, com notícias recentes.
+                  Os principais eixos de atuação e debate público, com notícias
+                  recentes.
                 </p>
               </div>
             </div>
@@ -257,9 +261,12 @@ export default async function Home() {
               className="w-2 h-14 mr-4 mt-1"
             />
             <div>
-              <h2 className="text-2xl font-bold">Transparência e dados públicos</h2>
+              <h2 className="text-2xl font-bold">
+                Transparência e dados públicos
+              </h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Acompanhe informações oficiais, dados abertos e canais de controle social.
+                Acompanhe informações oficiais, dados abertos e canais de
+                controle social.
               </p>
             </div>
           </div>
@@ -332,7 +339,8 @@ export default async function Home() {
               <div>
                 <h2 className="text-2xl font-bold">Dados editoriais</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Acompanhe a distribuição de temas, órgãos e publicações no ecossistema oficial de notícias do Governo Federal.
+                  Acompanhe a distribuição de temas, órgãos e publicações no
+                  ecossistema oficial de notícias do Governo Federal.
                 </p>
               </div>
             </div>
@@ -362,12 +370,20 @@ export default async function Home() {
               </div>
             </div>
             <div className="border-l md:border-l md:pl-8">
-              <div className="text-3xl font-bold text-government-green mb-1">31</div>
-              <div className="text-sm text-muted-foreground">Ministérios ativos</div>
+              <div className="text-3xl font-bold text-government-green mb-1">
+                31
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Ministérios ativos
+              </div>
             </div>
             <div className="border-l md:border-l md:pl-8">
-              <div className="text-3xl font-bold text-government-blue mb-1">24h</div>
-              <div className="text-sm text-muted-foreground">Atualização contínua</div>
+              <div className="text-3xl font-bold text-government-blue mb-1">
+                24h
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Atualização contínua
+              </div>
             </div>
           </div>
         </div>
