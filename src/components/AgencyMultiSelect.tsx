@@ -1,7 +1,7 @@
 'use client'
 
+import { Maximize2, X } from 'lucide-react'
 import * as React from 'react'
-import { X, Maximize2 } from 'lucide-react'
 import { Portal } from '@/components/Portal'
 
 type Agency = {
@@ -48,7 +48,7 @@ export function AgencyMultiSelect({
 
       for (const [type, typeAgencies] of Object.entries(agenciesByType)) {
         const matchingAgencies = typeAgencies.filter((agency) =>
-          agency.name.toLowerCase().includes(searchLower)
+          agency.name.toLowerCase().includes(searchLower),
         )
         if (matchingAgencies.length > 0) {
           filtered[type] = matchingAgencies
@@ -91,24 +91,27 @@ export function AgencyMultiSelect({
       onSelectedAgenciesChange(
         selectedAgencies.includes(agencyKey)
           ? selectedAgencies.filter((key) => key !== agencyKey)
-          : [...selectedAgencies, agencyKey]
+          : [...selectedAgencies, agencyKey],
       )
     },
-    [selectedAgencies, onSelectedAgenciesChange]
+    [selectedAgencies, onSelectedAgenciesChange],
   )
 
-  const getAgencyName = React.useCallback(
+  const _getAgencyName = React.useCallback(
     (key: string) => {
       const agency = agencies.find((a) => a.key === key)
       return agency?.name || key
     },
-    [agencies]
+    [agencies],
   )
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -169,14 +172,23 @@ export function AgencyMultiSelect({
   )
 
   return (
-    <div className={`relative w-full ${isOpen ? 'z-[9999]' : ''}`} ref={dropdownRef}>
+    <div
+      className={`relative w-full ${isOpen ? 'z-[9999]' : ''}`}
+      ref={dropdownRef}
+    >
       {/* Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full h-10 px-3 py-2 border border-input rounded-md text-left text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
       >
-        <span className={selectedAgencies.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
+        <span
+          className={
+            selectedAgencies.length === 0
+              ? 'text-muted-foreground'
+              : 'text-foreground'
+          }
+        >
           {selectedAgencies.length === 0
             ? 'Selecione órgãos...'
             : `${selectedAgencies.length} selecionado${selectedAgencies.length > 1 ? 's' : ''}`}
@@ -194,7 +206,6 @@ export function AgencyMultiSelect({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1 px-3 py-2 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-              autoFocus
             />
             <button
               type="button"
@@ -227,51 +238,54 @@ export function AgencyMultiSelect({
               className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col animate-in zoom-in-95 relative z-[301]"
               onClick={(e) => e.stopPropagation()}
             >
-            {/* Modal Header */}
-            <div className="p-6 border-b border-border flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-primary">Selecionar Órgãos</h2>
-              <button
-                type="button"
-                onClick={() => setIsExpanded(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                aria-label="Fechar"
-              >
-                <X className="h-5 w-5 text-muted-foreground" />
-              </button>
-            </div>
-
-            {/* Modal Search */}
-            <div className="p-6 border-b border-border">
-              <input
-                type="text"
-                placeholder="Buscar órgãos..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                autoFocus
-              />
-            </div>
-
-            {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {renderAgencyList()}
+              {/* Modal Header */}
+              <div className="p-6 border-b border-border flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-primary">
+                  Selecionar Órgãos
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Fechar"
+                >
+                  <X className="h-5 w-5 text-muted-foreground" />
+                </button>
               </div>
-            </div>
 
-            {/* Modal Footer */}
-            <div className="p-6 border-t border-border flex items-center justify-between bg-gray-50">
-              <span className="text-sm text-muted-foreground">
-                {selectedAgencies.length} órgão{selectedAgencies.length !== 1 ? 's' : ''} selecionado{selectedAgencies.length !== 1 ? 's' : ''}
-              </span>
-              <button
-                type="button"
-                onClick={() => setIsExpanded(false)}
-                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors font-medium"
-              >
-                Confirmar
-              </button>
-            </div>
+              {/* Modal Search */}
+              <div className="p-6 border-b border-border">
+                <input
+                  type="text"
+                  placeholder="Buscar órgãos..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-3 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                />
+              </div>
+
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {renderAgencyList()}
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-border flex items-center justify-between bg-gray-50">
+                <span className="text-sm text-muted-foreground">
+                  {selectedAgencies.length} órgão
+                  {selectedAgencies.length !== 1 ? 's' : ''} selecionado
+                  {selectedAgencies.length !== 1 ? 's' : ''}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(false)}
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors font-medium"
+                >
+                  Confirmar
+                </button>
+              </div>
             </div>
           </div>
         </Portal>

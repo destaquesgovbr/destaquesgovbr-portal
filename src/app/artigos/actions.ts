@@ -24,14 +24,14 @@ export async function getArticles(
 ): Promise<GetArticlesResult> {
   const { page, startDate, endDate, agencies, themes, tags } = args
 
-  let filter_by: string[] = []
+  const filter_by: string[] = []
 
   if (startDate) {
     filter_by.push(`published_at:>${Math.floor(startDate / 1000)}`)
   }
 
   if (endDate) {
-    filter_by.push(`published_at:<${Math.floor((endDate / 1000) + (60 * 60 * 3))}`)
+    filter_by.push(`published_at:<${Math.floor(endDate / 1000 + 60 * 60 * 3)}`)
   }
 
   if (agencies && agencies.length > 0) {
@@ -40,8 +40,9 @@ export async function getArticles(
 
   if (themes && themes.length > 0) {
     // Filter by any theme level - level 1, 2, or 3
-    const themeFilters = themes.map(theme =>
-      `(theme_1_level_1_code:${theme} || theme_1_level_2_code:${theme} || theme_1_level_3_code:${theme})`
+    const themeFilters = themes.map(
+      (theme) =>
+        `(theme_1_level_1_code:${theme} || theme_1_level_2_code:${theme} || theme_1_level_3_code:${theme})`,
     )
     filter_by.push(`(${themeFilters.join(' || ')})`)
   }
@@ -63,8 +64,8 @@ export async function getArticles(
     })
 
   return {
-    articles: result.hits?.map(hit => hit.document) ?? [],
-    page: page + 1
+    articles: result.hits?.map((hit) => hit.document) ?? [],
+    page: page + 1,
   }
 }
 

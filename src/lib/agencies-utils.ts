@@ -1,7 +1,7 @@
 'use server'
 
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import yaml from 'js-yaml'
 import { unstable_cache } from 'next/cache'
 
@@ -41,8 +41,8 @@ export const getAgenciesByName = unstable_cache(
   ['agencies-yaml'],
   {
     revalidate: 3600, // 1 hour - adjust based on how often external data changes
-    tags: ['agencies']
-  }
+    tags: ['agencies'],
+  },
 )
 
 /**
@@ -50,7 +50,7 @@ export const getAgenciesByName = unstable_cache(
  */
 export async function getAgencyField(
   agency: string | null | undefined,
-  field: keyof Agency = 'name'
+  field: keyof Agency = 'name',
 ): Promise<string | undefined> {
   if (!agency) return undefined
   const sources = await getAgenciesByName()
@@ -61,7 +61,7 @@ export async function getAgencyField(
  * Retorna o objeto completo de uma agência.
  */
 export async function getAgency(
-  agency: string | null | undefined
+  agency: string | null | undefined,
 ): Promise<Agency | undefined> {
   if (!agency) return undefined
   const sources = await getAgenciesByName()

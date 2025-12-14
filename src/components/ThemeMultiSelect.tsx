@@ -1,7 +1,7 @@
 'use client'
 
+import { ChevronDown, X } from 'lucide-react'
 import * as React from 'react'
-import { X, ChevronDown } from 'lucide-react'
 import { Portal } from '@/components/Portal'
 
 type Theme = {
@@ -23,20 +23,28 @@ type ThemeMultiSelectProps = {
 }
 
 // Helper to check if a node has any direct child explicitly selected
-function hasAnyChildSelected(node: ThemeNode, selectedThemes: string[]): boolean {
+function hasAnyChildSelected(
+  node: ThemeNode,
+  selectedThemes: string[],
+): boolean {
   if (!node.children || node.children.length === 0) return false
-  return node.children.some(child => selectedThemes.includes(child.code))
+  return node.children.some((child) => selectedThemes.includes(child.code))
 }
 
 // Helper to check if some (but not all) direct children are selected
 function isIndeterminate(node: ThemeNode, selectedThemes: string[]): boolean {
   if (!node.children || node.children.length === 0) return false
 
-  const selectedChildren = node.children.filter(child =>
-    selectedThemes.includes(child.code) || hasAnyChildSelected(child, selectedThemes)
+  const selectedChildren = node.children.filter(
+    (child) =>
+      selectedThemes.includes(child.code) ||
+      hasAnyChildSelected(child, selectedThemes),
   )
 
-  return selectedChildren.length > 0 && selectedChildren.length < node.children.length
+  return (
+    selectedChildren.length > 0 &&
+    selectedChildren.length < node.children.length
+  )
 }
 
 // Component for tree view items
@@ -62,7 +70,10 @@ function ThemeTreeItem({
   const isDirectlySelected = selectedThemes.includes(node.code)
   const isInherited = ancestorSelected && !isDirectlySelected
   const showAsChecked = isDirectlySelected || ancestorSelected
-  const indeterminate = !isDirectlySelected && !ancestorSelected && isIndeterminate(node, selectedThemes)
+  const indeterminate =
+    !isDirectlySelected &&
+    !ancestorSelected &&
+    isIndeterminate(node, selectedThemes)
 
   const checkboxRef = React.useRef<HTMLInputElement>(null)
 
@@ -138,7 +149,9 @@ export function ThemeMultiSelect({
 }: ThemeMultiSelectProps) {
   const [isExpanded, setIsExpanded] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
-  const [expandedNodes, setExpandedNodes] = React.useState<Set<string>>(new Set())
+  const [expandedNodes, setExpandedNodes] = React.useState<Set<string>>(
+    new Set(),
+  )
 
   const hierarchyNodes = React.useMemo(() => {
     return themeHierarchy && themeHierarchy.length > 0
@@ -155,24 +168,30 @@ export function ThemeMultiSelect({
     const searchLower = searchTerm.toLowerCase()
 
     // Helper function to check if a node or any of its children match
-    const nodeMatches = (node: ThemeNode): boolean => {
+    const _nodeMatches = (node: ThemeNode): boolean => {
       // Check if current node matches (label or code)
-      if (node.label.toLowerCase().includes(searchLower) || node.code.toLowerCase().includes(searchLower)) {
+      if (
+        node.label.toLowerCase().includes(searchLower) ||
+        node.code.toLowerCase().includes(searchLower)
+      ) {
         return true
       }
       // Check if any children match
       if (node.children) {
-        return node.children.some(child => nodeMatches(child))
+        return node.children.some((child) => _nodeMatches(child))
       }
       return false
     }
 
     // Helper function to filter and clone nodes
     const filterNode = (node: ThemeNode): ThemeNode | null => {
-      const currentMatches = node.label.toLowerCase().includes(searchLower) || node.code.toLowerCase().includes(searchLower)
-      const filteredChildren = node.children
-        ?.map(child => filterNode(child))
-        .filter((child): child is ThemeNode => child !== null) ?? []
+      const currentMatches =
+        node.label.toLowerCase().includes(searchLower) ||
+        node.code.toLowerCase().includes(searchLower)
+      const filteredChildren =
+        node.children
+          ?.map((child) => filterNode(child))
+          .filter((child): child is ThemeNode => child !== null) ?? []
 
       // Include node if it matches or has matching children
       if (currentMatches || filteredChildren.length > 0) {
@@ -185,7 +204,7 @@ export function ThemeMultiSelect({
     }
 
     return hierarchyNodes
-      .map(node => filterNode(node))
+      .map((node) => filterNode(node))
       .filter((node): node is ThemeNode => node !== null)
   }, [hierarchyNodes, searchTerm])
 
@@ -194,10 +213,10 @@ export function ThemeMultiSelect({
       onSelectedThemesChange(
         selectedThemes.includes(themeKey)
           ? selectedThemes.filter((key) => key !== themeKey)
-          : [...selectedThemes, themeKey]
+          : [...selectedThemes, themeKey],
       )
     },
-    [selectedThemes, onSelectedThemesChange]
+    [selectedThemes, onSelectedThemesChange],
   )
 
   const toggleExpandNode = React.useCallback((nodeCode: string) => {
@@ -229,7 +248,13 @@ export function ThemeMultiSelect({
         onClick={() => setIsExpanded(true)}
         className="w-full h-10 px-3 py-2 border border-input rounded-md text-left text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
       >
-        <span className={selectedThemes.length === 0 ? 'text-muted-foreground' : 'text-foreground'}>
+        <span
+          className={
+            selectedThemes.length === 0
+              ? 'text-muted-foreground'
+              : 'text-foreground'
+          }
+        >
           {selectedThemes.length === 0
             ? 'Selecione temas...'
             : `${selectedThemes.length} selecionado${selectedThemes.length > 1 ? 's' : ''}`}
@@ -247,7 +272,9 @@ export function ThemeMultiSelect({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 border-b border-border flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-primary">Selecionar Temas</h2>
+                <h2 className="text-xl font-semibold text-primary">
+                  Selecionar Temas
+                </h2>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
@@ -265,7 +292,6 @@ export function ThemeMultiSelect({
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1 px-4 py-3 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                  autoFocus
                 />
               </div>
 
@@ -293,7 +319,9 @@ export function ThemeMultiSelect({
 
               <div className="p-6 border-t border-border flex items-center justify-between bg-gray-50">
                 <span className="text-sm text-muted-foreground">
-                  {selectedThemes.length} tema{selectedThemes.length !== 1 ? 's' : ''} selecionado{selectedThemes.length !== 1 ? 's' : ''}
+                  {selectedThemes.length} tema
+                  {selectedThemes.length !== 1 ? 's' : ''} selecionado
+                  {selectedThemes.length !== 1 ? 's' : ''}
                 </span>
                 <button
                   type="button"
@@ -330,7 +358,7 @@ function buildHierarchyFromFlat(themes: Theme[]): ThemeNode[] {
     }
   }
 
-  let lastByLevel: Record<number, ThemeNode> = {}
+  const lastByLevel: Record<number, ThemeNode> = {}
   for (const theme of themes) {
     const indentLevel = (theme.name.length - theme.name.trimStart().length) / 2
 

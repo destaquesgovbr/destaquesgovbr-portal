@@ -1,7 +1,7 @@
 'use client'
 
+import { ChevronDown, ChevronUp, Search, Tag, X } from 'lucide-react'
 import * as React from 'react'
-import { X, Tag, Search, ChevronDown, ChevronUp } from 'lucide-react'
 import type { TagFacet } from '@/app/artigos/actions'
 
 type TagFilterProps = {
@@ -25,7 +25,7 @@ export function TagFilter({
     if (!searchTerm) return popularTags
     const searchLower = searchTerm.toLowerCase()
     return popularTags.filter((tag) =>
-      tag.value.toLowerCase().includes(searchLower)
+      tag.value.toLowerCase().includes(searchLower),
     )
   }, [searchTerm, popularTags])
 
@@ -37,10 +37,10 @@ export function TagFilter({
       onSelectedTagsChange(
         selectedTags.includes(tagValue)
           ? selectedTags.filter((t) => t !== tagValue)
-          : [...selectedTags, tagValue]
+          : [...selectedTags, tagValue],
       )
     },
-    [selectedTags, onSelectedTagsChange]
+    [selectedTags, onSelectedTagsChange],
   )
 
   // Close dropdown when clicking outside
@@ -112,8 +112,12 @@ export function TagFilter({
                       }`}
                     >
                       <Tag className="w-3 h-3" />
-                      <span className="truncate max-w-[150px]">{tag.value}</span>
-                      <span className="text-[10px] opacity-70">({tag.count})</span>
+                      <span className="truncate max-w-[150px]">
+                        {tag.value}
+                      </span>
+                      <span className="text-[10px] opacity-70">
+                        ({tag.count})
+                      </span>
                     </button>
                   )
                 })}

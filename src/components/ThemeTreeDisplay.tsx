@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import * as React from 'react'
 
 export type ThemeNode = {
   code: string
@@ -58,7 +58,9 @@ function ThemeTreeItem({
           href={`/artigos?temas=${node.code}`}
           className="flex-1 flex items-center justify-between text-sm font-medium hover:text-primary transition-colors group-hover:underline"
         >
-          <span>{node.code} - {node.label}</span>
+          <span>
+            {node.code} - {node.label}
+          </span>
           <span className="text-muted-foreground text-xs ml-2 flex-shrink-0">
             ({count})
           </span>
@@ -87,7 +89,9 @@ export function ThemeTreeDisplay({
   themeHierarchy,
   articleCounts,
 }: ThemeTreeDisplayProps) {
-  const [expandedNodes, setExpandedNodes] = React.useState<Set<string>>(new Set())
+  const [expandedNodes, setExpandedNodes] = React.useState<Set<string>>(
+    new Set(),
+  )
 
   const toggleExpandNode = React.useCallback((nodeCode: string) => {
     setExpandedNodes((prev) => {
