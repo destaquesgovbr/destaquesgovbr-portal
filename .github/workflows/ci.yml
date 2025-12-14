@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, development]
 
 env:
   PROJECT_ID: inspire-7-finep
