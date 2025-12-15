@@ -2,9 +2,9 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import NewsCard from '@/components/articles/NewsCard'
 import { Button } from '@/components/ui/button'
-import type { ArticleRow } from '@/types/article'
 import THEME_ICONS from '@/data/themes'
 import { formatDateTime, getExcerpt } from '@/lib/utils'
+import type { ArticleRow } from '@/types/article'
 import {
   countMonthlyNews,
   countTotalNews,

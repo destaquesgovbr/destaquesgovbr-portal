@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ArticleRow } from '@/types/article'
-import type { PrioritizationConfig } from '../prioritization-config'
 import {
   calculateArticleScore,
   calculateThemeScores,
@@ -9,6 +8,7 @@ import {
   getPrioritizedThemes,
   type ScoredArticle,
 } from '../prioritization'
+import type { PrioritizationConfig } from '../prioritization-config'
 
 const mockConfig: PrioritizationConfig = {
   agencyWeights: { mgi: 1.5, mec: 1.2 },
@@ -104,7 +104,9 @@ describe('calculateArticleScore', () => {
   })
 
   it('applies image boost when image present', () => {
-    const withImage = createMockArticle({ image: 'https://example.com/img.jpg' })
+    const withImage = createMockArticle({
+      image: 'https://example.com/img.jpg',
+    })
     const withoutImage = createMockArticle({ image: null })
 
     const scoreWithImage = calculateArticleScore(withImage, mockConfig)
@@ -118,7 +120,10 @@ describe('calculateArticleScore', () => {
     const withoutSummary = createMockArticle({ summary: null })
 
     const scoreWithSummary = calculateArticleScore(withSummary, mockConfig)
-    const scoreWithoutSummary = calculateArticleScore(withoutSummary, mockConfig)
+    const scoreWithoutSummary = calculateArticleScore(
+      withoutSummary,
+      mockConfig,
+    )
 
     expect(scoreWithSummary).toBeGreaterThan(scoreWithoutSummary)
   })
@@ -344,7 +349,10 @@ describe('getPrioritizedThemes', () => {
       createMockArticle({ theme_1_level_1_label: 'Saúde' }),
     ]
 
-    const weightedConfig = { ...mockConfig, themeFocusMode: 'weighted' as const }
+    const weightedConfig = {
+      ...mockConfig,
+      themeFocusMode: 'weighted' as const,
+    }
     const result = getPrioritizedThemes(articles, weightedConfig, 2)
 
     expect(result).toHaveLength(2)

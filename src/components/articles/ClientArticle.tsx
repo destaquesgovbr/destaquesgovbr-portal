@@ -10,11 +10,11 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import type { ArticleRow } from '@/types/article'
 import { formatDateTime } from '@/lib/utils'
-import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
+import type { ArticleRow } from '@/types/article'
 
 export default function ClientArticle({
   article,

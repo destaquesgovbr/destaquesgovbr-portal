@@ -1,6 +1,5 @@
 'use server'
 
-import type { ArticleRow } from '@/types/article'
 import type { ScoredArticle } from '@/config/prioritization'
 import {
   calculateArticleScore,
@@ -8,10 +7,11 @@ import {
 } from '@/config/prioritization'
 import type { PrioritizationConfig } from '@/config/prioritization-config'
 import { DEFAULT_CONFIG } from '@/config/prioritization-config'
-import { withResult } from '@/lib/result'
 import type { Theme } from '@/data/themes-utils'
 import { getThemesByLabel } from '@/data/themes-utils'
+import { withResult } from '@/lib/result'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 /**
  * Busca artigos e aplica preview de priorização com config customizada

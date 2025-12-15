@@ -2,9 +2,9 @@
 
 import { differenceInHours, getUnixTime, type Interval } from 'date-fns'
 import { getAgenciesByName } from '@/data/agencies-utils'
-import type { ArticleRow } from '@/types/article'
 import { withResult } from '@/lib/result'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 const BASE_FILTER = (r: Interval) => {
   const { start, end } = r

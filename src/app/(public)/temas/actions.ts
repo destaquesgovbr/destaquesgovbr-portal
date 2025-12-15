@@ -1,8 +1,8 @@
 'use server'
 
 import { subDays } from 'date-fns'
-import type { ArticleRow } from '@/types/article'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 /**
  * Get article counts by theme code for the last 30 days

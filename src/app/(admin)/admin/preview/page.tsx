@@ -21,13 +21,13 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { ArticleRow } from '@/types/article'
 import type { ScoredArticle } from '@/config/prioritization'
 import type {
   PrioritizationConfig,
   ThemeFocusMode,
 } from '@/config/prioritization-config'
 import { formatDateTime } from '@/lib/utils'
+import type { ArticleRow } from '@/types/article'
 import { getThemeCodeToNameMap, previewPrioritization } from './actions'
 
 export default function PreviewPage() {

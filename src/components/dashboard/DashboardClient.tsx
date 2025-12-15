@@ -14,10 +14,10 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { Portal } from '@/components/layout/Portal'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ChartTooltip } from './ChartTooltip'
 import KpiCard from './KpiCard'
-import { Portal } from '@/components/layout/Portal'
 
 type InfoTooltipProps = {
   content: string

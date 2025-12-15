@@ -1,7 +1,7 @@
 'use server'
 
-import type { ArticleRow } from '@/types/article'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 export type GetArticlesArgs = {
   agency: string

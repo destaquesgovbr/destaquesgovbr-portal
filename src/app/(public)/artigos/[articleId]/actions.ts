@@ -1,9 +1,9 @@
 'use server'
 
 import { getAgencyField } from '@/data/agencies-utils'
-import type { ArticleRow } from '@/types/article'
 import { ResultError, withResult } from '@/lib/result'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 export type GetArticleError = 'not_found' | 'db_error'
 

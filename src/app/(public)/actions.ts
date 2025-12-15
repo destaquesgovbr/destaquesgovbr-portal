@@ -1,11 +1,11 @@
 'use server'
 
 import { startOfMonth, subDays } from 'date-fns'
-import type { ArticleRow } from '@/types/article'
 import { getPrioritizedArticles } from '@/config/prioritization'
 import { loadConfig } from '@/config/prioritization-config'
 import { withResult } from '@/lib/result'
 import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
 
 export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   try {

@@ -4,8 +4,8 @@ import { Search, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { Button } from '@/components/ui/button'
 import SearchBar from '@/components/search/SearchBar'
+import { Button } from '@/components/ui/button'
 
 const routeLinks = [
   { href: '/artigos', label: 'Notícias' },
