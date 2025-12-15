@@ -7,11 +7,6 @@ on:
     branches: [main, development]
   workflow_dispatch:
 
-env:
-  NEXT_PUBLIC_TYPESENSE_HOST: 35.199.107.68
-  NEXT_PUBLIC_TYPESENSE_PORT: '443'
-  NEXT_PUBLIC_TYPESENSE_PROTOCOL: https
-
 jobs:
   unit-tests:
     name: Unit & Integration Tests
@@ -32,6 +27,7 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit -- --coverage
         env:
+          NEXT_PUBLIC_TYPESENSE_HOST: localhost
           NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: test_key
 
       - name: Upload coverage to Codecov
@@ -43,9 +39,6 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
-    # E2E tests require Typesense to be reachable from GitHub runners
-    # This may fail if firewall blocks GitHub's IP ranges
-    continue-on-error: true
     permissions:
       contents: read
       id-token: write
@@ -80,12 +73,16 @@ jobs:
 
       - name: Build application
         run: npm run build
+        env:
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
