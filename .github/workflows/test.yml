@@ -28,6 +28,7 @@ jobs:
         run: npm run test:unit -- --coverage
         env:
           NEXT_PUBLIC_TYPESENSE_HOST: localhost
+          NEXT_PUBLIC_TYPESENSE_PORT: '8108'
           NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: test_key
 
       - name: Upload coverage to Codecov
@@ -46,21 +47,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Fetch Typesense Config
+        id: typesense
+        uses: destaquesgovbr/reusable-workflows/actions/fetch-typesense-config@v1
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Fetch Typesense API Key from Secret Manager
-        id: secrets
-        run: |
-          API_KEY=$(gcloud secrets versions access latest --secret="typesense-search-only-api-key")
-          echo "::add-mask::$API_KEY"
-          echo "NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=$API_KEY" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -74,7 +66,9 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          NEXT_PUBLIC_TYPESENSE_HOST: ${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
+          NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
+          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: ${{ steps.typesense.outputs.api_key }}
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -82,7 +76,8 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
         env:
-          NEXT_PUBLIC_TYPESENSE_HOST: ${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
+          NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
