@@ -4,8 +4,9 @@
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml* ./
+RUN corepack enable
+RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build the application
 FROM node:20-alpine AS builder
@@ -22,7 +23,8 @@ ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js standalone output
-RUN npm run build
+RUN corepack enable
+RUN pnpm run build
 
 # Stage 3: Production image
 FROM node:20-alpine AS runner
