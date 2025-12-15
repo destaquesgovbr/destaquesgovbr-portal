@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
-    baseURL: process.env.E2E_BASE_URL || 'https://destaques.gov.br',
+    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -22,4 +22,11 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
     },
   ],
+  // Start local server for E2E tests
+  webServer: {
+    command: 'npm run start',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+  },
 })

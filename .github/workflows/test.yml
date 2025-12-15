@@ -6,20 +6,11 @@ on:
   pull_request:
     branches: [main, development]
   workflow_dispatch:
-    inputs:
-      e2e_base_url:
-        description: 'Base URL for E2E tests'
-        required: false
-        default: 'https://destaques.gov.br'
-      skip_e2e:
-        description: 'Skip E2E tests'
-        required: false
-        type: boolean
-        default: false
 
 env:
-  NEXT_PUBLIC_TYPESENSE_HOST: localhost
-  NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: test_api_key
+  NEXT_PUBLIC_TYPESENSE_HOST: 35.199.107.68
+  NEXT_PUBLIC_TYPESENSE_PORT: '443'
+  NEXT_PUBLIC_TYPESENSE_PROTOCOL: https
 
 jobs:
   unit-tests:
@@ -40,6 +31,8 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit -- --coverage
+        env:
+          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: test_key
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -50,14 +43,25 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
-    # E2E tests are optional until production domain is available
-    continue-on-error: true
-    if: ${{ github.event.inputs.skip_e2e != 'true' }}
-    env:
-      E2E_BASE_URL: ${{ github.event.inputs.e2e_base_url || 'https://destaques.gov.br' }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Fetch Typesense API Key from Secret Manager
+        id: secrets
+        run: |
+          API_KEY=$(gcloud secrets versions access latest --secret="typesense-search-only-api-key")
+          echo "::add-mask::$API_KEY"
+          echo "NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=$API_KEY" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -68,26 +72,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build application
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Check if E2E URL is reachable
-        id: check-url
-        run: |
-          if curl -s --head --connect-timeout 10 "$E2E_BASE_URL" > /dev/null 2>&1; then
-            echo "reachable=true" >> $GITHUB_OUTPUT
-          else
-            echo "reachable=false" >> $GITHUB_OUTPUT
-            echo "::warning::E2E base URL ($E2E_BASE_URL) is not reachable. Skipping E2E tests."
-          fi
-
       - name: Run E2E tests
-        if: steps.check-url.outputs.reachable == 'true'
         run: npm run test:e2e
-
-      - name: Skip E2E tests (URL not reachable)
-        if: steps.check-url.outputs.reachable != 'true'
-        run: echo "E2E tests skipped - URL not reachable"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
