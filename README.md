@@ -20,9 +20,81 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses **Vitest** for unit/integration tests and **Playwright** for E2E tests.
+
+### Running Tests
+
+```bash
+# Run unit tests in watch mode
+npm test
+
+# Run unit tests once
+npm run test:unit
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Open Vitest UI
+npm run test:ui
+
+# Run E2E tests
+npm run test:e2e
+
+# Open Playwright UI
+npm run test:e2e:ui
+```
+
+### Test Structure
+
+```
+src/
+├── __tests__/               # Test utilities and mocks
+│   ├── setup.ts             # Global test setup
+│   ├── test-utils.tsx       # Custom render with providers
+│   └── mocks/
+│       └── fixtures/        # Test data fixtures
+├── lib/__tests__/           # Unit tests for lib/
+│   ├── result.test.ts       # Result type tests
+│   └── utils.test.ts        # Utility function tests
+└── config/__tests__/        # Unit tests for config/
+    └── prioritization.test.ts
+
+e2e/                         # Playwright E2E tests
+```
+
+### Writing Tests
+
+**Unit tests** use Vitest with React Testing Library:
+
+```typescript
+import { describe, expect, it } from 'vitest'
+import { render, screen } from '@/__tests__/test-utils'
+import MyComponent from './MyComponent'
+
+describe('MyComponent', () => {
+  it('renders correctly', () => {
+    render(<MyComponent />)
+    expect(screen.getByText('Hello')).toBeInTheDocument()
+  })
+})
+```
+
+**E2E tests** use Playwright against the production site:
+
+```typescript
+import { test, expect } from '@playwright/test'
+
+test('home page loads', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading')).toBeVisible()
+})
+```
+
+### CI Integration
+
+Tests run automatically on every PR via GitHub Actions (`.github/workflows/test.yml`).
 
 ## Learn More
 

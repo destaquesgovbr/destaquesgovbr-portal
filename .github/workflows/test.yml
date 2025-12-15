@@ -1,0 +1,88 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit -- --coverage
+        env:
+          NEXT_PUBLIC_TYPESENSE_HOST: localhost
+          NEXT_PUBLIC_TYPESENSE_PORT: '8108'
+          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: test_key
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Typesense Config
+        id: typesense
+        uses: destaquesgovbr/reusable-workflows/actions/fetch-typesense-config@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
+          NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
+          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: ${{ steps.typesense.outputs.api_key }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
+          NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
