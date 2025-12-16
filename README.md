@@ -5,17 +5,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the typesense locally:
 In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and load the news dataset taken from Huggingface: https://github.com/destaquesgovbr/destaquesgovbr-typesense
 
-
 Then, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -144,14 +137,17 @@ This project is deployed to Google Cloud Run using GitHub Actions.
 The production deployment fetches the Typesense API key **directly from GCP Secret Manager** during the Docker build process.
 
 **GitHub Secrets Required:**
+
 - `GCP_WORKLOAD_IDENTITY_PROVIDER` - Workload Identity Federation provider
 - `GCP_SERVICE_ACCOUNT` - GitHub Actions service account email
 - `NEXT_PUBLIC_TYPESENSE_HOST` - Typesense server IP address
 
 **GCP Secret Manager:**
+
 - `typesense-search-only-api-key` - Search API key (read-only)
 
 **Why this architecture?**
+
 - **Single source of truth**: API key is only maintained in GCP Secret Manager
 - **Automatic sync**: Portal always uses the same key as the Typesense VM
 - **Easy rotation**: Update key in GCP → rebuild portal → done

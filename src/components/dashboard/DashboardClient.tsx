@@ -46,6 +46,7 @@ function InfoTooltip({ content, children, side = 'right' }: InfoTooltipProps) {
         ref={triggerRef}
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
+        role="tooltip"
       >
         {children}
       </div>

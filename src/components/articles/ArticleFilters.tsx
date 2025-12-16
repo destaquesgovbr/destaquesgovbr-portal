@@ -18,21 +18,29 @@ type DateFilterProps = {
 }
 
 function DateFilter({ label, value, onChange }: DateFilterProps) {
+  const inputId = `date-${label.replace(/\s+/g, '-').toLowerCase()}`
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-semibold text-primary">{label}</label>
+      <label htmlFor={inputId} className="text-sm font-semibold text-primary">
+        {label}
+      </label>
       <div className="relative">
         <Input
+          id={inputId}
           type="date"
           onChange={(e) => onChange(new Date(e.target.value))}
           className={value ? 'pr-9' : undefined}
           value={value ? value.toISOString().split('T')[0] : ''}
         />
         {value && (
-          <X
+          <button
+            type="button"
             onClick={() => onChange(undefined)}
+            aria-label="Limpar data"
             className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 hover:cursor-pointer transition-colors"
-          />
+          >
+            <X className="h-4 w-4" />
+          </button>
         )}
       </div>
     </div>
@@ -65,6 +73,7 @@ function Tooltip({ content, children }: TooltipProps) {
         ref={triggerRef}
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
+        role="tooltip"
       >
         {children}
       </div>
@@ -150,9 +159,9 @@ export function ArticleFilters({
           {showAgencyFilter && onAgenciesChange && getAgencyName && (
             <>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-primary">
+                <span className="text-sm font-semibold text-primary">
                   Órgãos
-                </label>
+                </span>
                 <AgencyMultiSelect
                   agencies={agencies}
                   selectedAgencies={selectedAgencies}
@@ -208,9 +217,9 @@ export function ArticleFilters({
           {showThemeFilter && onThemesChange && getThemeName && (
             <>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-primary">
+                <span className="text-sm font-semibold text-primary">
                   Temas
-                </label>
+                </span>
                 <ThemeMultiSelect
                   themes={themes}
                   selectedThemes={selectedThemes}
@@ -279,7 +288,7 @@ export function ArticleFilters({
           {/* Tag Filter */}
           {showTagFilter && onTagsChange && popularTags.length > 0 && (
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-primary">Tags</label>
+              <span className="text-sm font-semibold text-primary">Tags</span>
               <TagFilter
                 popularTags={popularTags}
                 selectedTags={selectedTags}
