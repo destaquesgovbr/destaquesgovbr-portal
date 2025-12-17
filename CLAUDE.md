@@ -183,11 +183,19 @@ pnpm format       # Formata código com Biome
 O projeto requer configuração do Typesense. Crie um arquivo `.env.local`:
 
 ```env
-TYPESENSE_HOST=seu-host-typesense
-TYPESENSE_PORT=8108
-TYPESENSE_PROTOCOL=https
-TYPESENSE_API_KEY=sua-api-key
+NEXT_PUBLIC_TYPESENSE_HOST=localhost
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=sua-api-key
 ```
+
+**Para desenvolvimento local:**
+
+O container `govbrnews-typesense` busca a chave da API do GCP Secret Manager na inicialização. Para obter a chave correta, execute:
+
+```bash
+docker logs govbrnews-typesense | grep "API Key:"
+```
+
+Copie a chave exibida e configure no seu `.env.local`.
 
 ## Padrões de Código
 
@@ -278,15 +286,15 @@ Cliente configurado em `lib/typesense-client.ts`:
 ```typescript
 import Typesense from "typesense";
 
+const host = process.env.NEXT_PUBLIC_TYPESENSE_HOST ?? 'localhost';
+const port = 8108;
+const protocol = 'http';
+
 const client = new Typesense.Client({
-  nodes: [
-    {
-      host: process.env.TYPESENSE_HOST!,
-      port: Number(process.env.TYPESENSE_PORT),
-      protocol: process.env.TYPESENSE_PROTOCOL as "http" | "https",
-    },
-  ],
-  apiKey: process.env.TYPESENSE_API_KEY!,
+  nodes: [{ host, port, protocol }],
+  apiKey: process.env.NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY ??
+    'govbrnews_api_key_change_in_production',
+  connectionTimeoutSeconds: 10,
 });
 ```
 
@@ -392,10 +400,8 @@ docker run -p 3000:3000 portal-brasil
 
 Certifique-se de configurar:
 
-- `TYPESENSE_HOST`
-- `TYPESENSE_PORT`
-- `TYPESENSE_PROTOCOL`
-- `TYPESENSE_API_KEY`
+- `NEXT_PUBLIC_TYPESENSE_HOST`
+- `NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY`
 
 ## Troubleshooting Comum
 

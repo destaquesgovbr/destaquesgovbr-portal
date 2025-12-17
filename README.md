@@ -2,10 +2,32 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the typesense locally:
-In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and load the news dataset taken from Huggingface: https://github.com/destaquesgovbr/typesense
+### 1. Run Typesense locally
 
-Then, run the development server:
+First, start the Typesense server. In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and loads the news dataset from Huggingface: https://github.com/destaquesgovbr/typesense
+
+### 2. Configure environment variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+The Typesense container fetches its API key from GCP Secret Manager on startup. Get the actual API key from the container logs:
+
+```bash
+docker logs govbrnews-typesense | grep "API Key:"
+```
+
+Update your `.env.local` file with the API key:
+
+```env
+NEXT_PUBLIC_TYPESENSE_HOST=localhost
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=<your-api-key-from-logs>
+```
+
+### 3. Run the development server
 
 ```bash
 pnpm dev
@@ -88,6 +110,49 @@ test('home page loads', async ({ page }) => {
 ### CI Integration
 
 Tests run automatically on every PR via GitHub Actions (`.github/workflows/test.yml`).
+
+## Troubleshooting
+
+### Typesense 401 Unauthorized Error
+
+If you see errors like:
+
+```
+RequestUnauthorized: Request failed with HTTP code 401 | Server said: Forbidden - a valid `x-typesense-api-key` header must be sent.
+```
+
+**Solution:**
+
+1. Check if the Typesense container is running:
+   ```bash
+   docker ps | grep typesense
+   ```
+
+2. Get the actual API key from container logs:
+   ```bash
+   docker logs govbrnews-typesense | grep "API Key:"
+   ```
+
+3. Update your `.env.local` file with the correct API key
+
+4. Restart the development server:
+   ```bash
+   pnpm dev
+   ```
+
+### Typesense Connection Issues
+
+**Check if Typesense is running:**
+```bash
+curl http://localhost:8108/health
+```
+
+Expected response: `{"ok":true}`
+
+**Verify API key works:**
+```bash
+curl -H "X-TYPESENSE-API-KEY: your-api-key" http://localhost:8108/collections
+```
 
 ## Learn More
 
