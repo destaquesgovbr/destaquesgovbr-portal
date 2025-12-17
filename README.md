@@ -23,11 +23,8 @@ docker logs govbrnews-typesense | grep "API Key:"
 Update your `.env.local` file with the API key:
 
 ```env
-TYPESENSE_HOST=localhost
-TYPESENSE_PORT=8108
-TYPESENSE_PROTOCOL=http
-TYPESENSE_API_KEY=<your-api-key-from-logs>
-TYPESENSE_COLLECTION_NAME=news
+NEXT_PUBLIC_TYPESENSE_HOST=localhost
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=<your-api-key-from-logs>
 ```
 
 ### 3. Run the development server
