@@ -37,7 +37,7 @@ Portal de notícias do Governo Federal brasileiro, desenvolvido com Next.js 15, 
 ## Estrutura de Diretórios
 
 ```
-/destaquesgovbr-portal
+/portal
 ├── src/
 │   ├── app/                    # App Router (Next.js 15)
 │   │   ├── page.tsx           # Homepage principal
