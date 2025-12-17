@@ -106,6 +106,7 @@ function ThemeTreeItem({
 
         <input
           ref={checkboxRef}
+          id={`theme-checkbox-${node.code}`}
           type="checkbox"
           checked={showAsChecked}
           onChange={() => onToggle(node.code)}
@@ -114,8 +115,8 @@ function ThemeTreeItem({
         />
 
         <label
+          htmlFor={`theme-checkbox-${node.code}`}
           className={`flex-1 cursor-pointer text-sm font-medium ${isInherited ? 'text-muted-foreground' : ''}`}
-          onClick={() => !isInherited && onToggle(node.code)}
         >
           {node.code} - {node.label}
         </label>
@@ -263,16 +264,25 @@ export function ThemeMultiSelect({
 
       {isExpanded && (
         <Portal>
-          <div
-            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4 pointer-events-auto"
+          <button
+            type="button"
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4 pointer-events-auto border-0"
             onClick={() => setIsExpanded(false)}
+            aria-label="Fechar modal"
           >
             <div
               className="bg-white rounded-lg shadow-2xl w-full max-w-5xl max-h-[85vh] flex flex-col animate-in zoom-in-95 relative z-[301]"
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="theme-select-title"
             >
               <div className="p-6 border-b border-border flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-primary">
+                <h2
+                  id="theme-select-title"
+                  className="text-xl font-semibold text-primary"
+                >
                   Selecionar Temas
                 </h2>
                 <button
@@ -332,7 +342,7 @@ export function ThemeMultiSelect({
                 </button>
               </div>
             </div>
-          </div>
+          </button>
         </Portal>
       )}
     </div>

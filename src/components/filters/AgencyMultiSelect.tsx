@@ -230,17 +230,26 @@ export function AgencyMultiSelect({
       {/* Expanded Modal */}
       {isExpanded && (
         <Portal>
-          <div
-            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4 pointer-events-auto"
+          <button
+            type="button"
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-in fade-in-0 p-4 pointer-events-auto border-0"
             onClick={() => setIsExpanded(false)}
+            aria-label="Fechar modal"
           >
             <div
               className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col animate-in zoom-in-95 relative z-[301]"
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="agency-select-title"
             >
               {/* Modal Header */}
               <div className="p-6 border-b border-border flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-primary">
+                <h2
+                  id="agency-select-title"
+                  className="text-xl font-semibold text-primary"
+                >
                   Selecionar Órgãos
                 </h2>
                 <button
@@ -287,7 +296,7 @@ export function AgencyMultiSelect({
                 </button>
               </div>
             </div>
-          </div>
+          </button>
         </Portal>
       )}
     </div>

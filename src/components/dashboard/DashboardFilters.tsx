@@ -81,10 +81,14 @@ export function DashboardFilters() {
         <div className="flex flex-wrap items-end gap-4">
           {/* Single dropdown for presets */}
           <div className="flex flex-col gap-2 w-full lg:w-auto">
-            <label className="text-sm font-semibold text-primary">
+            <label
+              htmlFor="period-select"
+              className="text-sm font-semibold text-primary"
+            >
               Período
             </label>
             <select
+              id="period-select"
               value={preset}
               onChange={(e) => handlePresetChange(e.target.value as DatePreset)}
               className="w-full h-10 px-3 py-2 border border-input rounded-md text-sm bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
@@ -101,11 +105,15 @@ export function DashboardFilters() {
           {preset === 'custom' && (
             <>
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-semibold text-primary">
+                <label
+                  htmlFor="custom-start-date"
+                  className="text-sm font-semibold text-primary"
+                >
                   Início
                 </label>
                 <div className="relative">
                   <Input
+                    id="custom-start-date"
                     type="date"
                     onChange={(e) =>
                       handleDateChange(
@@ -119,20 +127,28 @@ export function DashboardFilters() {
                     }
                   />
                   {startDate && (
-                    <X
+                    <button
+                      type="button"
                       onClick={() => handleDateChange('start', undefined)}
+                      aria-label="Limpar data de início"
                       className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 hover:cursor-pointer transition-colors"
-                    />
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-semibold text-primary">
+                <label
+                  htmlFor="custom-end-date"
+                  className="text-sm font-semibold text-primary"
+                >
                   Fim
                 </label>
                 <div className="relative">
                   <Input
+                    id="custom-end-date"
                     type="date"
                     onChange={(e) =>
                       handleDateChange(
@@ -144,10 +160,14 @@ export function DashboardFilters() {
                     value={endDate ? endDate.toISOString().split('T')[0] : ''}
                   />
                   {endDate && (
-                    <X
+                    <button
+                      type="button"
                       onClick={() => handleDateChange('end', undefined)}
+                      aria-label="Limpar data de fim"
                       className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 hover:cursor-pointer transition-colors"
-                    />
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   )}
                 </div>
               </div>
