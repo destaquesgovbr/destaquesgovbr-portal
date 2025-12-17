@@ -183,11 +183,22 @@ pnpm format       # Formata código com Biome
 O projeto requer configuração do Typesense. Crie um arquivo `.env.local`:
 
 ```env
-TYPESENSE_HOST=seu-host-typesense
+TYPESENSE_HOST=localhost
 TYPESENSE_PORT=8108
-TYPESENSE_PROTOCOL=https
+TYPESENSE_PROTOCOL=http
 TYPESENSE_API_KEY=sua-api-key
+TYPESENSE_COLLECTION_NAME=news
 ```
+
+**Para desenvolvimento local:**
+
+O container `govbrnews-typesense` busca a chave da API do GCP Secret Manager na inicialização. Para obter a chave correta, execute:
+
+```bash
+docker logs govbrnews-typesense | grep "API Key:"
+```
+
+Copie a chave exibida e configure no seu `.env.local`.
 
 ## Padrões de Código
 
