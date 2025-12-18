@@ -42,4 +42,5 @@ jobs:
         env:
           NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
           NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
+          NEXT_PUBLIC_TYPESENSE_PROTOCOL: ${{ steps.typesense.outputs.protocol }}
           NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: ${{ steps.typesense.outputs.api_key }}
