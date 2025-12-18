@@ -18,23 +18,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Fetch Typesense Config
+        id: typesense
+        uses: destaquesgovbr/reusable-workflows/actions/fetch-typesense-config@v1
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Fetch Typesense API Key from Secret Manager
-        id: secrets
-        run: |
-          TYPESENSE_KEY=$(gcloud secrets versions access latest \
-            --secret=typesense-search-only-api-key \
-            --project=${{ env.PROJECT_ID }})
-          echo "::add-mask::$TYPESENSE_KEY"
-          echo "typesense_api_key=$TYPESENSE_KEY" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -51,5 +40,6 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_TYPESENSE_HOST: ${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}
-          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: ${{ steps.secrets.outputs.typesense_api_key }}
+          NEXT_PUBLIC_TYPESENSE_HOST: ${{ steps.typesense.outputs.host }}
+          NEXT_PUBLIC_TYPESENSE_PORT: ${{ steps.typesense.outputs.port }}
+          NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY: ${{ steps.typesense.outputs.api_key }}
