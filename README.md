@@ -100,3 +100,4 @@ See [.github/workflows/deploy-production.yml](.github/workflows/deploy-productio
 ### Infrastructure
 
 The infrastructure (Typesense VM, secrets, IAM bindings) is managed via Terraform in the [destaquesgovbr-infra](https://github.com/destaquesgovbr/destaquesgovbr-infra) repository.
+# Test CI
