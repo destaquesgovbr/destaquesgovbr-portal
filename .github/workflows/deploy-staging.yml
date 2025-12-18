@@ -1,0 +1,73 @@
+name: Deploy to Staging (Cloud Run)
+
+on:
+  push:
+    branches: [development]
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: inspire-7-finep
+  REGION: southamerica-east1
+  SERVICE_NAME: destaquesgovbr-portal-staging
+  REGISTRY: southamerica-east1-docker.pkg.dev
+  REPOSITORY: destaquesgovbr-portal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch Typesense Config
+        id: typesense
+        uses: destaquesgovbr/reusable-workflows/actions/fetch-typesense-config@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY }}
+
+      - name: Build Docker image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ steps.typesense.outputs.host }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_PORT="${{ steps.typesense.outputs.port }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_PROTOCOL="${{ steps.typesense.outputs.protocol }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ steps.typesense.outputs.api_key }}" \
+            -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }} \
+            -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-latest \
+            --load \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-latest
+
+      - name: Deploy to Cloud Run Staging
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:staging-${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars "NODE_ENV=staging" \
+            --quiet
+
+      - name: Show deployment URL
+        run: |
+          URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format 'value(status.url)')
+          echo "## Staging Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "URL: $URL" >> $GITHUB_STEP_SUMMARY
