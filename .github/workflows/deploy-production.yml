@@ -23,23 +23,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Fetch Typesense Config
+        id: typesense
+        uses: destaquesgovbr/reusable-workflows/actions/fetch-typesense-config@v1
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Fetch Typesense API Key from Secret Manager
-        id: secrets
-        run: |
-          TYPESENSE_KEY=$(gcloud secrets versions access latest \
-            --secret=typesense-search-only-api-key \
-            --project=${{ env.PROJECT_ID }})
-          echo "::add-mask::$TYPESENSE_KEY"
-          echo "typesense_api_key=$TYPESENSE_KEY" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -51,8 +40,9 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64 \
-            --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
-            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ steps.secrets.outputs.typesense_api_key }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_HOST="${{ steps.typesense.outputs.host }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_PORT="${{ steps.typesense.outputs.port }}" \
+            --build-arg NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY="${{ steps.typesense.outputs.api_key }}" \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/portal:latest \
             --load \
@@ -70,7 +60,7 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars "NODE_ENV=production,NEXT_PUBLIC_TYPESENSE_HOST=${{ secrets.NEXT_PUBLIC_TYPESENSE_HOST }}" \
+            --set-env-vars "NODE_ENV=production" \
             --quiet
 
       - name: Show deployment URL
