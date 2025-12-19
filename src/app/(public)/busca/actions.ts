@@ -19,6 +19,41 @@ export type QueryArticlesResult = {
 
 const PAGE_SIZE = 40
 
+export type SearchSuggestion = {
+  unique_id: string
+  title: string
+}
+
+export async function getSearchSuggestions(
+  query: string,
+): Promise<SearchSuggestion[]> {
+  if (!query || query.length < 2) return []
+
+  try {
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: query,
+        query_by: 'title',
+        prefix: true,
+        limit: 7,
+        sort_by: 'published_at:desc',
+        include_fields: 'unique_id,title',
+        pre_segmented_query: false,
+      })
+
+    return (
+      result.hits?.map((hit) => ({
+        unique_id: hit.document.unique_id,
+        title: hit.document.title ?? '',
+      })) ?? []
+    )
+  } catch {
+    return []
+  }
+}
+
 export async function queryArticles(
   args: QueryArticlesArgs,
 ): Promise<QueryArticlesResult> {
