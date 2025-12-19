@@ -51,7 +51,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
     result.push(
       <mark
         key={`match-${matchCount++}-${start}`}
-        className="bg-yellow-200 text-inherit rounded-sm px-0.5"
+        className="bg-yellow-200 text-inherit rounded-sm"
       >
         {matchedText}
       </mark>,
