@@ -1,5 +1,7 @@
 'use server'
 
+import { getPrioritizedArticles } from '@/config/prioritization'
+import { DEFAULT_CONFIG } from '@/config/prioritization-config'
 import { typesense } from '@/services/typesense/client'
 import type { ArticleRow } from '@/types/article'
 
@@ -35,20 +37,21 @@ export async function getSearchSuggestions(
       .documents()
       .search({
         q: query,
-        query_by: 'title',
+        query_by: 'title,content',
         prefix: true,
-        limit: 7,
-        sort_by: 'published_at:desc',
-        include_fields: 'unique_id,title',
+        limit: 50, // Fetch more to apply prioritization
         pre_segmented_query: false,
       })
 
-    return (
-      result.hits?.map((hit) => ({
-        unique_id: hit.document.unique_id,
-        title: hit.document.title ?? '',
-      })) ?? []
-    )
+    const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
+
+    // Apply prioritization to results
+    const prioritized = getPrioritizedArticles(articles, DEFAULT_CONFIG, 7)
+
+    return prioritized.map((article) => ({
+      unique_id: article.unique_id,
+      title: article.title ?? '',
+    }))
   } catch {
     return []
   }
