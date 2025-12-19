@@ -147,10 +147,12 @@ describe('getExcerpt', () => {
 })
 
 describe('formatDateTime', () => {
+  // Note: formatDateTime uses America/Sao_Paulo timezone (UTC-3)
+  // Tests use UTC timestamps that correspond to specific times in Sao Paulo
+
   it('formats midnight timestamps as date only', () => {
-    // Create a midnight timestamp in local timezone
-    const date = new Date(2024, 0, 15, 0, 0, 0) // Jan 15, 2024 00:00:00 local
-    const timestamp = Math.floor(date.getTime() / 1000)
+    // Jan 15, 2024 00:00:00 in Sao Paulo = Jan 15, 2024 03:00:00 UTC
+    const timestamp = Date.UTC(2024, 0, 15, 3, 0, 0) / 1000
     const result = formatDateTime(timestamp)
 
     expect(result).toMatch(/15/)
@@ -159,15 +161,14 @@ describe('formatDateTime', () => {
   })
 
   it('includes time for non-midnight timestamps', () => {
-    // Create a non-midnight timestamp in local timezone
-    const date = new Date(2024, 0, 15, 14, 30, 0) // Jan 15, 2024 14:30:00 local
-    const timestamp = Math.floor(date.getTime() / 1000)
+    // Jan 15, 2024 14:30:00 in Sao Paulo = Jan 15, 2024 17:30:00 UTC
+    const timestamp = Date.UTC(2024, 0, 15, 17, 30, 0) / 1000
     const result = formatDateTime(timestamp)
 
     expect(result).toMatch(/15/)
     expect(result).toMatch(/jan/i)
     expect(result).toContain('às')
-    expect(result).toMatch(/\d{2}h\d{2}/)
+    expect(result).toContain('14h30')
   })
 
   it('handles null timestamp', () => {
@@ -180,21 +181,32 @@ describe('formatDateTime', () => {
   })
 
   it('formats time with leading zeros', () => {
-    // A timestamp with single-digit hours/minutes
-    const date = new Date(2024, 0, 15, 1, 5, 0) // Jan 15, 2024 01:05:00 local
-    const timestamp = Math.floor(date.getTime() / 1000)
+    // Jan 15, 2024 01:05:00 in Sao Paulo = Jan 15, 2024 04:05:00 UTC
+    const timestamp = Date.UTC(2024, 0, 15, 4, 5, 0) / 1000
     const result = formatDateTime(timestamp)
 
-    // Should have proper hour formatting
-    expect(result).toMatch(/\d{2}h\d{2}/)
+    expect(result).toContain('01h05')
   })
 
   it('uses Brazilian date format', () => {
-    const date = new Date(2024, 0, 15, 12, 0, 0) // Jan 15, 2024 12:00:00 local
-    const timestamp = Math.floor(date.getTime() / 1000)
+    // Jan 15, 2024 12:00:00 in Sao Paulo = Jan 15, 2024 15:00:00 UTC
+    const timestamp = Date.UTC(2024, 0, 15, 15, 0, 0) / 1000
     const result = formatDateTime(timestamp)
 
     // Brazilian format uses "de" for month separator
     expect(result).toMatch(/de.*de/)
+  })
+
+  it('uses consistent timezone regardless of server/client location', () => {
+    // This test verifies that the same timestamp produces the same output
+    // regardless of where the code runs (important for SSR hydration)
+    const timestamp = Date.UTC(2024, 0, 15, 17, 30, 0) / 1000
+
+    // Run multiple times to ensure consistency
+    const result1 = formatDateTime(timestamp)
+    const result2 = formatDateTime(timestamp)
+
+    expect(result1).toBe(result2)
+    expect(result1).toContain('14h30') // Always Sao Paulo time
   })
 })
