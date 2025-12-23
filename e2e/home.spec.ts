@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.describe('Home Page', () => {
   test('should load the home page', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
 
     // Check that the page has loaded with the main heading
     await expect(page).toHaveTitle(/Destaques/)
@@ -13,7 +13,7 @@ test.describe('Home Page', () => {
   })
 
   test('should display news content', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
 
     // Wait for page to fully load and check for any content
     // Look for links that go to /artigos (news articles)
@@ -22,7 +22,7 @@ test.describe('Home Page', () => {
   })
 
   test('should have header', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
 
     // Check that the header exists
     const header = page.locator('header')
@@ -32,25 +32,33 @@ test.describe('Home Page', () => {
 
 test.describe('Search Page', () => {
   test('should navigate to search page', async ({ page }) => {
-    await page.goto('/busca')
+    await page.goto('/busca', { waitUntil: 'domcontentloaded' })
 
     // Check that search page loads
     await expect(page).toHaveURL(/busca/)
   })
 
-  test('should have search functionality', async ({ page }) => {
-    await page.goto('/busca')
+  test('should have search functionality', async ({ page, viewport }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
 
-    // The search input exists (may be hidden on mobile due to responsive design)
-    // Just check that it's in the DOM
-    const searchInput = page.locator('input[placeholder*="Buscar"]')
-    await expect(searchInput).toHaveCount(1)
+    // On mobile, we need to click the search button to reveal the search bar
+    const isMobile = viewport && viewport.width < 768
+    if (isMobile) {
+      const searchButton = page.locator('button:has(svg.lucide-search)')
+      await searchButton.first().click()
+      // Wait a bit for the overlay to appear
+      await page.waitForTimeout(200)
+    }
+
+    // The search input should now be visible
+    const searchInput = page.locator('input[placeholder*="Buscar"]').last()
+    await expect(searchInput).toBeVisible()
   })
 })
 
 test.describe('Articles Page', () => {
   test('should load articles page', async ({ page }) => {
-    await page.goto('/artigos')
+    await page.goto('/artigos', { waitUntil: 'domcontentloaded' })
 
     // Check that articles page loads
     await expect(page).toHaveURL(/artigos/)

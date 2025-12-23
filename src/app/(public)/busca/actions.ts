@@ -1,5 +1,7 @@
 'use server'
 
+import { getPrioritizedArticles } from '@/config/prioritization'
+import { DEFAULT_CONFIG } from '@/config/prioritization-config'
 import { typesense } from '@/services/typesense/client'
 import type { ArticleRow } from '@/types/article'
 
@@ -18,6 +20,42 @@ export type QueryArticlesResult = {
 }
 
 const PAGE_SIZE = 40
+
+export type SearchSuggestion = {
+  unique_id: string
+  title: string
+}
+
+export async function getSearchSuggestions(
+  query: string,
+): Promise<SearchSuggestion[]> {
+  if (!query || query.length < 2) return []
+
+  try {
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: query,
+        query_by: 'title,content',
+        prefix: true,
+        limit: 50, // Fetch more to apply prioritization
+        pre_segmented_query: false,
+      })
+
+    const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
+
+    // Apply prioritization to results
+    const prioritized = getPrioritizedArticles(articles, DEFAULT_CONFIG, 7)
+
+    return prioritized.map((article) => ({
+      unique_id: article.unique_id,
+      title: article.title ?? '',
+    }))
+  } catch {
+    return []
+  }
+}
 
 export async function queryArticles(
   args: QueryArticlesArgs,
