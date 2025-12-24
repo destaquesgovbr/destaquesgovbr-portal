@@ -11,6 +11,7 @@ Portal de notícias do Governo Federal brasileiro, desenvolvido com Next.js 15, 
 ## Arquitetura e Stack
 
 ### Frontend
+
 - **Framework**: Next.js 15.5.3 (App Router)
 - **Linguagem**: TypeScript 5
 - **UI Components**: Radix UI + shadcn/ui
@@ -23,18 +24,20 @@ Portal de notícias do Governo Federal brasileiro, desenvolvido com Next.js 15, 
 - **Linting/Formatting**: Biome 2.2.0
 
 ### Backend/Dados
+
 - **Busca**: Typesense 2.1.0
 - **Revalidação**: ISR (Incremental Static Regeneration) a cada 10 minutos
 
 ### Ferramentas de Build
-- **Package Manager**: npm
+
+- **Package Manager**: pnpm
 - **Build Tool**: Next.js Turbopack
 - **Container**: Docker (Dockerfile presente)
 
 ## Estrutura de Diretórios
 
 ```
-/destaquesgovbr-portal
+/portal
 ├── src/
 │   ├── app/                    # App Router (Next.js 15)
 │   │   ├── page.tsx           # Homepage principal
@@ -101,6 +104,7 @@ O projeto utiliza extensivamente Server Actions do Next.js 15 para buscar dados:
 - **Integração com Typesense**: Cliente configurado em `lib/typesense-client.ts`
 
 Exemplo de uso:
+
 ```typescript
 // Em app/actions.ts
 export async function getLatestArticles() {
@@ -108,14 +112,15 @@ export async function getLatestArticles() {
 }
 
 // Em page.tsx
-const result = await getLatestArticles()
-if (result.type !== 'ok') return <div>Erro...</div>
-const articles = result.data
+const result = await getLatestArticles();
+if (result.type !== "ok") return <div>Erro...</div>;
+const articles = result.data;
 ```
 
 ### 2. Tipos de Artigo
 
 Estrutura principal definida em `lib/article-row.ts`:
+
 - `unique_id`: Identificador único
 - `title`: Título da notícia
 - `content`: Conteúdo em texto/markdown
@@ -127,6 +132,7 @@ Estrutura principal definida em `lib/article-row.ts`:
 ### 3. Sistema de Temas
 
 Definidos em `lib/themes.ts`:
+
 - Mapeia temas para ícones e imagens
 - Usado na página inicial e páginas de temas
 - Estrutura: `{ [themeName: string]: { icon: React.Component, image: string } }`
@@ -134,6 +140,7 @@ Definidos em `lib/themes.ts`:
 ### 4. Componentes de UI
 
 Baseados em shadcn/ui (Radix UI):
+
 - Configuração em `components.json`
 - Componentes em `components/ui/`
 - Estilos personalizados com cores do governo brasileiro
@@ -158,17 +165,17 @@ A página inicial (`app/page.tsx`) tem 5 seções principais:
 
 ```bash
 # Desenvolvimento
-npm run dev          # Inicia servidor dev com Turbopack
+pnpm dev          # Inicia servidor dev com Turbopack
 
 # Build
-npm run build        # Build de produção com Turbopack
+pnpm build        # Build de produção com Turbopack
 
 # Produção
-npm run start        # Inicia servidor de produção
+pnpm start        # Inicia servidor de produção
 
 # Linting e Formatação
-npm run lint         # Verifica código com Biome
-npm run format       # Formata código com Biome
+pnpm lint         # Verifica código com Biome
+pnpm format       # Formata código com Biome
 ```
 
 ## Variáveis de Ambiente
@@ -176,33 +183,43 @@ npm run format       # Formata código com Biome
 O projeto requer configuração do Typesense. Crie um arquivo `.env.local`:
 
 ```env
-TYPESENSE_HOST=seu-host-typesense
-TYPESENSE_PORT=8108
-TYPESENSE_PROTOCOL=https
-TYPESENSE_API_KEY=sua-api-key
+NEXT_PUBLIC_TYPESENSE_HOST=localhost
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=sua-api-key
 ```
+
+**Para desenvolvimento local:**
+
+O container `govbrnews-typesense` busca a chave da API do GCP Secret Manager na inicialização. Para obter a chave correta, execute:
+
+```bash
+docker logs govbrnews-typesense | grep "API Key:"
+```
+
+Copie a chave exibida e configure no seu `.env.local`.
 
 ## Padrões de Código
 
 ### Server Components (padrão)
 
 As páginas em `app/` são Server Components por padrão:
+
 ```tsx
 // app/page.tsx
 export default async function Page() {
-  const data = await fetchData() // Direto no componente
-  return <div>{data}</div>
+  const data = await fetchData(); // Direto no componente
+  return <div>{data}</div>;
 }
 ```
 
 ### Client Components
 
 Marcados com `'use client'`:
+
 ```tsx
 // components/ClientArticle.tsx
-'use client'
+"use client";
 export default function ClientArticle() {
-  const [state, setState] = useState()
+  const [state, setState] = useState();
   // ...
 }
 ```
@@ -211,16 +228,16 @@ export default function ClientArticle() {
 
 ```tsx
 // app/artigos/actions.ts
-'use server'
+"use server";
 
-import { Result } from '@/lib/result'
+import { Result } from "@/lib/result";
 
 export async function getArticles(): Promise<Result<Article[]>> {
   try {
     // Busca do Typesense
-    return { type: 'ok', data: articles }
+    return { type: "ok", data: articles };
   } catch (error) {
-    return { type: 'error', error: 'Mensagem de erro' }
+    return { type: "error", error: "Mensagem de erro" };
   }
 }
 ```
@@ -228,10 +245,9 @@ export async function getArticles(): Promise<Result<Article[]>> {
 ### Tratamento de Erros
 
 Sempre use o padrão `Result<T>`:
+
 ```typescript
-type Result<T> =
-  | { type: 'ok'; data: T }
-  | { type: 'error'; error: string }
+type Result<T> = { type: "ok"; data: T } | { type: "error"; error: string };
 ```
 
 ## Estilo e Design
@@ -239,6 +255,7 @@ type Result<T> =
 ### Cores do Governo
 
 Definidas em `app/globals.css`:
+
 - `--government-blue`: Azul institucional
 - `--government-red`: Vermelho
 - `--government-green`: Verde
@@ -247,8 +264,11 @@ Definidas em `app/globals.css`:
 ### Tailwind Classes Customizadas
 
 ```css
-.theme-banner-1, .theme-banner-2, .theme-banner-3
-.transparency-banner-1, .transparency-banner-2, .transparency-banner-3
+.theme-banner-1,
+.theme-banner-2,
+.theme-banner-3 .transparency-banner-1,
+.transparency-banner-2,
+.transparency-banner-3;
 ```
 
 SVGs decorativos de fundo para cards de temas e transparência.
@@ -264,29 +284,28 @@ SVGs decorativos de fundo para cards de temas e transparência.
 Cliente configurado em `lib/typesense-client.ts`:
 
 ```typescript
-import Typesense from 'typesense'
+import Typesense from "typesense";
+
+const host = process.env.NEXT_PUBLIC_TYPESENSE_HOST ?? 'localhost';
+const port = 8108;
+const protocol = 'http';
 
 const client = new Typesense.Client({
-  nodes: [{
-    host: process.env.TYPESENSE_HOST!,
-    port: Number(process.env.TYPESENSE_PORT),
-    protocol: process.env.TYPESENSE_PROTOCOL as 'http' | 'https',
-  }],
-  apiKey: process.env.TYPESENSE_API_KEY!,
-})
+  nodes: [{ host, port, protocol }],
+  apiKey: process.env.NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY ??
+    'govbrnews_api_key_change_in_production',
+  connectionTimeoutSeconds: 10,
+});
 ```
 
 ### Busca de Artigos
 
 ```typescript
-const searchResults = await client
-  .collections('articles')
-  .documents()
-  .search({
-    q: query,
-    query_by: 'title,content',
-    sort_by: 'published_at:desc',
-  })
+const searchResults = await client.collections("articles").documents().search({
+  q: query,
+  query_by: "title,content",
+  sort_by: "published_at:desc",
+});
 ```
 
 ## Componentes Importantes
@@ -294,11 +313,13 @@ const searchResults = await client
 ### NewsCard
 
 Card de notícia reutilizável com suporte a diferentes layouts:
+
 - Modo principal (manchete grande com imagem)
 - Modo padrão (card médio)
 - Modo compacto (sem imagem)
 
 Props principais:
+
 - `title`, `summary`, `date`, `theme_1_level_1`
 - `imageUrl`, `internalUrl`
 - `isMain` (boolean para manchete principal)
@@ -306,6 +327,7 @@ Props principais:
 ### MarkdownRenderer
 
 Renderiza conteúdo markdown dos artigos:
+
 - Suporta HTML bruto (rehype-raw)
 - GitHub Flavored Markdown (remark-gfm)
 - Estilos customizados para elementos markdown
@@ -313,6 +335,7 @@ Renderiza conteúdo markdown dos artigos:
 ### SearchBar
 
 Barra de busca com:
+
 - Debounce
 - Navegação para `/busca?q=termo`
 - Ícone de busca (Lucide React)
@@ -362,8 +385,8 @@ O projeto está configurado para deploy standalone:
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  output: 'standalone',
-}
+  output: "standalone",
+};
 ```
 
 ### Com Docker
@@ -376,17 +399,16 @@ docker run -p 3000:3000 portal-brasil
 ### Variáveis de Ambiente em Produção
 
 Certifique-se de configurar:
-- `TYPESENSE_HOST`
-- `TYPESENSE_PORT`
-- `TYPESENSE_PROTOCOL`
-- `TYPESENSE_API_KEY`
+
+- `NEXT_PUBLIC_TYPESENSE_HOST`
+- `NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY`
 
 ## Troubleshooting Comum
 
 ### Erros de Build com Turbopack
 
 - Limpe cache: `rm -rf .next`
-- Reinstale dependências: `rm -rf node_modules && npm install`
+- Reinstale dependências: `rm -rf node_modules && pnpm install`
 
 ### Erros de Typesense
 
@@ -397,7 +419,7 @@ Certifique-se de configurar:
 
 ### Problemas de Estilo
 
-- Rode `npm run format` para consistência
+- Rode `pnpm format` para consistência
 - Verifique imports do Tailwind em `globals.css`
 - Limpe cache do navegador
 
@@ -428,27 +450,32 @@ Certifique-se de configurar:
 
 ```typescript
 // 1. React/Next
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState } from "react";
+import Link from "next/link";
 
 // 2. Bibliotecas externas
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
 
 // 3. Componentes internos
-import { Button } from '@/components/ui/button'
-import NewsCard from '@/components/NewsCard'
+import { Button } from "@/components/ui/button";
+import NewsCard from "@/components/NewsCard";
 
 // 4. Utilitários e tipos
-import { getExcerpt } from '@/lib/utils'
-import type { ArticleRow } from '@/lib/article-row'
+import { getExcerpt } from "@/lib/utils";
+import type { ArticleRow } from "@/lib/article-row";
 ```
 
 ### Comentários
 
 Use comentários descritivos para seções da página:
+
 ```tsx
-{/* 1️⃣ HERO — destaque principal */}
-{/* 2️⃣ ÚLTIMAS NOTÍCIAS — grade */}
+{
+  /* 1️⃣ HERO — destaque principal */
+}
+{
+  /* 2️⃣ ÚLTIMAS NOTÍCIAS — grade */
+}
 ```
 
 ## Contribuindo
@@ -456,8 +483,8 @@ Use comentários descritivos para seções da página:
 Este projeto utiliza Biome para linting e formatação. Antes de commitar:
 
 ```bash
-npm run lint    # Verifica erros
-npm run format  # Formata código
+pnpm lint    # Verifica erros
+pnpm format  # Formata código
 ```
 
 ---

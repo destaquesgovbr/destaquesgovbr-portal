@@ -1,10 +1,11 @@
-import * as React from 'react'
+import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
-const Label = React.forwardRef<
+const Label = forwardRef<
   HTMLLabelElement,
   React.LabelHTMLAttributes<HTMLLabelElement>
 >(({ className, ...props }, ref) => (
+  // biome-ignore lint/a11y/noLabelWithoutControl: This is a generic label component that accepts htmlFor via props
   <label
     ref={ref}
     className={cn(
