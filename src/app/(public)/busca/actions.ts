@@ -26,6 +26,100 @@ export type SearchSuggestion = {
   title: string
 }
 
+export type InlineAutocompleteSuggestion = {
+  completion: string // The full suggested text to show
+  suffix: string // Just the part to append after user's input
+  unique_id: string // The article ID for direct navigation
+}
+
+// Remove diacritics (accents) from a string for comparison
+function removeDiacritics(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
+/**
+ * Get inline autocomplete suggestion based on prefix matching.
+ * Returns the best matching title that starts with the user's query.
+ * Uses accent-insensitive comparison for Portuguese text.
+ */
+export async function getInlineAutocompleteSuggestion(
+  query: string,
+): Promise<InlineAutocompleteSuggestion | null> {
+  if (!query || query.length < 2) return null
+
+  const normalizedQuery = removeDiacritics(query.toLowerCase().trim())
+
+  try {
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: query,
+        query_by: 'title',
+        prefix: true,
+        limit: 10,
+        pre_segmented_query: false,
+      })
+
+    const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
+
+    // Find the first title that starts with the query (accent-insensitive)
+    for (const article of articles) {
+      const title = article.title ?? ''
+      const normalizedTitle = removeDiacritics(title.toLowerCase())
+
+      // Check if title starts with the query
+      if (normalizedTitle.startsWith(normalizedQuery)) {
+        return {
+          completion: title,
+          suffix: title.slice(query.length),
+          unique_id: article.unique_id,
+        }
+      }
+
+      // Also check word-by-word matching for multi-word queries
+      const queryWords = normalizedQuery.split(/\s+/)
+      const titleWords = title.split(/\s+/)
+      const normalizedTitleWords = titleWords.map((w) =>
+        removeDiacritics(w.toLowerCase()),
+      )
+
+      if (queryWords.length > 0 && titleWords.length >= queryWords.length) {
+        let matches = true
+        for (let i = 0; i < queryWords.length - 1; i++) {
+          if (normalizedTitleWords[i] !== queryWords[i]) {
+            matches = false
+            break
+          }
+        }
+
+        // Check if last query word is a prefix of the corresponding title word
+        const lastQueryWord = queryWords[queryWords.length - 1]
+        const lastNormalizedTitleWord =
+          normalizedTitleWords[queryWords.length - 1]
+
+        if (matches && lastNormalizedTitleWord?.startsWith(lastQueryWord)) {
+          // Calculate where in the original title the completion starts
+          const queryUpToLastWord = queryWords.slice(0, -1).join(' ')
+          const prefixLength = queryUpToLastWord
+            ? queryUpToLastWord.length + 1 + lastQueryWord.length
+            : lastQueryWord.length
+
+          return {
+            completion: title,
+            suffix: title.slice(prefixLength),
+            unique_id: article.unique_id,
+          }
+        }
+      }
+    }
+
+    return null
+  } catch {
+    return null
+  }
+}
+
 export async function getSearchSuggestions(
   query: string,
 ): Promise<SearchSuggestion[]> {

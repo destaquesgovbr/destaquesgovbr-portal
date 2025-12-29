@@ -178,7 +178,7 @@ test.describe('Search Autocomplete', () => {
 
     // Check combobox role
     await expect(searchInput).toHaveAttribute('role', 'combobox')
-    await expect(searchInput).toHaveAttribute('aria-autocomplete', 'list')
+    await expect(searchInput).toHaveAttribute('aria-autocomplete', 'both')
     await expect(searchInput).toHaveAttribute('aria-expanded', 'false')
 
     // Type to show suggestions

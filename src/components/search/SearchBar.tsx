@@ -1,12 +1,14 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { Search, X } from 'lucide-react'
+import { Loader2, Search, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import {
+  getInlineAutocompleteSuggestion,
   getSearchSuggestions,
+  type InlineAutocompleteSuggestion,
   type SearchSuggestion,
 } from '@/app/(public)/busca/actions'
 import { Input } from '@/components/ui/input'
@@ -78,8 +80,10 @@ const SearchBar = () => {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [isPending, startTransition] = useTransition()
 
   const containerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Sync query with URL params when they change externally
@@ -95,6 +99,34 @@ const SearchBar = () => {
     enabled: debouncedQuery.length >= 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
+
+  // Fetch inline autocomplete suggestion
+  const { data: inlineSuggestion } =
+    useQuery<InlineAutocompleteSuggestion | null>({
+      queryKey: ['inlineAutocomplete', debouncedQuery],
+      queryFn: () => getInlineAutocompleteSuggestion(debouncedQuery),
+      enabled: debouncedQuery.length >= 2,
+      staleTime: 1000 * 60 * 5,
+    })
+
+  // Calculate the current suffix based on real-time query (not debounced)
+  // This prevents the visual delay when typing
+  // Uses accent-insensitive comparison for Portuguese text
+  const currentSuffix = (() => {
+    if (!inlineSuggestion || query.length < 2) return null
+
+    const normalizedCompletion = removeDiacritics(
+      inlineSuggestion.completion.toLowerCase(),
+    )
+    const normalizedQuery = removeDiacritics(query.toLowerCase())
+
+    if (normalizedCompletion.startsWith(normalizedQuery)) {
+      return inlineSuggestion.completion.slice(query.length)
+    }
+    return null
+  })()
+
+  const showInlineSuggestion = currentSuffix && currentSuffix.length > 0
 
   // Derive isOpen state from suggestions
   const shouldShowDropdown =
@@ -123,10 +155,25 @@ const SearchBar = () => {
     }
   }, [])
 
+  // Track if we accepted an inline suggestion (for direct navigation on Enter)
+  const [acceptedSuggestionId, setAcceptedSuggestionId] = useState<
+    string | null
+  >(null)
+
+  // Accept the inline autocomplete suggestion
+  const acceptInlineSuggestion = () => {
+    if (showInlineSuggestion && inlineSuggestion) {
+      setQuery(inlineSuggestion.completion)
+      setDebouncedQuery(inlineSuggestion.completion)
+      setAcceptedSuggestionId(inlineSuggestion.unique_id)
+    }
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setQuery(newValue)
     setSelectedIndex(-1)
+    setAcceptedSuggestionId(null) // Clear accepted suggestion when user types
 
     // Debounce the query update
     if (debounceTimerRef.current) {
@@ -148,13 +195,27 @@ const SearchBar = () => {
     e?.preventDefault()
     if (!query.trim()) return
     setIsOpen(false)
+
+    // If user accepted an inline suggestion, navigate directly to the article
+    if (acceptedSuggestionId) {
+      setQuery('')
+      setDebouncedQuery('')
+      setAcceptedSuggestionId(null)
+      startTransition(() => {
+        router.push(`/artigos/${acceptedSuggestionId}`)
+      })
+      return
+    }
+
     router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
   }
 
   const handleSelectSuggestion = (suggestion: SearchSuggestion) => {
     setQuery(suggestion.title)
     setIsOpen(false)
-    router.push(`/artigos/${suggestion.unique_id}`)
+    startTransition(() => {
+      router.push(`/artigos/${suggestion.unique_id}`)
+    })
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -162,6 +223,18 @@ const SearchBar = () => {
     if (e.key === 'Escape') {
       e.preventDefault()
       setIsOpen(false)
+      return
+    }
+
+    // Handle Tab or ArrowRight to accept inline suggestion
+    if ((e.key === 'Tab' || e.key === 'ArrowRight') && showInlineSuggestion) {
+      // Only accept on ArrowRight if cursor is at the end
+      const input = e.currentTarget
+      if (e.key === 'ArrowRight' && input.selectionStart !== query.length) {
+        return // Let default ArrowRight behavior happen
+      }
+      e.preventDefault()
+      acceptInlineSuggestion()
       return
     }
 
@@ -225,23 +298,43 @@ const SearchBar = () => {
     <div ref={containerRef} className="relative w-full">
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          {isPending ? (
+            <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground animate-spin" />
+          ) : (
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          )}
+          {/* Inline autocomplete ghost text layer */}
+          {showInlineSuggestion && (
+            <div
+              className="absolute inset-0 pl-10 pr-10 pointer-events-none overflow-hidden text-base md:text-sm flex items-center"
+              aria-hidden="true"
+            >
+              <span className="whitespace-pre">
+                <span className="text-transparent">{query}</span>
+                <span className="text-muted-foreground/50">
+                  {currentSuffix}
+                </span>
+              </span>
+            </div>
+          )}
           <Input
+            ref={inputRef}
             value={query}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Buscar notícias..."
-            className={query ? 'pl-10 pr-10' : 'pl-10'}
+            className={`${query ? 'pl-10 pr-10' : 'pl-10'} bg-transparent`}
             role="combobox"
             aria-expanded={shouldShowDropdown}
             aria-controls={listboxId}
             aria-activedescendant={
               selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined
             }
-            aria-autocomplete="list"
+            aria-autocomplete="both"
             autoComplete="off"
+            disabled={isPending}
           />
-          {query && (
+          {query && !isPending && (
             <X
               onClick={handleClear}
               className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground rounded-full p-2 hover:bg-gray-200 active:bg-gray-300 hover:cursor-pointer transition-colors touch-manipulation"
@@ -266,9 +359,13 @@ const SearchBar = () => {
               role="option"
               aria-selected={index === selectedIndex}
               href={`/artigos/${suggestion.unique_id}`}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
                 setIsOpen(false)
                 setQuery(suggestion.title)
+                startTransition(() => {
+                  router.push(`/artigos/${suggestion.unique_id}`)
+                })
               }}
               onMouseEnter={() => setSelectedIndex(index)}
               className={`block px-4 py-3 text-sm cursor-pointer transition-colors ${
