@@ -12,11 +12,7 @@ import {
   type SearchSuggestion,
 } from '@/app/(public)/busca/actions'
 import { Input } from '@/components/ui/input'
-
-// Remove diacritics (accents) from a string for comparison
-function removeDiacritics(str: string): string {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-}
+import { removeDiacritics } from '@/lib/utils'
 
 function highlightMatch(text: string, query: string): React.ReactNode {
   if (!query.trim()) return text
@@ -155,17 +151,11 @@ const SearchBar = () => {
     }
   }, [])
 
-  // Track if we accepted an inline suggestion (for direct navigation on Enter)
-  const [acceptedSuggestionId, setAcceptedSuggestionId] = useState<
-    string | null
-  >(null)
-
   // Accept the inline autocomplete suggestion
   const acceptInlineSuggestion = () => {
     if (showInlineSuggestion && inlineSuggestion) {
       setQuery(inlineSuggestion.completion)
       setDebouncedQuery(inlineSuggestion.completion)
-      setAcceptedSuggestionId(inlineSuggestion.unique_id)
     }
   }
 
@@ -173,7 +163,6 @@ const SearchBar = () => {
     const newValue = e.target.value
     setQuery(newValue)
     setSelectedIndex(-1)
-    setAcceptedSuggestionId(null) // Clear accepted suggestion when user types
 
     // Debounce the query update
     if (debounceTimerRef.current) {
@@ -195,17 +184,6 @@ const SearchBar = () => {
     e?.preventDefault()
     if (!query.trim()) return
     setIsOpen(false)
-
-    // If user accepted an inline suggestion, navigate directly to the article
-    if (acceptedSuggestionId) {
-      setQuery('')
-      setDebouncedQuery('')
-      setAcceptedSuggestionId(null)
-      startTransition(() => {
-        router.push(`/artigos/${acceptedSuggestionId}`)
-      })
-      return
-    }
 
     router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
   }

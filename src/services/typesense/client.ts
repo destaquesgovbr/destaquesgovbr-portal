@@ -1,7 +1,7 @@
 import Typesense from 'typesense'
 
 const host = process.env.NEXT_PUBLIC_TYPESENSE_HOST ?? 'localhost'
-const port = Number.parseInt(process.env.NEXT_PUBLIC_TYPESENSE_PORT ?? '8108')
+const port = Number(process.env.NEXT_PUBLIC_TYPESENSE_PORT ?? '8108')
 const protocol = process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL ?? 'http'
 
 export const typesense = new Typesense.Client({

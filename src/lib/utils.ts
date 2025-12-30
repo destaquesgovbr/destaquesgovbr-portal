@@ -115,3 +115,15 @@ export function formatDateTime(timestamp: number | null): string {
 
   return `${dateStr} às ${timeStr}`
 }
+
+/**
+ * Remove diacritics (accents) from a string for comparison.
+ * Useful for accent-insensitive search in Portuguese text.
+ *
+ * @example
+ * removeDiacritics("notícias") // "noticias"
+ * removeDiacritics("saúde") // "saude"
+ */
+export function removeDiacritics(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
