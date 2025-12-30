@@ -2,6 +2,7 @@
 
 import { getPrioritizedArticles } from '@/config/prioritization'
 import { DEFAULT_CONFIG } from '@/config/prioritization-config'
+import { removeDiacritics } from '@/lib/utils'
 import { typesense } from '@/services/typesense/client'
 import type { ArticleRow } from '@/types/article'
 
@@ -27,19 +28,14 @@ export type SearchSuggestion = {
 }
 
 export type InlineAutocompleteSuggestion = {
-  completion: string // The full suggested text to show
-  suffix: string // Just the part to append after user's input
-  unique_id: string // The article ID for direct navigation
-}
-
-// Remove diacritics (accents) from a string for comparison
-function removeDiacritics(str: string): string {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  completion: string // The completed word (e.g., "Diplomacia" when user typed "Diplo")
+  suffix: string // Just the part to append after user's input (e.g., "macia")
 }
 
 /**
- * Get inline autocomplete suggestion based on prefix matching.
- * Returns the best matching title that starts with the user's query.
+ * Get inline autocomplete suggestion based on word completion.
+ * Returns the completion for the word being typed, not the entire title.
+ * E.g., if user types "Diplo" and a title contains "Diplomacia", suggests "Diplomacia".
  * Uses accent-insensitive comparison for Portuguese text.
  */
 export async function getInlineAutocompleteSuggestion(
@@ -47,68 +43,59 @@ export async function getInlineAutocompleteSuggestion(
 ): Promise<InlineAutocompleteSuggestion | null> {
   if (!query || query.length < 2) return null
 
-  const normalizedQuery = removeDiacritics(query.toLowerCase().trim())
+  const trimmedQuery = query.trim()
+  // Get the last word being typed (the one we want to complete)
+  const queryWords = trimmedQuery.split(/\s+/)
+  const lastWord = queryWords[queryWords.length - 1]
+
+  // Only suggest if the last word has at least 2 characters
+  if (lastWord.length < 2) return null
+
+  const normalizedLastWord = removeDiacritics(lastWord.toLowerCase())
 
   try {
     const result = await typesense
       .collections<ArticleRow>('news')
       .documents()
       .search({
-        q: query,
+        q: lastWord,
         query_by: 'title',
         prefix: true,
-        limit: 10,
+        limit: 20,
         pre_segmented_query: false,
       })
 
     const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
 
-    // Find the first title that starts with the query (accent-insensitive)
+    // Find a word in any title that starts with the last word the user is typing
     for (const article of articles) {
       const title = article.title ?? ''
-      const normalizedTitle = removeDiacritics(title.toLowerCase())
-
-      // Check if title starts with the query
-      if (normalizedTitle.startsWith(normalizedQuery)) {
-        return {
-          completion: title,
-          suffix: title.slice(query.length),
-          unique_id: article.unique_id,
-        }
-      }
-
-      // Also check word-by-word matching for multi-word queries
-      const queryWords = normalizedQuery.split(/\s+/)
       const titleWords = title.split(/\s+/)
-      const normalizedTitleWords = titleWords.map((w) =>
-        removeDiacritics(w.toLowerCase()),
-      )
 
-      if (queryWords.length > 0 && titleWords.length >= queryWords.length) {
-        let matches = true
-        for (let i = 0; i < queryWords.length - 1; i++) {
-          if (normalizedTitleWords[i] !== queryWords[i]) {
-            matches = false
-            break
-          }
-        }
+      for (const titleWord of titleWords) {
+        // Clean the title word (remove punctuation at the end)
+        const cleanTitleWord = titleWord.replace(/[.,;:!?"')\]]+$/, '')
+        const normalizedTitleWord = removeDiacritics(
+          cleanTitleWord.toLowerCase(),
+        )
 
-        // Check if last query word is a prefix of the corresponding title word
-        const lastQueryWord = queryWords[queryWords.length - 1]
-        const lastNormalizedTitleWord =
-          normalizedTitleWords[queryWords.length - 1]
+        // Check if this title word starts with what the user typed
+        if (
+          normalizedTitleWord.startsWith(normalizedLastWord) &&
+          normalizedTitleWord.length > normalizedLastWord.length
+        ) {
+          // Build the completion: everything before the last word + the completed word
+          const prefix = queryWords.slice(0, -1).join(' ')
+          const completion = prefix
+            ? `${prefix} ${cleanTitleWord}`
+            : cleanTitleWord
 
-        if (matches && lastNormalizedTitleWord?.startsWith(lastQueryWord)) {
-          // Calculate where in the original title the completion starts
-          const queryUpToLastWord = queryWords.slice(0, -1).join(' ')
-          const prefixLength = queryUpToLastWord
-            ? queryUpToLastWord.length + 1 + lastQueryWord.length
-            : lastQueryWord.length
+          // The suffix is just the remaining part of the word
+          const suffix = cleanTitleWord.slice(lastWord.length)
 
           return {
-            completion: title,
-            suffix: title.slice(prefixLength),
-            unique_id: article.unique_id,
+            completion,
+            suffix,
           }
         }
       }

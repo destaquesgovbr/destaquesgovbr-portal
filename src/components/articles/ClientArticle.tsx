@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { VideoPlayer } from '@/components/articles/VideoPlayer'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -142,17 +143,23 @@ export default function ClientArticle({
           </div>
         </header>
 
-        {/* Imagem de capa - only show if image is NOT repeated in body */}
-        {article.image && !isImageInBody && (
-          <div className="mb-12">
-            <img
-              src={article.image}
-              alt={article.title || ''}
-              width={992}
-              height={384}
-              className="w-full h-64 md:h-96 object-cover rounded-lg shadow-md"
-            />
-          </div>
+        {/* Video takes priority over cover image */}
+        {article.video_url ? (
+          <VideoPlayer videoUrl={article.video_url} title={article.title} />
+        ) : (
+          /* Imagem de capa - only show if image is NOT repeated in body */
+          article.image &&
+          !isImageInBody && (
+            <div className="mb-12">
+              <img
+                src={article.image}
+                alt={article.title || ''}
+                width={992}
+                height={384}
+                className="w-full h-64 md:h-96 object-cover rounded-lg shadow-md"
+              />
+            </div>
+          )
         )}
 
         {/* Corpo do artigo */}
