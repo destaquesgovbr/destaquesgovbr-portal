@@ -5,6 +5,7 @@ export type ArticleRow = {
   title: string | null
   url: string | null
   image: string | null
+  video_url: string | null
   category: string | null
   content: string | null
   summary: string | null
