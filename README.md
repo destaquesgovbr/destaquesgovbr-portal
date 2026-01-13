@@ -47,22 +47,22 @@ This project uses **Vitest** for unit/integration tests and **Playwright** for E
 
 ```bash
 # Run unit tests in watch mode
-npm test
+pnpm test
 
 # Run unit tests once
-npm run test:unit
+pnpm test:unit
 
 # Run tests with coverage report
-npm run test:coverage
+pnpm test:coverage
 
 # Open Vitest UI
-npm run test:ui
+pnpm test:ui
 
 # Run E2E tests
-npm run test:e2e
+pnpm test:e2e
 
 # Open Playwright UI
-npm run test:e2e:ui
+pnpm test:e2e:ui
 ```
 
 ### Test Structure
