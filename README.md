@@ -18,17 +18,11 @@ Copy the example environment file:
 cp .env.example .env.local
 ```
 
-The Typesense container fetches its API key from GCP Secret Manager on startup. Get the actual API key from the container logs:
-
-```bash
-docker logs govbrnews-typesense | grep "API Key:"
-```
-
-Update your `.env.local` file with the API key:
+Update your `.env.local` file with the local development API key:
 
 ```env
 NEXT_PUBLIC_TYPESENSE_HOST=localhost
-NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=<your-api-key-from-logs>
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=govbrnews_api_key_change_in_production
 ```
 
 ### 3. Run the development server
@@ -166,12 +160,6 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## Production Deployment
 
