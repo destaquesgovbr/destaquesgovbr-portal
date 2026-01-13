@@ -58,10 +58,13 @@ export async function getInlineAutocompleteSuggestion(
       .collections<ArticleRow>('news')
       .documents()
       .search({
-        q: lastWord,
-        query_by: 'title',
+        q: trimmedQuery,
+        query_by: 'title,content',
+        query_by_weights: '3,1',
         prefix: true,
-        limit: 20,
+        prioritize_exact_match: true,
+        drop_tokens_threshold: 5,
+        limit: 50,
         pre_segmented_query: false,
       })
 
@@ -119,8 +122,11 @@ export async function getSearchSuggestions(
       .search({
         q: query,
         query_by: 'title,content',
+        query_by_weights: '3,1',
         prefix: true,
-        limit: 50, // Fetch more to apply prioritization
+        prioritize_exact_match: true,
+        drop_tokens_threshold: 5,
+        limit: 50,
         pre_segmented_query: false,
       })
 
