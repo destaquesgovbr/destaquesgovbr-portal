@@ -43,9 +43,10 @@ export async function getInlineAutocompleteSuggestion(
 ): Promise<InlineAutocompleteSuggestion | null> {
   if (!query || query.length < 2) return null
 
-  const trimmedQuery = query.trim()
+  // Normalize multiple spaces to single space and trim
+  const trimmedQuery = query.trim().replace(/\s+/g, ' ')
   // Get the last word being typed (the one we want to complete)
-  const queryWords = trimmedQuery.split(/\s+/)
+  const queryWords = trimmedQuery.split(' ')
   const lastWord = queryWords[queryWords.length - 1]
 
   // Only suggest if the last word has at least 2 characters
@@ -115,12 +116,15 @@ export async function getSearchSuggestions(
 ): Promise<SearchSuggestion[]> {
   if (!query || query.length < 2) return []
 
+  // Normalize multiple spaces to single space
+  const normalizedQuery = query.trim().replace(/\s+/g, ' ')
+
   try {
     const result = await typesense
       .collections<ArticleRow>('news')
       .documents()
       .search({
-        q: query,
+        q: normalizedQuery,
         query_by: 'title,content',
         query_by_weights: '3,1',
         prefix: true,
@@ -177,7 +181,7 @@ export async function queryArticles(
     .collections<ArticleRow>('news')
     .documents()
     .search({
-      q: query ?? '*',
+      q: query ? query.trim().replace(/\s+/g, ' ') : '*',
       query_by: 'title, content',
       sort_by: 'published_at:desc, unique_id:desc',
       filter_by: filter_by.join(" && "),

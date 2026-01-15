@@ -17,9 +17,12 @@ import { removeDiacritics } from '@/lib/utils'
 function highlightMatch(text: string, query: string): React.ReactNode {
   if (!query.trim()) return text
 
+  // Normalize multiple spaces to single space in query
+  const normalizedSpaceQuery = query.trim().replace(/\s+/g, ' ')
+
   // Normalize both text and query for accent-insensitive matching
   const normalizedText = removeDiacritics(text)
-  const normalizedQuery = removeDiacritics(query)
+  const normalizedQuery = removeDiacritics(normalizedSpaceQuery)
   const escapedQuery = normalizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const regex = new RegExp(`(${escapedQuery})`, 'gi')
 
@@ -111,13 +114,20 @@ const SearchBar = () => {
   const currentSuffix = (() => {
     if (!inlineSuggestion || query.length < 2) return null
 
+    // Normalize multiple spaces to single space for comparison
+    const normalizedQueryForComparison = query.trim().replace(/\s+/g, ' ')
+
     const normalizedCompletion = removeDiacritics(
       inlineSuggestion.completion.toLowerCase(),
     )
-    const normalizedQuery = removeDiacritics(query.toLowerCase())
+    const normalizedQuery = removeDiacritics(
+      normalizedQueryForComparison.toLowerCase(),
+    )
 
     if (normalizedCompletion.startsWith(normalizedQuery)) {
-      return inlineSuggestion.completion.slice(query.length)
+      return inlineSuggestion.completion.slice(
+        normalizedQueryForComparison.length,
+      )
     }
     return null
   })()
@@ -182,10 +192,11 @@ const SearchBar = () => {
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault()
-    if (!query.trim()) return
+    const normalizedQuery = query.trim().replace(/\s+/g, ' ')
+    if (!normalizedQuery) return
     setIsOpen(false)
 
-    router.push(`/busca?q=${encodeURIComponent(query.trim())}`)
+    router.push(`/busca?q=${encodeURIComponent(normalizedQuery)}`)
   }
 
   const handleSelectSuggestion = (suggestion: SearchSuggestion) => {
