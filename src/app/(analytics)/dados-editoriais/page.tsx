@@ -74,13 +74,14 @@ function getPresetLabel(preset: DatePreset): string {
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: { preset?: string; start?: string; end?: string }
+  searchParams: Promise<{ preset?: string; start?: string; end?: string }>
 }) {
-  const preset = (searchParams.preset as DatePreset) || 'month'
+  const params = await searchParams
+  const preset = (params.preset as DatePreset) || 'month'
   const range = getDateRangeFromPreset(
     preset,
-    searchParams.start,
-    searchParams.end,
+    params.start,
+    params.end,
   )
   const presetLabel = getPresetLabel(preset)
 
