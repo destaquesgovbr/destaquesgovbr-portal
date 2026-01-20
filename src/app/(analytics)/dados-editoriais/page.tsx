@@ -78,11 +78,7 @@ export default async function DashboardPage({
 }) {
   const params = await searchParams
   const preset = (params.preset as DatePreset) || 'month'
-  const range = getDateRangeFromPreset(
-    preset,
-    params.start,
-    params.end,
-  )
+  const range = getDateRangeFromPreset(preset, params.start, params.end)
   const presetLabel = getPresetLabel(preset)
 
   // Calculate previous period for comparison
