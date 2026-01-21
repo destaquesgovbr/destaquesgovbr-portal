@@ -79,17 +79,36 @@ const SearchBar = () => {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [keyboardNavigated, setKeyboardNavigated] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prevUrlQueryRef = useRef<string>(initialQuery)
 
   // Sync query with URL params when they change externally
   const urlQuery = searchParams.get('q') || ''
-  if (urlQuery !== query && urlQuery !== '') {
-    setQuery(urlQuery)
-  }
+
+  useEffect(() => {
+    const prevUrlQuery = prevUrlQueryRef.current
+
+    // Only update if URL query actually changed
+    if (urlQuery !== prevUrlQuery) {
+      if (urlQuery) {
+        // URL has a query, update search bar
+        setQuery(urlQuery)
+        setDebouncedQuery(urlQuery)
+      } else {
+        // URL has no query, clear search bar
+        setQuery('')
+        setDebouncedQuery('')
+        setIsOpen(false)
+      }
+      prevUrlQueryRef.current = urlQuery
+    }
+  }, [urlQuery])
 
   // Fetch suggestions with React Query
   const { data: suggestions = [] } = useQuery<SearchSuggestion[]>({
@@ -112,7 +131,7 @@ const SearchBar = () => {
   // This prevents the visual delay when typing
   // Uses accent-insensitive comparison for Portuguese text
   const currentSuffix = (() => {
-    if (!inlineSuggestion || query.length < 2) return null
+    if (!inlineSuggestion || query.length < 2 || !isFocused) return null
 
     // Normalize multiple spaces to single space for comparison
     const normalizedQueryForComparison = query.trim().replace(/\s+/g, ' ')
@@ -173,6 +192,7 @@ const SearchBar = () => {
     const newValue = e.target.value
     setQuery(newValue)
     setSelectedIndex(-1)
+    setKeyboardNavigated(false)
 
     // Debounce the query update
     if (debounceTimerRef.current) {
@@ -238,17 +258,23 @@ const SearchBar = () => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
+        setKeyboardNavigated(true)
         setSelectedIndex((prev) =>
           prev < suggestions.length - 1 ? prev + 1 : prev,
         )
         break
       case 'ArrowUp':
         e.preventDefault()
+        setKeyboardNavigated(true)
         setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1))
         break
       case 'Enter':
         e.preventDefault()
-        if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+        if (
+          keyboardNavigated &&
+          selectedIndex >= 0 &&
+          selectedIndex < suggestions.length
+        ) {
           handleSelectSuggestion(suggestions[selectedIndex])
         } else {
           handleSubmit()
@@ -311,6 +337,8 @@ const SearchBar = () => {
             value={query}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             placeholder="Buscar notícias..."
             className={`${query ? 'pl-10 pr-10' : 'pl-10'} bg-transparent`}
             role="combobox"
@@ -356,11 +384,10 @@ const SearchBar = () => {
                   router.push(`/artigos/${suggestion.unique_id}`)
                 })
               }}
-              onMouseEnter={() => setSelectedIndex(index)}
-              className={`block px-4 py-3 text-sm cursor-pointer transition-colors ${
-                index === selectedIndex
+              className={`block px-4 py-3 text-sm cursor-pointer transition-colors hover:bg-accent/50 ${
+                keyboardNavigated && index === selectedIndex
                   ? 'bg-accent text-accent-foreground'
-                  : 'hover:bg-accent/50'
+                  : ''
               }`}
             >
               <span className="line-clamp-2">
