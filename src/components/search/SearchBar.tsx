@@ -83,6 +83,7 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevUrlQueryRef = useRef<string>(initialQuery)
+  const prevPathnameRef = useRef<string>(pathname)
   const suggestionRefs = useRef<(HTMLAnchorElement | null)[]>([])
 
   // Sync query with URL params when they change externally
@@ -90,22 +91,36 @@ const SearchBar = () => {
 
   useEffect(() => {
     const prevUrlQuery = prevUrlQueryRef.current
+    const prevPathname = prevPathnameRef.current
+    const pathnameChanged = pathname !== prevPathname
+    const isArticlePage = pathname.startsWith('/artigos/')
+    const wasSearchPage = prevPathname === '/busca'
 
-    // Only update if URL query actually changed
     if (urlQuery !== prevUrlQuery) {
+      // URL query changed
       if (urlQuery) {
         // URL has a query, update search bar
         setQuery(urlQuery)
         setDebouncedQuery(urlQuery)
-      } else {
-        // URL has no query, clear search bar
+      } else if (!isArticlePage || !wasSearchPage) {
+        // URL query cleared, but NOT going from search to article
+        // Clear the search bar
         setQuery('')
         setDebouncedQuery('')
         setIsOpen(false)
       }
+      // If going from search to article, keep the query as is
       prevUrlQueryRef.current = urlQuery
+    } else if (pathnameChanged && !urlQuery && !isArticlePage) {
+      // Pathname changed, no query in URL, and not going to an article page
+      // Clear searchbar (user navigated away from search context)
+      setQuery('')
+      setDebouncedQuery('')
+      setIsOpen(false)
     }
-  }, [urlQuery])
+
+    prevPathnameRef.current = pathname
+  }, [urlQuery, pathname])
 
   // Fetch both suggestions and inline autocomplete in a single query
   const { data: searchResults } = useQuery<CombinedSearchResults>({
@@ -216,6 +231,7 @@ const SearchBar = () => {
     const normalizedQuery = query.trim().replace(/\s+/g, ' ')
     if (!normalizedQuery) return
     setIsOpen(false)
+    inputRef.current?.blur()
 
     router.push(`/busca?q=${encodeURIComponent(normalizedQuery)}`)
   }
