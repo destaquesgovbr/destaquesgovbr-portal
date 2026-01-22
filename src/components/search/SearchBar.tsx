@@ -5,14 +5,10 @@ import { Loader2, Search, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState, useTransition } from 'react'
-import {
-  getInlineAutocompleteSuggestion,
-  getSearchSuggestions,
-  type InlineAutocompleteSuggestion,
-  type SearchSuggestion,
-} from '@/app/(public)/busca/actions'
+import { getCombinedSearchResults } from '@/app/(public)/busca/actions'
 import { Input } from '@/components/ui/input'
 import { removeDiacritics } from '@/lib/utils'
+import type { CombinedSearchResults, SearchSuggestion } from '@/types/search'
 
 function highlightMatch(text: string, query: string): React.ReactNode {
   if (!query.trim()) return text
@@ -110,22 +106,16 @@ const SearchBar = () => {
     }
   }, [urlQuery])
 
-  // Fetch suggestions with React Query
-  const { data: suggestions = [] } = useQuery<SearchSuggestion[]>({
-    queryKey: ['searchSuggestions', debouncedQuery],
-    queryFn: () => getSearchSuggestions(debouncedQuery),
+  // Fetch both suggestions and inline autocomplete in a single query
+  const { data: searchResults } = useQuery<CombinedSearchResults>({
+    queryKey: ['combinedSearch', debouncedQuery],
+    queryFn: () => getCombinedSearchResults(debouncedQuery),
     enabled: debouncedQuery.length >= 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-  // Fetch inline autocomplete suggestion
-  const { data: inlineSuggestion } =
-    useQuery<InlineAutocompleteSuggestion | null>({
-      queryKey: ['inlineAutocomplete', debouncedQuery],
-      queryFn: () => getInlineAutocompleteSuggestion(debouncedQuery),
-      enabled: debouncedQuery.length >= 2,
-      staleTime: 1000 * 60 * 5,
-    })
+  const suggestions = searchResults?.suggestions ?? []
+  const inlineSuggestion = searchResults?.inlineAutocomplete ?? null
 
   // Calculate the current suffix based on real-time query (not debounced)
   // This prevents the visual delay when typing
