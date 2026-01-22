@@ -71,9 +71,28 @@ export async function getInlineAutocompleteSuggestion(
 
     const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
 
+    // If we have previous words (e.g., "Inteligência" in "Inteligência art")
+    // we should only suggest completions from titles that contain those previous words
+    const previousWords = queryWords.slice(0, -1)
+    const hasPreviousWords = previousWords.length > 0
+
     // Find a word in any title that starts with the last word the user is typing
     for (const article of articles) {
       const title = article.title ?? ''
+      const normalizedTitle = removeDiacritics(title.toLowerCase())
+
+      // If we have previous words, check if the title contains them
+      if (hasPreviousWords) {
+        const normalizedPreviousPhrase = removeDiacritics(
+          previousWords.join(' ').toLowerCase(),
+        )
+
+        // Skip this article if it doesn't contain the previous words
+        if (!normalizedTitle.includes(normalizedPreviousPhrase)) {
+          continue
+        }
+      }
+
       const titleWords = title.split(/\s+/)
 
       for (const titleWord of titleWords) {
@@ -96,6 +115,9 @@ export async function getInlineAutocompleteSuggestion(
 
           // The suffix is just the remaining part of the word
           const suffix = cleanTitleWord.slice(lastWord.length)
+
+          console.log('suffix', suffix)
+          console.log(completion, 'completion')
 
           return {
             completion,
