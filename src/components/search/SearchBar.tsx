@@ -83,6 +83,7 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevUrlQueryRef = useRef<string>(initialQuery)
+  const suggestionRefs = useRef<(HTMLAnchorElement | null)[]>([])
 
   // Sync query with URL params when they change externally
   const urlQuery = searchParams.get('q') || ''
@@ -169,6 +170,16 @@ const SearchBar = () => {
       }
     }
   }, [])
+
+  // Scroll selected suggestion into view when navigating with keyboard
+  useEffect(() => {
+    if (selectedIndex >= 0 && keyboardNavigated && suggestionRefs.current[selectedIndex]) {
+      suggestionRefs.current[selectedIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+    }
+  }, [selectedIndex, keyboardNavigated])
 
   // Accept the inline autocomplete suggestion
   const acceptInlineSuggestion = () => {
@@ -363,6 +374,9 @@ const SearchBar = () => {
             <Link
               key={suggestion.unique_id}
               id={`suggestion-${index}`}
+              ref={(el) => {
+                suggestionRefs.current[index] = el
+              }}
               role="option"
               aria-selected={index === selectedIndex}
               href={`/artigos/${suggestion.unique_id}`}
