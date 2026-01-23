@@ -5,14 +5,10 @@ import { Loader2, Search, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState, useTransition } from 'react'
-import {
-  getInlineAutocompleteSuggestion,
-  getSearchSuggestions,
-  type InlineAutocompleteSuggestion,
-  type SearchSuggestion,
-} from '@/app/(public)/busca/actions'
+import { getCombinedSearchResults } from '@/app/(public)/busca/actions'
 import { Input } from '@/components/ui/input'
 import { removeDiacritics } from '@/lib/utils'
+import type { CombinedSearchResults, SearchSuggestion } from '@/types/search'
 
 function highlightMatch(text: string, query: string): React.ReactNode {
   if (!query.trim()) return text
@@ -87,45 +83,55 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevUrlQueryRef = useRef<string>(initialQuery)
+  const prevPathnameRef = useRef<string>(pathname)
+  const suggestionRefs = useRef<(HTMLAnchorElement | null)[]>([])
 
   // Sync query with URL params when they change externally
   const urlQuery = searchParams.get('q') || ''
 
   useEffect(() => {
     const prevUrlQuery = prevUrlQueryRef.current
+    const prevPathname = prevPathnameRef.current
+    const pathnameChanged = pathname !== prevPathname
+    const isArticlePage = pathname.startsWith('/artigos/')
+    const wasSearchPage = prevPathname === '/busca'
 
-    // Only update if URL query actually changed
     if (urlQuery !== prevUrlQuery) {
+      // URL query changed
       if (urlQuery) {
         // URL has a query, update search bar
         setQuery(urlQuery)
         setDebouncedQuery(urlQuery)
-      } else {
-        // URL has no query, clear search bar
+      } else if (!isArticlePage || !wasSearchPage) {
+        // URL query cleared, but NOT going from search to article
+        // Clear the search bar
         setQuery('')
         setDebouncedQuery('')
         setIsOpen(false)
       }
+      // If going from search to article, keep the query as is
       prevUrlQueryRef.current = urlQuery
+    } else if (pathnameChanged && !urlQuery && !isArticlePage) {
+      // Pathname changed, no query in URL, and not going to an article page
+      // Clear searchbar (user navigated away from search context)
+      setQuery('')
+      setDebouncedQuery('')
+      setIsOpen(false)
     }
-  }, [urlQuery])
 
-  // Fetch suggestions with React Query
-  const { data: suggestions = [] } = useQuery<SearchSuggestion[]>({
-    queryKey: ['searchSuggestions', debouncedQuery],
-    queryFn: () => getSearchSuggestions(debouncedQuery),
+    prevPathnameRef.current = pathname
+  }, [urlQuery, pathname])
+
+  // Fetch both suggestions and inline autocomplete in a single query
+  const { data: searchResults } = useQuery<CombinedSearchResults>({
+    queryKey: ['combinedSearch', debouncedQuery],
+    queryFn: () => getCombinedSearchResults(debouncedQuery),
     enabled: debouncedQuery.length >= 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-  // Fetch inline autocomplete suggestion
-  const { data: inlineSuggestion } =
-    useQuery<InlineAutocompleteSuggestion | null>({
-      queryKey: ['inlineAutocomplete', debouncedQuery],
-      queryFn: () => getInlineAutocompleteSuggestion(debouncedQuery),
-      enabled: debouncedQuery.length >= 2,
-      staleTime: 1000 * 60 * 5,
-    })
+  const suggestions = searchResults?.suggestions ?? []
+  const inlineSuggestion = searchResults?.inlineAutocomplete ?? null
 
   // Calculate the current suffix based on real-time query (not debounced)
   // This prevents the visual delay when typing
@@ -180,6 +186,20 @@ const SearchBar = () => {
     }
   }, [])
 
+  // Scroll selected suggestion into view when navigating with keyboard
+  useEffect(() => {
+    if (
+      selectedIndex >= 0 &&
+      keyboardNavigated &&
+      suggestionRefs.current[selectedIndex]
+    ) {
+      suggestionRefs.current[selectedIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+    }
+  }, [selectedIndex, keyboardNavigated])
+
   // Accept the inline autocomplete suggestion
   const acceptInlineSuggestion = () => {
     if (showInlineSuggestion && inlineSuggestion) {
@@ -215,6 +235,7 @@ const SearchBar = () => {
     const normalizedQuery = query.trim().replace(/\s+/g, ' ')
     if (!normalizedQuery) return
     setIsOpen(false)
+    inputRef.current?.blur()
 
     router.push(`/busca?q=${encodeURIComponent(normalizedQuery)}`)
   }
@@ -373,6 +394,9 @@ const SearchBar = () => {
             <Link
               key={suggestion.unique_id}
               id={`suggestion-${index}`}
+              ref={(el) => {
+                suggestionRefs.current[index] = el
+              }}
               role="option"
               aria-selected={index === selectedIndex}
               href={`/artigos/${suggestion.unique_id}`}
