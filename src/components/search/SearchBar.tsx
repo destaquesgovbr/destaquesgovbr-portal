@@ -188,7 +188,11 @@ const SearchBar = () => {
 
   // Scroll selected suggestion into view when navigating with keyboard
   useEffect(() => {
-    if (selectedIndex >= 0 && keyboardNavigated && suggestionRefs.current[selectedIndex]) {
+    if (
+      selectedIndex >= 0 &&
+      keyboardNavigated &&
+      suggestionRefs.current[selectedIndex]
+    ) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
