@@ -1,13 +1,15 @@
 'use server'
 
 import { startOfMonth, subDays } from 'date-fns'
+import { cache } from 'react'
 import { getPrioritizedArticles } from '@/config/prioritization'
 import { loadConfig } from '@/config/prioritization-config'
 import { withResult } from '@/lib/result'
 import { typesense } from '@/services/typesense/client'
 import type { ArticleRow } from '@/types/article'
 
-export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
+// Internal function for fetching latest articles
+const fetchLatestArticles = cache(async (): Promise<ArticleRow[]> => {
   try {
     // Carregar configuração de priorização
     const config = await loadConfig()
@@ -45,12 +47,16 @@ export const getLatestArticles = withResult(async (): Promise<ArticleRow[]> => {
   }
 })
 
+// Public API with Result wrapper
+export const getLatestArticles = withResult(fetchLatestArticles)
+
 export type GetThemesResult = {
   name: string
   count: number
 }[]
 
-export const getThemes = withResult(async (): Promise<GetThemesResult> => {
+// Internal function for fetching themes
+const fetchThemes = cache(async (): Promise<GetThemesResult> => {
   try {
     // Carregar configuração de priorização
     const config = await loadConfig()
@@ -138,7 +144,11 @@ export const getThemes = withResult(async (): Promise<GetThemesResult> => {
   }
 })
 
-export const countMonthlyNews = withResult(async (): Promise<number> => {
+// Public API with Result wrapper
+export const getThemes = withResult(fetchThemes)
+
+// Internal function for counting monthly news
+const fetchMonthlyNews = cache(async (): Promise<number> => {
   const thisMonth = startOfMonth(new Date()).getTime() / 1000
 
   const result = await typesense
@@ -152,7 +162,11 @@ export const countMonthlyNews = withResult(async (): Promise<number> => {
   return result.found
 })
 
-export const countTotalNews = withResult(async (): Promise<number> => {
+// Public API with Result wrapper
+export const countMonthlyNews = withResult(fetchMonthlyNews)
+
+// Internal function for counting total news
+const fetchTotalNews = cache(async (): Promise<number> => {
   const result = await typesense
     .collections<ArticleRow>('news')
     .documents()
@@ -164,7 +178,11 @@ export const countTotalNews = withResult(async (): Promise<number> => {
   return result.found
 })
 
-export const getLatestByTheme = withResult(
+// Public API with Result wrapper
+export const countTotalNews = withResult(fetchTotalNews)
+
+// Internal function for fetching articles by theme
+const fetchLatestByTheme = cache(
   async (theme: string, limit: number | null): Promise<ArticleRow[]> => {
     if (!theme) return []
 
@@ -181,3 +199,42 @@ export const getLatestByTheme = withResult(
     return result.hits?.map((hit) => hit.document) as ArticleRow[]
   },
 )
+
+// Public API with Result wrapper
+export const getLatestByTheme = withResult(fetchLatestByTheme)
+
+// Type for batch theme articles result
+export type ThemesWithArticles = Record<string, ArticleRow[]>
+
+// Internal function for fetching articles for multiple themes in a single query
+const fetchLatestByThemes = cache(
+  async (themes: string[], limitPerTheme = 2): Promise<ThemesWithArticles> => {
+    if (!themes.length) return {}
+
+    // Single query with group_by for all themes
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: '*',
+        filter_by: `theme_1_level_1_label:[${themes.join(',')}]`,
+        group_by: 'theme_1_level_1_label',
+        group_limit: limitPerTheme,
+        sort_by: 'published_at:desc',
+        limit: themes.length * limitPerTheme,
+      })
+
+    // Transform grouped results into a record
+    const grouped: ThemesWithArticles = {}
+    for (const group of result.grouped_hits ?? []) {
+      const themeName = group.group_key[0]
+      grouped[themeName] = (group.hits?.map((h) => h.document) ??
+        []) as ArticleRow[]
+    }
+
+    return grouped
+  },
+)
+
+// Public API with Result wrapper
+export const getLatestByThemes = withResult(fetchLatestByThemes)
