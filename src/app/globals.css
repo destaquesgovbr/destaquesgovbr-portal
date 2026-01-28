@@ -198,3 +198,16 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Drop cap styling for article content */
+.article-content > .prose > p:first-of-type::first-letter {
+  float: left;
+  font-size: 4em;
+  line-height: 0.85;
+  font-weight: 700;
+  color: #0057a4;
+  margin-right: 0.1em;
+  margin-top: 0.05em;
+  font-family: inherit;
+  padding-right: 0.05em;
+}
