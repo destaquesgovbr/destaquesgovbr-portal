@@ -1,0 +1,186 @@
+'use server'
+
+import { getPrioritizedArticles } from '@/config/prioritization'
+import { DEFAULT_CONFIG } from '@/config/prioritization-config'
+import { removeDiacritics } from '@/lib/utils'
+import { typesense } from '@/services/typesense/client'
+import type { ArticleRow } from '@/types/article'
+
+export type QueryArticlesArgs = {
+  query?: string
+  page: number
+  startDate?: number
+  endDate?: number
+  agencies?: string[]
+  themes?: string[]
+}
+
+export type QueryArticlesResult = {
+  articles: ArticleRow[]
+  page: number
+}
+
+const PAGE_SIZE = 40
+
+export type SearchSuggestion = {
+  unique_id: string
+  title: string
+}
+
+export type InlineAutocompleteSuggestion = {
+  completion: string // The completed word (e.g., "Diplomacia" when user typed "Diplo")
+  suffix: string // Just the part to append after user's input (e.g., "macia")
+}
+
+/**
+ * Get inline autocomplete suggestion based on word completion.
+ * Returns the completion for the word being typed, not the entire title.
+ * E.g., if user types "Diplo" and a title contains "Diplomacia", suggests "Diplomacia".
+ * Uses accent-insensitive comparison for Portuguese text.
+ */
+export async function getInlineAutocompleteSuggestion(
+  query: string,
+): Promise<InlineAutocompleteSuggestion | null> {
+  if (!query || query.length < 2) return null
+
+  const trimmedQuery = query.trim()
+  // Get the last word being typed (the one we want to complete)
+  const queryWords = trimmedQuery.split(/\s+/)
+  const lastWord = queryWords[queryWords.length - 1]
+
+  // Only suggest if the last word has at least 2 characters
+  if (lastWord.length < 2) return null
+
+  const normalizedLastWord = removeDiacritics(lastWord.toLowerCase())
+
+  try {
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: lastWord,
+        query_by: 'title',
+        prefix: true,
+        limit: 20,
+        pre_segmented_query: false,
+      })
+
+    const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
+
+    // Find a word in any title that starts with the last word the user is typing
+    for (const article of articles) {
+      const title = article.title ?? ''
+      const titleWords = title.split(/\s+/)
+
+      for (const titleWord of titleWords) {
+        // Clean the title word (remove punctuation at the end)
+        const cleanTitleWord = titleWord.replace(/[.,;:!?"')\]]+$/, '')
+        const normalizedTitleWord = removeDiacritics(
+          cleanTitleWord.toLowerCase(),
+        )
+
+        // Check if this title word starts with what the user typed
+        if (
+          normalizedTitleWord.startsWith(normalizedLastWord) &&
+          normalizedTitleWord.length > normalizedLastWord.length
+        ) {
+          // Build the completion: everything before the last word + the completed word
+          const prefix = queryWords.slice(0, -1).join(' ')
+          const completion = prefix
+            ? `${prefix} ${cleanTitleWord}`
+            : cleanTitleWord
+
+          // The suffix is just the remaining part of the word
+          const suffix = cleanTitleWord.slice(lastWord.length)
+
+          return {
+            completion,
+            suffix,
+          }
+        }
+      }
+    }
+
+    return null
+  } catch {
+    return null
+  }
+}
+
+export async function getSearchSuggestions(
+  query: string,
+): Promise<SearchSuggestion[]> {
+  if (!query || query.length < 2) return []
+
+  try {
+    const result = await typesense
+      .collections<ArticleRow>('news')
+      .documents()
+      .search({
+        q: query,
+        query_by: 'title,content',
+        prefix: true,
+        limit: 50, // Fetch more to apply prioritization
+        pre_segmented_query: false,
+      })
+
+    const articles = result.hits?.map((hit) => hit.document as ArticleRow) ?? []
+
+    // Apply prioritization to results
+    const prioritized = getPrioritizedArticles(articles, DEFAULT_CONFIG, 7)
+
+    return prioritized.map((article) => ({
+      unique_id: article.unique_id,
+      title: article.title ?? '',
+    }))
+  } catch {
+    return []
+  }
+}
+
+export async function queryArticles(
+  args: QueryArticlesArgs,
+): Promise<QueryArticlesResult> {
+  const { page, query, startDate, endDate, agencies, themes } = args
+
+  const filter_by: string[] = []
+
+  if (startDate) {
+    filter_by.push(`published_at:>${Math.floor(startDate / 1000)}`)
+  }
+
+  if (endDate) {
+    filter_by.push(`published_at:<${Math.floor(endDate / 1000 + 60 * 60 * 3)}`)
+  }
+
+  if (agencies && agencies.length > 0) {
+    filter_by.push(`agency:[${agencies.join(',')}]`)
+  }
+
+  if (themes && themes.length > 0) {
+    // Filter by any theme level - level 1, 2, or 3
+    const themeFilters = themes.map(
+      (theme) =>
+        `(theme_1_level_1_code:${theme} || theme_1_level_2_code:${theme} || theme_1_level_3_code:${theme})`,
+    )
+    filter_by.push(`(${themeFilters.join(' || ')})`)
+  }
+
+  // biome-ignore format: true
+  const result = await typesense
+    .collections<ArticleRow>('news')
+    .documents()
+    .search({
+      q: query ?? '*',
+      query_by: 'title, content',
+      sort_by: 'published_at:desc, unique_id:desc',
+      filter_by: filter_by.join(" && "),
+      limit: PAGE_SIZE,
+      page
+    })
+
+  return {
+    articles: result.hits?.map((hit) => hit.document) ?? [],
+    page: page + 1,
+  }
+}

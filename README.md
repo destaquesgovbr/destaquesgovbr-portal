@@ -1,28 +1,162 @@
+# Portal DestaquesGovBr
+
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-First, run the typesense locally:
-In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and load the news dataset taken from Huggingface: https://github.com/destaquesgovbr/destaquesgovbr-typesense
+### 1. Run Typesense locally
 
+First, start the Typesense server. In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and loads the news dataset from Huggingface: https://github.com/destaquesgovbr/typesense
 
-Then, run the development server:
+### 2. Configure environment variables
+
+Copy the example environment file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+cp .env.example .env.local
+```
+
+The Typesense container fetches its API key from GCP Secret Manager on startup. Get the actual API key from the container logs:
+
+```bash
+docker logs govbrnews-typesense | grep "API Key:"
+```
+
+Update your `.env.local` file with the API key:
+
+```env
+NEXT_PUBLIC_TYPESENSE_HOST=localhost
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=<your-api-key-from-logs>
+```
+
+### 3. Run the development server
+
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses **Vitest** for unit/integration tests and **Playwright** for E2E tests.
+
+### Running Tests
+
+```bash
+# Run unit tests in watch mode
+npm test
+
+# Run unit tests once
+npm run test:unit
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Open Vitest UI
+npm run test:ui
+
+# Run E2E tests
+npm run test:e2e
+
+# Open Playwright UI
+npm run test:e2e:ui
+```
+
+### Test Structure
+
+```
+src/
+├── __tests__/               # Test utilities and mocks
+│   ├── setup.ts             # Global test setup
+│   ├── test-utils.tsx       # Custom render with providers
+│   └── mocks/
+│       └── fixtures/        # Test data fixtures
+├── lib/__tests__/           # Unit tests for lib/
+│   ├── result.test.ts       # Result type tests
+│   └── utils.test.ts        # Utility function tests
+└── config/__tests__/        # Unit tests for config/
+    └── prioritization.test.ts
+
+e2e/                         # Playwright E2E tests
+```
+
+### Writing Tests
+
+**Unit tests** use Vitest with React Testing Library:
+
+```typescript
+import { describe, expect, it } from 'vitest'
+import { render, screen } from '@/__tests__/test-utils'
+import MyComponent from './MyComponent'
+
+describe('MyComponent', () => {
+  it('renders correctly', () => {
+    render(<MyComponent />)
+    expect(screen.getByText('Hello')).toBeInTheDocument()
+  })
+})
+```
+
+**E2E tests** use Playwright against the production site:
+
+```typescript
+import { test, expect } from '@playwright/test'
+
+test('home page loads', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading')).toBeVisible()
+})
+```
+
+### CI Integration
+
+Tests run automatically on every PR via GitHub Actions (`.github/workflows/test.yml`).
+
+## Troubleshooting
+
+### Typesense 401 Unauthorized Error
+
+If you see errors like:
+
+```
+RequestUnauthorized: Request failed with HTTP code 401 | Server said: Forbidden - a valid `x-typesense-api-key` header must be sent.
+```
+
+**Solution:**
+
+1. Check if the Typesense container is running:
+   ```bash
+   docker ps | grep typesense
+   ```
+
+2. Get the actual API key from container logs:
+   ```bash
+   docker logs govbrnews-typesense | grep "API Key:"
+   ```
+
+3. Update your `.env.local` file with the correct API key
+
+4. Restart the development server:
+   ```bash
+   pnpm dev
+   ```
+
+### Typesense Connection Issues
+
+**Check if Typesense is running:**
+```bash
+curl http://localhost:8108/health
+```
+
+Expected response: `{"ok":true}`
+
+**Verify API key works:**
+```bash
+curl -H "X-TYPESENSE-API-KEY: your-api-key" http://localhost:8108/collections
+```
 
 ## Learn More
 
@@ -72,14 +206,17 @@ This project is deployed to Google Cloud Run using GitHub Actions.
 The production deployment fetches the Typesense API key **directly from GCP Secret Manager** during the Docker build process.
 
 **GitHub Secrets Required:**
+
 - `GCP_WORKLOAD_IDENTITY_PROVIDER` - Workload Identity Federation provider
 - `GCP_SERVICE_ACCOUNT` - GitHub Actions service account email
 - `NEXT_PUBLIC_TYPESENSE_HOST` - Typesense server IP address
 
 **GCP Secret Manager:**
+
 - `typesense-search-only-api-key` - Search API key (read-only)
 
 **Why this architecture?**
+
 - **Single source of truth**: API key is only maintained in GCP Secret Manager
 - **Automatic sync**: Portal always uses the same key as the Typesense VM
 - **Easy rotation**: Update key in GCP → rebuild portal → done
@@ -99,4 +236,4 @@ See [.github/workflows/deploy-production.yml](.github/workflows/deploy-productio
 
 ### Infrastructure
 
-The infrastructure (Typesense VM, secrets, IAM bindings) is managed via Terraform in the [destaquesgovbr-infra](https://github.com/destaquesgovbr/destaquesgovbr-infra) repository.
+The infrastructure (Typesense VM, secrets, IAM bindings) is managed via Terraform in the [infra](https://github.com/destaquesgovbr/infra) repository.

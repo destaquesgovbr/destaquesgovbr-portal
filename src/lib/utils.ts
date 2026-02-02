@@ -65,6 +65,7 @@ export function getExcerpt(content: string, maxLength: number = 200): string {
 
 /**
  * Format Unix timestamp to display date and time (if not midnight)
+ * Uses America/Sao_Paulo timezone to ensure consistent rendering between server and client
  * @param timestamp - Unix timestamp in seconds
  * @returns Formatted date string, with time if not 00:00
  *
@@ -76,14 +77,29 @@ export function formatDateTime(timestamp: number | null): string {
   if (!timestamp) return ''
 
   const date = new Date(timestamp * 1000)
+  const timeZone = 'America/Sao_Paulo'
 
-  // Check if time is midnight (00:00)
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
+  // Get hours and minutes in Sao Paulo timezone
+  const formatter = new Intl.DateTimeFormat('pt-BR', {
+    timeZone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+  const timeParts = formatter.formatToParts(date)
+  const hours = Number.parseInt(
+    timeParts.find((p) => p.type === 'hour')?.value ?? '0',
+    10,
+  )
+  const minutes = Number.parseInt(
+    timeParts.find((p) => p.type === 'minute')?.value ?? '0',
+    10,
+  )
   const isMidnight = hours === 0 && minutes === 0
 
-  // Format date
+  // Format date with consistent timezone
   const dateStr = date.toLocaleDateString('pt-BR', {
+    timeZone,
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -98,4 +114,16 @@ export function formatDateTime(timestamp: number | null): string {
   const timeStr = `${hours.toString().padStart(2, '0')}h${minutes.toString().padStart(2, '0')}`
 
   return `${dateStr} às ${timeStr}`
+}
+
+/**
+ * Remove diacritics (accents) from a string for comparison.
+ * Useful for accent-insensitive search in Portuguese text.
+ *
+ * @example
+ * removeDiacritics("notícias") // "noticias"
+ * removeDiacritics("saúde") // "saude"
+ */
+export function removeDiacritics(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
