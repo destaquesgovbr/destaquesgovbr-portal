@@ -114,6 +114,12 @@ export default function DashboardClient(props: DashboardClientProps) {
     agencyComparison,
   } = props
 
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   // Calculate trends
   const calculateTrend = (current: number, previous: number) => {
     if (previous === 0) return { value: 0, percentage: '—' }
@@ -337,10 +343,12 @@ export default function DashboardClient(props: DashboardClientProps) {
           <CardContent>
             <div className="text-center py-4">
               <p className="text-2xl font-bold text-primary">
-                {new Date(peakDay.date).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'short',
-                })}
+                {isClient
+                  ? new Date(peakDay.date).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: 'short',
+                    })
+                  : '—'}
               </p>
               <p className="text-4xl font-semibold mt-2">{peakDay.count}</p>
               <p className="text-sm text-muted-foreground mt-1">publicações</p>

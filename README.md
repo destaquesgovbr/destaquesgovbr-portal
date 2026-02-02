@@ -1,91 +1,85 @@
 # Portal DestaquesGovBr
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Licença: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Este é um projeto [Next.js](https://nextjs.org) criado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Primeiros Passos
 
-### 1. Run Typesense locally
+### 1. Executar o Typesense localmente
 
-First, start the Typesense server. In this repository you'll find a docker container and a script `run-typesense-server.sh` that runs the container and loads the news dataset from Huggingface: https://github.com/destaquesgovbr/typesense
+Primeiro, inicie o servidor Typesense. Neste repositório você encontrará um container Docker e um script `run-typesense-server.sh` que executa o container e carrega o dataset de notícias do Huggingface: https://github.com/destaquesgovbr/typesense
 
-### 2. Configure environment variables
+### 2. Configurar variáveis de ambiente
 
-Copy the example environment file:
+Copie o arquivo de exemplo de ambiente:
 
 ```bash
 cp .env.example .env.local
 ```
 
-The Typesense container fetches its API key from GCP Secret Manager on startup. Get the actual API key from the container logs:
-
-```bash
-docker logs govbrnews-typesense | grep "API Key:"
-```
-
-Update your `.env.local` file with the API key:
+Atualize seu arquivo `.env.local` com a chave de API para desenvolvimento local:
 
 ```env
 NEXT_PUBLIC_TYPESENSE_HOST=localhost
-NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=<your-api-key-from-logs>
+NEXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY=govbrnews_api_key_change_in_production
 ```
 
-### 3. Run the development server
+### 3. Executar o servidor de desenvolvimento
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-## Testing
+## Testes
 
-This project uses **Vitest** for unit/integration tests and **Playwright** for E2E tests.
+Este projeto usa **Vitest** para testes unitários/integração e **Playwright** para testes E2E.
 
-### Running Tests
+### Executando Testes
 
 ```bash
-# Run unit tests in watch mode
-npm test
+# Executar testes unitários em modo watch
+pnpm test
 
-# Run unit tests once
-npm run test:unit
+# Executar testes unitários uma vez
+pnpm test:unit
 
-# Run tests with coverage report
-npm run test:coverage
+# Executar testes com relatório de cobertura
+pnpm test:coverage
 
-# Open Vitest UI
-npm run test:ui
+# Abrir interface do Vitest
+pnpm test:ui
 
-# Run E2E tests
-npm run test:e2e
+# Executar testes E2E
+pnpm test:e2e
 
-# Open Playwright UI
-npm run test:e2e:ui
+# Abrir interface do Playwright
+pnpm test:e2e:ui
 ```
 
-### Test Structure
+### Estrutura de Testes
 
 ```
 src/
-├── __tests__/               # Test utilities and mocks
-│   ├── setup.ts             # Global test setup
-│   ├── test-utils.tsx       # Custom render with providers
+├── __tests__/               # Utilitários e mocks de teste
+│   ├── setup.ts             # Configuração global de testes
+│   ├── test-utils.tsx       # Render customizado com providers
 │   └── mocks/
-│       └── fixtures/        # Test data fixtures
-├── lib/__tests__/           # Unit tests for lib/
-│   ├── result.test.ts       # Result type tests
-│   └── utils.test.ts        # Utility function tests
-└── config/__tests__/        # Unit tests for config/
+│       └── fixtures/        # Dados de teste
+├── lib/__tests__/           # Testes unitários para lib/
+│   ├── result.test.ts       # Testes do tipo Result
+│   └── utils.test.ts        # Testes de funções utilitárias
+└── config/__tests__/        # Testes unitários para config/
     └── prioritization.test.ts
 
-e2e/                         # Playwright E2E tests
+e2e/                         # Testes E2E com Playwright
 ```
 
-### Writing Tests
+### Escrevendo Testes
 
-**Unit tests** use Vitest with React Testing Library:
+**Testes unitários** usam Vitest com React Testing Library:
 
 ```typescript
 import { describe, expect, it } from 'vitest'
@@ -93,91 +87,85 @@ import { render, screen } from '@/__tests__/test-utils'
 import MyComponent from './MyComponent'
 
 describe('MyComponent', () => {
-  it('renders correctly', () => {
+  it('renderiza corretamente', () => {
     render(<MyComponent />)
     expect(screen.getByText('Hello')).toBeInTheDocument()
   })
 })
 ```
 
-**E2E tests** use Playwright against the production site:
+**Testes E2E** usam Playwright contra o site de produção:
 
 ```typescript
 import { test, expect } from '@playwright/test'
 
-test('home page loads', async ({ page }) => {
+test('página inicial carrega', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('heading')).toBeVisible()
 })
 ```
 
-### CI Integration
+### Integração com CI
 
-Tests run automatically on every PR via GitHub Actions (`.github/workflows/test.yml`).
+Os testes são executados automaticamente em cada PR via GitHub Actions (`.github/workflows/test.yml`).
 
-## Troubleshooting
+## Solução de Problemas
 
-### Typesense 401 Unauthorized Error
+### Erro 401 Unauthorized do Typesense
 
-If you see errors like:
+Se você ver erros como:
 
 ```
 RequestUnauthorized: Request failed with HTTP code 401 | Server said: Forbidden - a valid `x-typesense-api-key` header must be sent.
 ```
 
-**Solution:**
+**Solução:**
 
-1. Check if the Typesense container is running:
+1. Verifique se o container do Typesense está rodando:
    ```bash
    docker ps | grep typesense
    ```
 
-2. Get the actual API key from container logs:
+2. Obtenha a chave de API real dos logs do container:
    ```bash
    docker logs govbrnews-typesense | grep "API Key:"
    ```
 
-3. Update your `.env.local` file with the correct API key
+3. Atualize seu arquivo `.env.local` com a chave de API correta
 
-4. Restart the development server:
+4. Reinicie o servidor de desenvolvimento:
    ```bash
    pnpm dev
    ```
 
-### Typesense Connection Issues
+### Problemas de Conexão com Typesense
 
-**Check if Typesense is running:**
+**Verifique se o Typesense está rodando:**
 ```bash
 curl http://localhost:8108/health
 ```
 
-Expected response: `{"ok":true}`
+Resposta esperada: `{"ok":true}`
 
-**Verify API key works:**
+**Verifique se a chave de API funciona:**
 ```bash
-curl -H "X-TYPESENSE-API-KEY: your-api-key" http://localhost:8108/collections
+curl -H "X-TYPESENSE-API-KEY: sua-api-key" http://localhost:8108/collections
 ```
 
-## Learn More
+## Saiba Mais
 
-To learn more about Next.js, take a look at the following resources:
+Para aprender mais sobre Next.js, confira os seguintes recursos:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Documentação do Next.js](https://nextjs.org/docs) - aprenda sobre recursos e API do Next.js.
+- [Aprenda Next.js](https://nextjs.org/learn) - um tutorial interativo de Next.js.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Você pode conferir o [repositório do Next.js no GitHub](https://github.com/vercel/next.js) - seu feedback e contribuições são bem-vindos!
 
-## Deploy on Vercel
+## Deploy em Produção
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Este projeto é implantado no Google Cloud Run usando GitHub Actions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Production Deployment
-
-This project is deployed to Google Cloud Run using GitHub Actions.
-
-### Deployment Architecture
+### Arquitetura de Deploy
 
 ```
 ┌─────────────────────┐
@@ -201,39 +189,39 @@ This project is deployed to Google Cloud Run using GitHub Actions.
 └──────────────┘
 ```
 
-### Secrets Management
+### Gerenciamento de Secrets
 
-The production deployment fetches the Typesense API key **directly from GCP Secret Manager** during the Docker build process.
+O deploy de produção busca a chave de API do Typesense **diretamente do GCP Secret Manager** durante o processo de build do Docker.
 
-**GitHub Secrets Required:**
+**Secrets Necessários no GitHub:**
 
-- `GCP_WORKLOAD_IDENTITY_PROVIDER` - Workload Identity Federation provider
-- `GCP_SERVICE_ACCOUNT` - GitHub Actions service account email
-- `NEXT_PUBLIC_TYPESENSE_HOST` - Typesense server IP address
+- `GCP_WORKLOAD_IDENTITY_PROVIDER` - Provider do Workload Identity Federation
+- `GCP_SERVICE_ACCOUNT` - Email da service account do GitHub Actions
+- `NEXT_PUBLIC_TYPESENSE_HOST` - Endereço IP do servidor Typesense
 
 **GCP Secret Manager:**
 
-- `typesense-search-only-api-key` - Search API key (read-only)
+- `typesense-search-only-api-key` - Chave de API de busca (somente leitura)
 
-**Why this architecture?**
+**Por que essa arquitetura?**
 
-- **Single source of truth**: API key is only maintained in GCP Secret Manager
-- **Automatic sync**: Portal always uses the same key as the Typesense VM
-- **Easy rotation**: Update key in GCP → rebuild portal → done
-- **Audit trail**: All secret access is logged in GCP
+- **Fonte única da verdade**: A chave de API é mantida apenas no GCP Secret Manager
+- **Sincronização automática**: O Portal sempre usa a mesma chave que a VM do Typesense
+- **Rotação fácil**: Atualize a chave no GCP → reconstrua o portal → pronto
+- **Trilha de auditoria**: Todo acesso a secrets é registrado no GCP
 
-### Deployment Workflow
+### Fluxo de Deploy
 
-When code is pushed to `main`:
+Quando o código é enviado para `main`:
 
-1. GitHub Actions authenticates to GCP via Workload Identity Federation
-2. Fetches `typesense-search-only-api-key` from Secret Manager
-3. Builds Docker image with API key as build argument
-4. Pushes image to Artifact Registry
-5. Deploys to Cloud Run
+1. GitHub Actions autentica no GCP via Workload Identity Federation
+2. Busca `typesense-search-only-api-key` do Secret Manager
+3. Constrói a imagem Docker com a chave de API como argumento de build
+4. Envia a imagem para o Artifact Registry
+5. Implanta no Cloud Run
 
-See [.github/workflows/deploy-production.yml](.github/workflows/deploy-production.yml) for details.
+Veja [.github/workflows/deploy-production.yml](.github/workflows/deploy-production.yml) para detalhes.
 
-### Infrastructure
+### Infraestrutura
 
-The infrastructure (Typesense VM, secrets, IAM bindings) is managed via Terraform in the [infra](https://github.com/destaquesgovbr/infra) repository.
+A infraestrutura (VM do Typesense, secrets, bindings de IAM) é gerenciada via Terraform no repositório [infra](https://github.com/destaquesgovbr/infra).

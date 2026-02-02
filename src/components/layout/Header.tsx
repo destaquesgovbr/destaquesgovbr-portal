@@ -30,23 +30,23 @@ const Header = () => {
   // Focus search input when overlay opens
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
-      // Small delay to ensure the overlay is rendered
-      setTimeout(() => {
+      // Use requestAnimationFrame for immediate focus after render
+      requestAnimationFrame(() => {
         searchInputRef.current?.querySelector('input')?.focus()
-      }, 100)
+      })
     }
   }, [searchOpen])
 
-  // Close search on Escape key
+  // Close search on Escape key (empty deps - listener added once)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && searchOpen) {
+      if (e.key === 'Escape') {
         setSearchOpen(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [searchOpen])
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[99] border-b bg-card shadow-card">

@@ -9,7 +9,7 @@ import {
   countMonthlyNews,
   countTotalNews,
   getLatestArticles,
-  getLatestByTheme,
+  getLatestByThemes,
   getThemes,
 } from './actions'
 
@@ -42,16 +42,18 @@ export default async function Home() {
   const latestPreview = rest.slice(4, 10) // 6 cards em média
 
   // ===== Temas em foco (3 temas × 2 notícias cada) =====
+  // Single query for all themes (eliminates N+1 queries)
   const focusThemes = themes.slice(0, 3)
-  const themesWithNews = await Promise.all(
-    focusThemes.map(async (t: { name: string }) => {
-      const r = await getLatestByTheme(t.name, 2)
-      return {
-        theme: t.name,
-        articles: r.type === 'ok' ? (r.data ?? []) : [],
-      }
-    }),
-  )
+  const themeNames = focusThemes.map((t) => t.name)
+  const themesArticlesResult = await getLatestByThemes(themeNames, 2)
+
+  const themesWithNews = focusThemes.map((t) => ({
+    theme: t.name,
+    articles:
+      themesArticlesResult.type === 'ok'
+        ? (themesArticlesResult.data[t.name] ?? [])
+        : [],
+  }))
 
   return (
     <main className="min-h-screen bg-background">

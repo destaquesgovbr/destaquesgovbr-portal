@@ -1,4 +1,5 @@
 import { Calendar, Tag } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Ref } from 'react'
 import { Badge } from '@/components/ui/badge'
@@ -40,10 +41,12 @@ const NewsCard = ({
           <div
             className={`relative overflow-hidden ${isMain ? 'h-64' : 'h-40'}`}
           >
-            <img
+            <Image
               src={imageUrl}
               alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             />
 
             {/* Overlay sutil */}
