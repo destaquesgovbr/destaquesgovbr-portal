@@ -478,6 +478,24 @@ Use comentários descritivos para seções da página:
 }
 ```
 
+### Git Commits
+
+- **Idioma**: Português
+- **Prefixos**: `feature:`, `fix:`, `refactor:`, `docs:`, `chore:`
+- **NÃO incluir** `Co-Authored-By` nas mensagens de commit
+- Usar descrição concisa na primeira linha
+- Detalhar mudanças em bullet points quando necessário
+
+Exemplo:
+```
+feature: implementa analytics tracking com Umami
+
+- Adiciona integração com Umami Analytics
+- Cria hook useUmamiTrack para eventos customizados
+- Rastreia cliques em artigos com origem
+
+```
+
 ## Contribuindo
 
 Este projeto utiliza Biome para linting e formatação. Antes de commitar:
