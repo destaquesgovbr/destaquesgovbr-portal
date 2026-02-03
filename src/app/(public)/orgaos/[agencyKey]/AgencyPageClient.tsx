@@ -201,6 +201,7 @@ export default function AgencyPageClient({
                   summary={getExcerpt(article.content || '', 150)}
                   title={article.title || ''}
                   imageUrl={article.image || ''}
+                  trackingOrigin="agency"
                 />
               ))}
             </motion.div>

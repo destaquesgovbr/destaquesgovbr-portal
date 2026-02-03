@@ -202,6 +202,7 @@ export default function ThemePageClient({
                   summary={getExcerpt(article.content || '', 150)}
                   title={article.title || ''}
                   imageUrl={article.image || ''}
+                  trackingOrigin="theme"
                 />
               ))}
             </motion.div>

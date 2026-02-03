@@ -4,7 +4,7 @@
 
 Portal de notícias do Governo Federal brasileiro, desenvolvido com Next.js 15, que agrega e exibe conteúdo de diversos ministérios e órgãos governamentais. O projeto utiliza Typesense para busca e indexação de artigos.
 
-**Nome do projeto**: portal-brasil
+**Nome do projeto**: portal
 **Tecnologia principal**: Next.js 15.5.3 com App Router
 **Deploy**: Standalone mode (configurado para containers)
 
