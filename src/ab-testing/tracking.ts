@@ -1,11 +1,9 @@
+import type { WindowWithAnalytics as BaseWindowWithAnalytics } from '@/types/analytics'
+
 type ClarityFunction = (method: string, key: string, value: string) => void
 
-interface WindowWithAnalytics extends Window {
+interface WindowWithAnalytics extends BaseWindowWithAnalytics {
   clarity?: ClarityFunction
-  // Future: Umami.js support
-  umami?: {
-    track: (eventName: string, data?: Record<string, unknown>) => void
-  }
 }
 
 // Track which experiments have been exposed to prevent duplicate tracking
@@ -46,13 +44,13 @@ export function trackExperimentViewed(
     w.clarity('set', 'ab_exposure', `${experimentKey}:${variantKey}`)
   }
 
-  // Future: Umami.js tracking
-  // if (w.umami) {
-  //   w.umami.track('experiment_viewed', {
-  //     experiment: experimentKey,
-  //     variant: variantKey,
-  //   })
-  // }
+  // Track with Umami Analytics
+  if (w.umami) {
+    w.umami.track('experiment_viewed', {
+      experiment: experimentKey,
+      variant: variantKey,
+    })
+  }
 }
 
 /**
@@ -88,14 +86,14 @@ export function trackConversion(
     w.clarity('set', 'ab_last_conversion', conversionName)
   }
 
-  // Future: Umami.js tracking
-  // if (w.umami) {
-  //   w.umami.track('experiment_conversion', {
-  //     experiment: experimentKey,
-  //     variant: variantKey,
-  //     conversion: conversionName,
-  //   })
-  // }
+  // Track with Umami Analytics
+  if (w.umami) {
+    w.umami.track('experiment_conversion', {
+      experiment: experimentKey,
+      variant: variantKey,
+      conversion: conversionName,
+    })
+  }
 }
 
 /**

@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ABDebugPanel, GrowthBookProvider } from '@/ab-testing'
 import { ClarityScript } from '@/components/analytics/ClarityScript'
+import { UmamiScript } from '@/components/analytics/UmamiScript'
 import { ConsentProvider } from '@/components/consent/ConsentProvider'
 import { CookieConsent } from '@/components/consent/CookieConsent'
 
@@ -16,6 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           {children}
           <CookieConsent />
           <ClarityScript />
+          <UmamiScript />
           <ABDebugPanel />
         </QueryClientProvider>
       </GrowthBookProvider>
