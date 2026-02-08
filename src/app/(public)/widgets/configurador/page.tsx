@@ -97,7 +97,7 @@ export default function WidgetConfiguratorPage() {
                 <div className="space-y-3">
                   <Label>Layout</Label>
                   <div className="grid grid-cols-2 gap-3">
-                    {(['list', 'grid-2'] as WidgetLayout[]).map((layout) => (
+                    {(['list', 'grid-2', 'grid-3', 'carousel'] as WidgetLayout[]).map((layout) => (
                       <button
                         key={layout}
                         type="button"

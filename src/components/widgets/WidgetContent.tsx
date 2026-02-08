@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { WidgetLayout } from '@/types/widget'
+import { WidgetCarousel } from './WidgetCarousel'
 
 interface WidgetContentProps {
   layout: WidgetLayout
@@ -7,6 +8,16 @@ interface WidgetContentProps {
 }
 
 export function WidgetContent({ layout, children }: WidgetContentProps) {
+  // Para carousel, usamos componente específico
+  if (layout === 'carousel') {
+    const childrenArray = Array.isArray(children) ? children : [children]
+    return (
+      <div className="widget-content flex-1 p-4" data-layout={layout}>
+        <WidgetCarousel autoAdvance={true}>{childrenArray}</WidgetCarousel>
+      </div>
+    )
+  }
+
   const getLayoutClasses = () => {
     switch (layout) {
       case 'list':
@@ -15,8 +26,6 @@ export function WidgetContent({ layout, children }: WidgetContentProps) {
         return 'grid grid-cols-1 sm:grid-cols-2 gap-4'
       case 'grid-3':
         return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
-      case 'carousel':
-        return 'flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide'
       default:
         return 'flex flex-col gap-3'
     }
