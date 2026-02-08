@@ -24,6 +24,7 @@ export function WidgetNewsCard({
   compact = false,
 }: WidgetNewsCardProps) {
   const hasTheme = Boolean(theme && theme.trim() !== '')
+  const articleId = internalUrl.split('/').pop() || ''
 
   return (
     <Link
@@ -32,6 +33,9 @@ export function WidgetNewsCard({
       target="_blank"
       rel="noopener noreferrer"
       data-testid="news-card"
+      data-umami-event="widget_article_click"
+      data-umami-event-article-id={articleId}
+      data-umami-event-origin="widget_embed"
     >
       <Card className="transition-all overflow-hidden duration-300 h-full cursor-pointer group hover:shadow-md hover:scale-[1.01] bg-card">
         {/* Imagem de capa */}

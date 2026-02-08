@@ -15,6 +15,8 @@ export function WidgetFooter({ showLink }: WidgetFooterProps) {
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors group"
+        data-umami-event="widget_footer_click"
+        data-umami-event-origin="widget_embed"
       >
         <span className="font-medium">Ver mais notícias no DGB</span>
         <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
