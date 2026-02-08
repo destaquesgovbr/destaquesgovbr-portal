@@ -17,7 +17,7 @@ export function WidgetPreview({ config }: WidgetPreviewProps) {
   }, [config])
 
   const encoded = encodeWidgetConfig(config)
-  const iframeUrl = `/widgets/embed?c=${encoded}`
+  const iframeUrl = `/embed?c=${encoded}`
 
   const width =
     config.size === 'custom' && config.width ? config.width : undefined

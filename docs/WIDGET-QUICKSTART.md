@@ -12,7 +12,7 @@ Exemplo para mostrar notícias do Ministério da Cultura:
 
 ```html
 <iframe
-  src="https://destaques.gov.br/widgets/embed?c=<SUA_CONFIG>"
+  src="https://destaques.gov.br/embed?c=<SUA_CONFIG>"
   width="400"
   height="600"
   frameborder="0"

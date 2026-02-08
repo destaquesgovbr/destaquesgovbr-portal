@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
       },
       // Headers para permitir embedding do widget em iframes
       {
-        source: '/widgets/embed',
+        source: '/embed',
         headers: [
           {
             key: 'X-Frame-Options',

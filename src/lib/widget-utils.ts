@@ -78,7 +78,7 @@ export function generateIframeCode(config: WidgetConfig, baseUrl: string): strin
   }
 
   return `<iframe
-  src="${baseUrl}/widgets/embed?c=${encoded}"
+  src="${baseUrl}/embed?c=${encoded}"
   width="${finalWidth}"
   height="${finalHeight}"
   frameborder="0"

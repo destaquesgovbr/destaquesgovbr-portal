@@ -48,7 +48,7 @@ Visite [destaques.gov.br/widgets/configurador](https://destaques.gov.br/widgets/
 
 ```html
 <iframe
-  src="https://destaques.gov.br/widgets/embed?c=eyJhZ2VuY2llcyI6W10sInRoZW1lcyI6W10sImxheW91dCI6Imxpc3QiLCJzaXplIjoibWVkaXVtIiwic2hvd0xvZ28iOnRydWUsInNob3dMaW5rIjp0cnVlLCJzaG93VG9vbHRpcCI6dHJ1ZSwiYXJ0aWNsZXNQZXJQYWdlIjoxMH0"
+  src="https://destaques.gov.br/embed?c=eyJhZ2VuY2llcyI6W10sInRoZW1lcyI6W10sImxheW91dCI6Imxpc3QiLCJzaXplIjoibWVkaXVtIiwic2hvd0xvZ28iOnRydWUsInNob3dMaW5rIjp0cnVlLCJzaG93VG9vbHRpcCI6dHJ1ZSwiYXJ0aWNsZXNQZXJQYWdlIjoxMH0"
   width="400"
   height="600"
   frameborder="0"
