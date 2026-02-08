@@ -2,9 +2,7 @@ import { WidgetContainer } from '@/components/widgets/WidgetContainer'
 import { WidgetContent } from '@/components/widgets/WidgetContent'
 import { WidgetError } from '@/components/widgets/WidgetError'
 import { WidgetFooter } from '@/components/widgets/WidgetFooter'
-import { WidgetHeader } from '@/components/widgets/WidgetHeader'
 import { WidgetNewsCard } from '@/components/widgets/WidgetNewsCard'
-import { WidgetTooltip } from '@/components/widgets/WidgetTooltip'
 import { decodeWidgetConfig } from '@/lib/widget-utils'
 import { fetchWidgetArticles } from './actions'
 
@@ -69,13 +67,22 @@ export default async function WidgetEmbedPage({
   if (articles.length === 0) {
     return (
       <WidgetContainer config={config}>
-        <WidgetHeader showLogo={config.showLogo} />
         <div className="flex-1 flex items-center justify-center p-6">
           <p className="text-sm text-muted-foreground text-center">
             Nenhuma notícia encontrada com os filtros selecionados.
           </p>
         </div>
-        <WidgetFooter showLink={config.showLink} />
+        <WidgetFooter
+          config={{
+            agencies: config.agencies,
+            themes: config.themes,
+            showLogo: config.showLogo,
+            showLink: config.showLink,
+            showTooltip: config.showTooltip,
+          }}
+          agencyNames={agencyNames}
+          themeNames={themeNames}
+        />
       </WidgetContainer>
     )
   }
@@ -84,19 +91,6 @@ export default async function WidgetEmbedPage({
 
   return (
     <WidgetContainer config={config}>
-      <WidgetHeader showLogo={config.showLogo} />
-
-      {/* Tooltip de informações (posicionado absolutamente) */}
-      {config.showTooltip && (
-        <div className="relative">
-          <WidgetTooltip
-            filters={{ agencies: config.agencies, themes: config.themes }}
-            agencyNames={agencyNames}
-            themeNames={themeNames}
-          />
-        </div>
-      )}
-
       <WidgetContent layout={config.layout}>
         {articles.map((article) => (
           <WidgetNewsCard
@@ -112,7 +106,17 @@ export default async function WidgetEmbedPage({
         ))}
       </WidgetContent>
 
-      <WidgetFooter showLink={config.showLink} />
+      <WidgetFooter
+        config={{
+          agencies: config.agencies,
+          themes: config.themes,
+          showLogo: config.showLogo,
+          showLink: config.showLink,
+          showTooltip: config.showTooltip,
+        }}
+        agencyNames={agencyNames}
+        themeNames={themeNames}
+      />
     </WidgetContainer>
   )
 }
