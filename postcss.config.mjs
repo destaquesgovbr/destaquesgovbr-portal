@@ -1,12 +1,13 @@
-import prefixWrap from "postcss-prefixwrap";
+import prefixWrap from 'postcss-prefixwrap'
 
 const config = {
   plugins: [
-    "@tailwindcss/postcss",
-    prefixWrap(".govbr", {
-      whitelist: ["src/app/govbr.css"],
+    '@tailwindcss/postcss',
+    prefixWrap('.govbr', {
+      whitelist: ['govbr\\.css'],
+      ignoredSelectors: [':root'],
     }),
   ],
-};
+}
 
-export default config;
+export default config
