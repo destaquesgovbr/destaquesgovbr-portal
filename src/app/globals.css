@@ -98,6 +98,10 @@
   --government-gray: hsl(210 10% 95%);
   --government-red: hsl(5, 80%, 55%);
 
+  /* GovBR Design System tokens */
+  --govbr-blue-warm-vivid-90: #071D41;
+  --govbr-blue-700: #2E6276;
+
   /* Gradients */
   --gradient-government: linear-gradient(135deg,
       var(--government-blue),

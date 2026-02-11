@@ -38,7 +38,7 @@ export default function NotFound() {
             />
           </div>
           <div className="md:text-left">
-            <h1 className="text-3xl md:text-5xl font-bold text-[#2E6276] mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold text-[var(--govbr-blue-700)] mb-4">
               Não encontramos o que você procura
             </h1>
             <p className="text-2xl text-gray-600">
@@ -76,18 +76,11 @@ export default function NotFound() {
               Ir para a Página Principal
             </BrButton>
           </Link>
-
-          <a href="https://www.gov.br/ouvidorias" target="_blank" rel="noopener">
-            <BrButton emphasis="tertiary">
-              <i className="fas fa-comment-dots mr-2" />
-              Envie um Feedback
-            </BrButton>
-          </a>
         </nav>
       </main>
 
       {/* Footer simplificado */}
-      <footer className="bg-[#071D41] text-white py-4 text-center text-sm">
+      <footer className="bg-[var(--govbr-blue-warm-vivid-90)] text-white py-4 text-center text-sm">
         <p>
           © {new Date().getFullYear()} Governo Federal do Brasil.{" "}
           <strong>Todos os direitos reservados.</strong>
