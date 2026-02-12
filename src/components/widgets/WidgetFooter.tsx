@@ -62,7 +62,7 @@ export function WidgetFooter({ config, agencyNames = {}, themeNames = {} }: Widg
               />
             </div>
             <span className="text-xs font-semibold text-muted-foreground">
-              DGB
+              Destaques Gov.br
             </span>
           </div>
         )}
