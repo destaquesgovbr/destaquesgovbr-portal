@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { headers } from 'next/headers'
 import { Suspense } from 'react'
 import { Providers } from '@/components/common/Providers'
 import Footer from '@/components/layout/Footer'
@@ -22,23 +23,34 @@ export const metadata: Metadata = {
     'Portal de centralização das notícias oficiais do Governo Brasileiro',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Detecta se é uma página de widget embed via middleware
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || ''
+  const isWidgetEmbed = pathname.startsWith('/embed')
+
   return (
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <Header />
-          <div className="pt-[110px] md:pt-[130px]">
-            <Suspense>{children}</Suspense>
-          </div>
-          <Footer />
-        </Providers>
+        {isWidgetEmbed ? (
+          // Widget: sem Header, Footer, Providers
+          children
+        ) : (
+          // Portal principal: com Header, Footer, Providers
+          <Providers>
+            <Header />
+            <div className="pt-[110px] md:pt-[130px]">
+              <Suspense>{children}</Suspense>
+            </div>
+            <Footer />
+          </Providers>
+        )}
       </body>
     </html>
   )
