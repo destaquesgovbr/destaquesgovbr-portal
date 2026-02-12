@@ -99,18 +99,22 @@
   --government-red: hsl(5, 80%, 55%);
 
   /* GovBR Design System tokens */
-  --govbr-blue-warm-vivid-90: #071D41;
-  --govbr-blue-700: #2E6276;
+  --govbr-blue-warm-vivid-90: #071d41;
+  --govbr-blue-700: #2e6276;
 
   /* Gradients */
-  --gradient-government: linear-gradient(135deg,
-      var(--government-blue),
-      var(--government-green),
-      var(--government-yellow),
-      var(--government-red));
-  --gradient-subtle: linear-gradient(180deg,
-      var(--background),
-      var(--government-gray));
+  --gradient-government: linear-gradient(
+    135deg,
+    var(--government-blue),
+    var(--government-green),
+    var(--government-yellow),
+    var(--government-red)
+  );
+  --gradient-subtle: linear-gradient(
+    180deg,
+    var(--background),
+    var(--government-gray)
+  );
 
   /* Shadows */
   --shadow-government: 0 4px 20px -2px hsl(142 65% 25% / 0.1);
@@ -145,8 +149,7 @@
 /* Show SVGs only on medium screens and up */
 @media (min-width: 768px) {
   .header-banner {
-    background-image:
-      url("/ribbon-tile.svg"), url("/ribbon-tile.svg");
+    background-image: url("/ribbon-tile.svg"), url("/ribbon-tile.svg");
     /* duas instâncias do mesmo SVG */
     background-repeat: no-repeat, no-repeat;
     background-size:
@@ -210,7 +213,7 @@ body:has(.not-found-page) .layout-footer {
 }
 
 /* Drop cap styling for article content */
-.article-content>.prose>p:first-of-type::first-letter {
+.article-content > .prose > p:first-of-type::first-letter {
   float: left;
   font-size: 4em;
   line-height: 0.85;

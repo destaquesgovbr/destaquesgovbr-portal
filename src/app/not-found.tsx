@@ -1,25 +1,25 @@
-"use client";
+'use client'
 
-import { BrButton, BrInput } from "@govbr-ds/webcomponents-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { BrButton, BrInput } from '@govbr-ds/webcomponents-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
 
 export default function NotFound() {
-  const router = useRouter();
-  const searchRef = useRef("");
+  const router = useRouter()
+  const searchRef = useRef('')
 
   function handleSearch() {
-    const query = searchRef.current.trim();
+    const query = searchRef.current.trim()
     if (query) {
-      router.push(`/busca?q=${encodeURIComponent(query)}`);
+      router.push(`/busca?q=${encodeURIComponent(query)}`)
     }
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter") {
-      handleSearch();
+    if (e.key === 'Enter') {
+      handleSearch()
     }
   }
 
@@ -57,7 +57,7 @@ export default function NotFound() {
               density="medium"
               actionLabel="Buscar"
               onValueChange={(e: CustomEvent<string>) => {
-                searchRef.current = e.detail;
+                searchRef.current = e.detail
               }}
             />
           </search>
@@ -82,10 +82,10 @@ export default function NotFound() {
       {/* Footer simplificado */}
       <footer className="bg-[var(--govbr-blue-warm-vivid-90)] text-white py-4 text-center text-sm">
         <p>
-          © {new Date().getFullYear()} Governo Federal do Brasil.{" "}
+          © {new Date().getFullYear()} Governo Federal do Brasil.{' '}
           <strong>Todos os direitos reservados.</strong>
         </p>
       </footer>
-    </div >
-  );
+    </div>
+  )
 }
