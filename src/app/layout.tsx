@@ -21,6 +21,13 @@ export const metadata: Metadata = {
   title: 'Destaques GOV',
   description:
     'Portal de centralização das notícias oficiais do Governo Brasileiro',
+  alternates: {
+    types: {
+      'application/rss+xml': '/feed.xml',
+      'application/atom+xml': '/feed.atom',
+      'application/feed+json': '/feed.json',
+    },
+  },
 }
 
 export default function RootLayout({
