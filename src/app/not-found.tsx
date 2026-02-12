@@ -39,10 +39,10 @@ export default function NotFound() {
           </div>
           <div className="md:text-left">
             <h1 className="text-3xl md:text-5xl font-bold text-[var(--govbr-blue-700)] mb-4">
-              Não encontramos o que você procura
+              Não encontramos o que <br /> você procura
             </h1>
             <p className="text-2xl text-gray-600">
-              Verifique o endereço usado ou tente fazer uma nova busca.
+              Verifique o endereço usado ou <br /> tente fazer uma nova busca.
             </p>
           </div>
         </section>
@@ -86,6 +86,6 @@ export default function NotFound() {
           <strong>Todos os direitos reservados.</strong>
         </p>
       </footer>
-    </div>
+    </div >
   );
 }
