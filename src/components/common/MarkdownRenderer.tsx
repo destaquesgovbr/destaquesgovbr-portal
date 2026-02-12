@@ -23,6 +23,7 @@ export function MarkdownRenderer({
 }: MarkdownRendererProps) {
   const processedContent = preprocessImageCarousels(content)
 
+  // biome-ignore lint/suspicious/noExplicitAny: react-markdown Components type does not support custom HTML elements
   const components: Components & Record<string, React.ComponentType<any>> = {
     // Parágrafos
     p: ({ node, children, ...props }) => (

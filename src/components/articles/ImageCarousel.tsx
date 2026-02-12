@@ -1,15 +1,15 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { cn } from '@/lib/utils'
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from '@/components/ui/carousel'
+import { cn } from '@/lib/utils'
 
 interface ImageCarouselProps {
   images: string[]
@@ -45,9 +45,7 @@ export function ImageCarousel({ images, alts }: ImageCarouselProps) {
               <div className="flex items-center justify-center">
                 <img
                   src={src}
-                  alt={
-                    alts[index] || `Imagem ${index + 1} de ${images.length}`
-                  }
+                  alt={alts[index] || `Imagem ${index + 1} de ${images.length}`}
                   className="max-w-full max-h-[500px] object-contain rounded-md shadow-sm"
                   loading={index === 0 ? 'eager' : 'lazy'}
                 />
@@ -56,11 +54,11 @@ export function ImageCarousel({ images, alts }: ImageCarouselProps) {
           ))}
         </CarouselContent>
         <CarouselPrevious
-          className="left-2 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100"
+          className="-left-5 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100"
           aria-label="Imagem anterior"
         />
         <CarouselNext
-          className="right-2 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100"
+          className="-right-5 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100"
           aria-label="Proxima imagem"
         />
       </Carousel>
